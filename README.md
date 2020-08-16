@@ -1,2 +1,35 @@
-# FavoriteMovies
-JSCRIPT 400 Final  Project
+# JSCRIPT 400 Final  Project
+
+## Overview
+For our final project we will be utilizing movie data found from Kaggle.com which includes a collection of movies found on Netflix, Prime Video, Hulu and Disney+ as seen [here](https://www.kaggle.com/ruchi798/movies-on-netflix-prime-video-hulu-and-disney). This application allows users to search the vast database for movie information using refined search queries based on many search parameters such as year, genre, age, rating, keywords, and more. Users can also create an account for additional features such as the ability to save movies to their own collection as "viewed movies" or "want to watch" movies and even add reviews and ratings of the movies they have seen. This is the perfect application for those who love to record and catalog the movies they have watched for future reference.
+
+Here is a sample of the movie data.
+![movie data sample](https://res.cloudinary.com/dcokaa0ia/image/upload/v1597605631/samples/movieData_srpkmq.png)
+
+## Route Endpoints
+
+### User Endpoints
+GET /users 		    Retrieves all users<br/>
+GET /users/:id		Retrieves a specific user<br/>
+PUT /users/:id		Updates a specific user (Requires Auth or Admin Role)<br/>
+DELETE /users/:id	Removes a user (Requires Admin Role)<br/>
+
+### Movie Endpoints
+GET /movies		    Retrieves all movies<br/>
+GET /movies/:id	    Retrieves a specific movie<br/>
+POST /movies		Adds a new movie to database (Requires Admin Role)<br/>
+PUT /movies/:id	    Updates a specific movie (Requires Admin Role)<br/>
+DELETE /movies/:id	removes a movie from database (Requires Admin Role)<br/>
+
+### Login Endpoints
+POST /login			    Logs a user into their account<br/>
+POST /login/signup		Creates a new user account<br/>
+POST /login/logout		Logs a user out<br/>
+POST /login/password 	Allows user to change password<br/>
+
+### Saved Endpoints (All of these routes require authentication)
+GET /saved  		Retrieves all saved movies from account<br/>
+POST /saved         Adds movie to saved collection<br/>
+PUT /saved/:id      Updates a specific saved movie<br/>
+DELETE /saved/:id	Removes a movie from account<br/>
+
