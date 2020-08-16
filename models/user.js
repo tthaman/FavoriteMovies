@@ -6,7 +6,6 @@ const userSchema = new mongoose.Schema({
   firstName: { type: String, required: true },
   lastName: { type: String, required: true },
   avatar: { type: String },
-  reviews: [{ type: Schema.Types.ObjectId, ref: 'reviews' }],
   roles: { type: [String], required: true }
 });
 
