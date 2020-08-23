@@ -18,12 +18,25 @@ module.exports.updateUserPassword = async (email, password) =>  {
   )
 };
 
+module.exports.getAll = async () => {
+  return await User.find().lean();
+}
+
 module.exports.getById = async (userId) => {
   return await User.findOne({ _id: userId }).lean();
 }
 
 module.exports.getByEmail = async (email) => {
   return  await User.findOne({ email: email }).lean();
+}
+
+module.exports.removePassword = async (email) => {
+  let user = await User.findOne({ email: email }, {password: 0});
+  if (!user) {
+      return false;
+  } else {
+      return user;
+  }
 }
 
 module.exports.deleteByUserId = async (userId) => {
