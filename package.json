@@ -6,26 +6,20 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
-    "react-scripts": "3.4.3",
     "bcrypt": "^5.0.0",
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "jest": "24.9.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.9.21"
   },
   "devDependencies": {
     "@shelf/jest-mongodb": "^1.1.5",
-    "jest": "^26.1.0",
     "supertest": "^4.0.2"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "startNode": "node index.js",
-    "testNode": "jest --coverage --runInBand",
+    "start": "node index.js",
+    "test": "jest --coverage --runInBand",
     "tdd": "jest --watch --runInBand"
   },
   "eslintConfig": {
