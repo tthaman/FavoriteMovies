@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const User = require('../models/user');
 const bcrypt = require('bcrypt');
+
 const salt = bcrypt.genSaltSync(12);
 
 module.exports = {};

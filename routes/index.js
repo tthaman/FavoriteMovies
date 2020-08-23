@@ -1,9 +1,6 @@
 const { Router } = require("express");
 const router = Router();
 const jwt = require('jsonwebtoken');
-const secret = 'put this someplace else';
-
-
 
 router.use((req, res, next) => {
   if(req.headers) {
@@ -12,7 +9,7 @@ router.use((req, res, next) => {
       const aToken = authorization.toString().split('Bearer ')[1]
       if (aToken && aToken !== "undefined") {
         try {
-          const jwtToken = jwt.verify(aToken, secret)
+          const jwtToken = jwt.verify(aToken, process.env.SECRET);
           req.userEmail = jwtToken.email;
           req.userId = jwtToken.userId;
           req.roles = jwtToken.roles;
@@ -29,15 +26,9 @@ router.use((req, res, next) => {
   }
 });
 
-router.use('/items',(req, res, next) => {
-  if(!req.userId) {
-    res.status(401).send(e.message);
-  } else {
-    next();
-  }
-});
-
-router.use('/orders',(req, res, next) => {
+//before proceeding to the favorite route, make sure user has logged in.  All favorite routes require the userId
+//to be in the request.
+router.use('/favorite',(req, res, next) => {
   if(!req.userId) {
     res.status(401).send(e.message);
   } else {
@@ -46,5 +37,6 @@ router.use('/orders',(req, res, next) => {
 });
 
 router.use("/login", require('./login'));
+router.use("/favorite", require('./saved'));
 
 module.exports = router;
