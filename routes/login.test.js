@@ -14,13 +14,21 @@ describe("/login", () => {
   afterEach(testUtils.clearDB);
 
   const user0 = {
-    email: 'user0@mail.com',
-    password: '123password'
-  };
+    password: "helpme",
+    email: "someone@gmail.com",
+    firstName: "Betty",
+    lastName: "White",
+    avatar: "cat",
+    roles: ['admin']
+    };
   const user1 = {
-    email: 'user1@mail.com',
-    password: '456password'
-  }
+    password: "jellybeans",
+    email: "someoneelse@gmail.com",
+    firstName: "Georgia",
+    lastName: "Beans",
+    avatar: "tree",
+    roles: ['user']
+    }
 
   describe("before signup", () => {
     describe("POST /", () => {
@@ -118,6 +126,9 @@ describe("/login", () => {
         const decodedToken = jwt.decode(token);
         expect(decodedToken.email).toEqual(user.email);
         expect(decodedToken.roles).toEqual(['user']);
+        expect(decodedToken.firstName).toEqual(user.firstName);
+        expect(decodedToken.lastName).toEqual(user.lastName);
+        expect(decodedToken.avatar).toEqual(user.avatar);
         expect(decodedToken._id).toMatch(/^(?=[a-f\d]{24}$)(\d+[a-f]|[a-f]+\d)/i) // mongo _id regex
         expect(decodedToken.password).toBeUndefined();
       });

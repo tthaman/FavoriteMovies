@@ -8,9 +8,7 @@ const User = require('../models/user');
 describe("/users", () => {
     beforeAll(testUtils.connectDB);
     afterAll(testUtils.stopDB);
-  
-    afterEach(testUtils.clearDB);
-  
+
     const testUsers = [
         {
         password: "helpme",
@@ -18,7 +16,7 @@ describe("/users", () => {
         firstName: "Betty",
         lastName: "White",
         avatar: "cat",
-        roles: ['admin']
+        roles: ['user']
         },
         {
         password: "jellybeans",
@@ -29,6 +27,9 @@ describe("/users", () => {
         roles: ['user']
         },
     ];
+  
+    afterEach(testUtils.clearDB);
+  
 
   describe("GET /", () => {
     it("should return all users", async () => {
@@ -68,7 +69,7 @@ describe("/users", () => {
     });
 
     it("should update a user", async () => {
-      const originalUser = testUser[1];
+      const originalUser = testUsers[1];
       const user = { ...originalUser };
       user.lastName = "Smith";
       const res = await request(server).put("/users/" + user._id).send(user);

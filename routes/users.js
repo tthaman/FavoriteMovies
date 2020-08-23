@@ -5,8 +5,10 @@ const userDAO = require('../daos/user');
 const { isAuthorized } = require('../middleware/middleware');
 const { isAdmin } = require('../middleware/middleware');
 
-router.get("/:id", async (req, res, next) => {
+router.get("/:id", isAuthorized, async (req, res, next) => {
+  console.log(req.params.id);
     const user = await userDAO.getById(req.params.id);
+    console.log(user);
     if (user) {
       res.json(user);
     } else {
@@ -14,7 +16,7 @@ router.get("/:id", async (req, res, next) => {
     }
   });
 
-router.get("/", async (req, res, next) => {
+router.get("/", isAuthorized, async (req, res, next) => {
     const users = await userDAO.getAll();
     res.json(users);
 });
@@ -40,10 +42,12 @@ router.put("/:id", isAuthorized, isAdmin, async (req, res, next) => {
   
 router.delete("/:id", isAuthorized, isAdmin, async (req, res, next) => {
     const userId = req.params.id;
-    try {
-      const success = await userDAO.deleteByUserId(userId);
-      res.sendStatus(success ? 200 : 400);
-    } catch(e) {
-      res.status(500).send(e.message);
+    const success = await userDAO.deleteByUserId(userId);
+    if (success) {
+      res.sendStatus(200);
+    } else {
+      res.sendStatus(400);
     }
 });
+
+module.exports = router;

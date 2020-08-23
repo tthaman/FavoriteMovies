@@ -22,8 +22,12 @@ module.exports.getAll = async () => {
   return await User.find().lean();
 }
 
-module.exports.getById = async (userId) => {
-  return await User.findOne({ _id: userId }).lean();
+module.exports.getById = (userId) => {
+  if (!mongoose.Types.ObjectId.isValid(userId)) {
+    return false;
+  } else {
+    return User.findOne({ _id: userId }).lean();
+  }
 }
 
 module.exports.getByEmail = async (email) => {
@@ -40,11 +44,21 @@ module.exports.removePassword = async (email) => {
 }
 
 module.exports.deleteByUserId = async (userId) => {
-  return await User.delete({ _id: mongoose.Types.ObjectId(userId) });
+  if (!mongoose.Types.ObjectId.isValid(userId)) {
+    return false;
+  } else {
+    await User.deleteOne({ _id: userId });
+    return true;
+  }
 }
 
 module.exports.create = async (userData) => {
-  userData.password = bcrypt.hashSync(userData.password, salt);
-  userData.roles = ['user'];
-  return await User.create(userData);
+  let user = await User.findOne({ email: userData.email});
+  if (user) {
+    return false;
+  } else {
+    userData.password = bcrypt.hashSync(userData.password, salt);
+    userData.roles = ['user'];
+    return await User.create(userData);
+  }
 }

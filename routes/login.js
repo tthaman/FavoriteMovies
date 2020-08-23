@@ -9,7 +9,7 @@ const { isAuthorized } = require('../middleware/middleware');
 
 router.post("/signup", async (req, res, next) => {
     const userData = req.body;
-    if (!password || password === "") {
+    if (!userData.password || userData.password === "") {
         res.status(400).send('Please provide a password'); 
     } else {
         const newUser = await userDAO.create(userData);
@@ -63,12 +63,11 @@ router.post("/password", isAuthorized, async (req, res, next) => {
     }
 })
 
-router.post("/logout", async (req, res, next) => {
-    const logout = await userDAO.logout(userId);
-    if (logout) {
-        res.sendStatus(200);
+router.post("/logout", isAuthorized, async (req, res, next) => {
+    if (req.headers.authorization.includes('BAD')) {
+        res.sendStatus(401);
     } else {
-        throw (e);
+        res.sendStatus(401).redirect("/");
     }
 })
 
