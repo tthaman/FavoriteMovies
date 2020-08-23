@@ -5,7 +5,7 @@ const reviewSchema = new mongoose.Schema({
     review: { type: String },
     rating: { type: Number },
     createdAt: {type: Date, default: Date.now},
-    movieId: { type: Schema.Types.ObjectId, ref: 'movies', required: true }
+    movieId: { type: mongoose.Schema.Types.ObjectId, ref: 'movies', required: true }
 });
 
 module.exports = mongoose.model("reviews", reviewSchema);
