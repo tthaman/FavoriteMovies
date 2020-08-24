@@ -26,9 +26,17 @@ router.use((req, res, next) => {
   }
 });
 
-//before proceeding to the favorite route, make sure user has logged in.  All favorite routes require the userId
-//to be in the request.
-router.use('/favorite',(req, res, next) => {
+//before proceeding to the saved route, make sure user has logged in.
+router.use('/saved',(req, res, next) => {
+  if(!req.userId) {
+    res.status(401).send(e.message);
+  } else {
+    next();
+  }
+});
+
+//before proceeding to the review route, make sure user has logged in.
+router.use('/review',(req, res, next) => {
   if(!req.userId) {
     res.status(401).send(e.message);
   } else {
@@ -37,6 +45,7 @@ router.use('/favorite',(req, res, next) => {
 });
 
 router.use("/login", require('./login'));
-router.use("/favorite", require('./saved'));
+router.use("/saved", require('./saved'));
+router.use("/review", require('./review'));
 
 module.exports = router;

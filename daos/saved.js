@@ -1,26 +1,37 @@
 const mongoose = require('mongoose');
-const User = require('../models/user');
+const Saved = require('../models/saved');
 
 module.exports = {};
 
 module.exports.getByUserId = async (userId) => {
-  return await User.findOne({ _id: userId }).lean();
+  return await Saved.findOne({ userId: userId }).lean();
 }
 
 module.exports.deleteByUserId = async (userId) => {
-  return await User.delete({ _id: mongoose.Types.ObjectId(userId) });
+  return await Saved.delete({ userId: mongoose.Types.ObjectId(userId) });
 }
 
-module.exports.create = async (favorite) => {
-  return await User.create(favorite);
+module.exports.create = async (saveMe) => {
+  return await Saved.create(saveMe);
 }
 
-// update movies array
-module.exports.updateMovies = async (userId, movies) =>  {
-  return await User.updateOne(
-    { _id: mongoose.Types.ObjectId(userId) },
+// update watchlist array
+module.exports.updateWatchlist = async (userId, watchlist) =>  {
+  return await Saved.updateOne(
+    { userId: mongoose.Types.ObjectId(userId) },
     {
-      $set: { movies: movies },
+      $set: { watchlist: watchlist },
+      $currentDate: { lastModified: true }
+    }
+  )
+};
+
+// update favorites array
+module.exports.updateWatchlist = async (userId, favorites) =>  {
+  return await Saved.updateOne(
+    { userId: mongoose.Types.ObjectId(userId) },
+    {
+      $set: { favorites: favorites },
       $currentDate: { lastModified: true }
     }
   )

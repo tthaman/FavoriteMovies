@@ -2,13 +2,12 @@ const { Router } = require("express");
 const router = Router();
 const savedDAO = require('../daos/saved');
 
-//get user's favorites...userId must have been set in request by middleware
+//get user's savedMovieData...userId must have been set in request by middleware
 router.get("/", async (req, res, next) => {
   const userId = req.userId;
   try {
     let saved = await savedDAO.getByUserId(userId);
     if (saved) {
-
       res.render('index', {
         movies: ['item one', 'other', 'new item']
       });
@@ -20,14 +19,36 @@ router.get("/", async (req, res, next) => {
   }
 });
 
-// Check for saved movie with userId.  If found, update movies array.  Else, create saved movie with 1 instance in movies.
-router.put("/:id", async (req, res, next) => {
-  const noteId = req.params.id;
-  const note = req.body;
-  if (!note || JSON.stringify(note) === '{}' ) {
-    res.status(400).send('note is required"');
+// Update users watchlist.
+router.put("/watchlist/:movieId", async (req, res, next) => {
+  const movieId = req.params.movieId;
+  const userId = req.userId;
+  if (!movieId ) {
+    //res.render(error html)
+    res.status(400).send('Please provide movie to be added to watchlist"');
   } else {
-    const updatednote = await noteDAO.updateById(noteId, note);
-    res.json(updatednote);
+    try {
+      const updatedWL = await savedDAO.updateWatchlist(userId, movieId);
+      //res.render(movie view)
+      res.json(updatedWL);
+    } catch (err) {
+      //res.render(error html)
+    }
   }
 });
+
+// Update users favorites.
+router.put("/favorites/:movieId", async (req, res, next) => {
+  const movieId = req.params.movieId;
+  const userId = req.userId;
+  if (!saveMe || JSON.stringify(movieId) === '{}' ) {
+    //res.render(error html)
+    res.status(400).send('Please provide movie to be added to favorites"');
+  } else {
+    const updatedFav = await savedDAO.updateFavorites(userId, movieId);
+    //res.render(movie view)
+    res.json(updatedFav);
+  }
+});
+
+module.exports = router;
