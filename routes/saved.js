@@ -20,15 +20,15 @@ router.get("/", async (req, res, next) => {
 });
 
 // Update users watchlist.
-router.put("/watchlist/:movieId", async (req, res, next) => {
-  const movieId = req.params.movieId;
+router.post("/watchlist", async (req, res, next) => {
+  const aMovie = req.body;
   const userId = req.userId;
-  if (!movieId ) {
+  if (!aMovie || JSON.stringify(aMovie) === '{}') {
     //res.render(error html)
     res.status(400).send('Please provide movie to be added to watchlist"');
   } else {
     try {
-      const updatedWL = await savedDAO.updateWatchlist(userId, movieId);
+      const updatedWL = await savedDAO.updateWatchlist(userId, aMovie._id);
       //res.render(movie view)
       res.json(updatedWL);
     } catch (err) {
@@ -38,14 +38,14 @@ router.put("/watchlist/:movieId", async (req, res, next) => {
 });
 
 // Update users favorites.
-router.put("/favorites/:movieId", async (req, res, next) => {
-  const movieId = req.params.movieId;
+router.post("/favorites", async (req, res, next) => {
+  const aMovie = req.body;
   const userId = req.userId;
-  if (!saveMe || JSON.stringify(movieId) === '{}' ) {
+  if (!aMovie || JSON.stringify(aMovie) === '{}' ) {
     //res.render(error html)
     res.status(400).send('Please provide movie to be added to favorites"');
   } else {
-    const updatedFav = await savedDAO.updateFavorites(userId, movieId);
+    const updatedFav = await savedDAO.updateFavorites(userId, aMovie._id);
     //res.render(movie view)
     res.json(updatedFav);
   }

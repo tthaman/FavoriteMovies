@@ -11,33 +11,69 @@ describe("/saved", () => {
   beforeAll(testUtils.connectDB);
   afterAll(testUtils.stopDB);
   afterEach(testUtils.clearDB);
-  let saveMovie;
-  // beforeEach(async () => {
-  //   saveMovie = (await Movies.findOne({"Title" : "Inglourious Basterds"}).)._id.toString();
-  // });
+
+  const movie0 = {
+    "" : 9,
+    "ID" : 10,
+    "Title" : "Inglourious Basterds",
+    "Year" : 2009,
+    "Age" : "18+",
+    "IMDb" : 8.3,
+    "Rotten Tomatoes" : "89%",
+    "Netflix" : 1,
+    "Hulu" : 0,
+    "Prime Video" : 0,
+    "Disney+" : 0,
+    "Type" : 0,
+    "Directors" : "Quentin Tarantino",
+    "Genres" : "Adventure,Drama,War",
+    "Country" : "Germany,United States",
+    "Language" : "English,German,French,Italian",
+    "Runtime" : 153
+  };
+
+  const movie1 = {
+    "" : 17,
+    "ID" : 18,
+    "Title" : "Groundhog Day",
+    "Year" : 1993,
+    "Age" : "7+",
+    "IMDb" : 8,
+    "Rotten Tomatoes" : "96%",
+    "Netflix" : 1,
+    "Hulu" : 0,
+    "Prime Video" : 0,
+    "Disney+" : 0,
+    "Type" : 0,
+    "Directors" : "Harold Ramis",
+    "Genres" : "Comedy,Fantasy,Romance",
+    "Country" : "United States",
+    "Language" : "English,French,Italian",
+    "Runtime" : 101 };
+  let movies;
 
   beforeEach(async () => {
-    console.log(await Movies.find({}));
-    saveMovie = (await Movies.findOne({"Title" : "Inglourious Basterds"}))._id.toString();
+    movies = (await Movies.insertMany([movie0, movie1])).map(i => i.toJSON());
+    console.log(movies);
   });
 
   describe('Before login', () => {
-    describe('POST /', () => {
+    describe('PUT /', () => {
       it('should send 401 without a token', async () => {
-        const res = await request(server).post("/saved").send(saveMovie);
+        const res = await request(server).put("/saved/watchlist").send(movies[0]);
         expect(res.statusCode).toEqual(401);
       });
       it('should send 401 with a bad token', async () => {
         const res = await request(server)
-          .post("/saved")
+          .put("/saved/watchlist" + movies[0]._id)
           .set('Authorization', 'Bearer BAD')
-          .send(saveMe);
+          .send();
         expect(res.statusCode).toEqual(401);
       });
     });
     describe('GET /', () => {
       it('should send 401 without a token', async () => {
-        const res = await request(server).get("/saved").send(saveMe);
+        const res = await request(server).get("/saved").send();
         expect(res.statusCode).toEqual(401);
       });
       it('should send 401 with a bad token', async () => {
@@ -62,12 +98,12 @@ describe("/saved", () => {
       const res0 = await request(server).post("/login").send(user0);
       token0 = res0.body.token;
     });
-    describe("PUT /", () => {
+    describe("POST /saved/watchlist", () => {
       it('should send 200 to normal user and save movie', async () => {
         const res = await request(server)
-          .put("/saved/watchlist/" + saveMe._id)
+          .post("/saved/watchlist")
           .set('Authorization', 'Bearer ' + token0)
-          .send();
+          .send(movies[0])
         expect(res.statusCode).toEqual(200);
         const savedMovie = await Saved.findOne().lean();
         expect(savedMovie).toMatchObject({
@@ -77,7 +113,7 @@ describe("/saved", () => {
       });
       it('should send 200 to admin user and create order with repeat items', async () => {
         const res = await request(server)
-          .post("/saved")
+          .post("/saved/watchlist")
           .set('Authorization', 'Bearer ' + adminToken)
           .send([items[1], items[1]].map(i => i._id));
         expect(res.statusCode).toEqual(200);
