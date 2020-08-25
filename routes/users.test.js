@@ -1,4 +1,4 @@
-  
+
 const request = require("supertest");
 
 const server = require("../server");
@@ -9,13 +9,14 @@ describe("/users", () => {
     beforeAll(testUtils.connectDB);
     afterAll(testUtils.stopDB);
 
-    const testUsers = [
+  afterEach(testUtils.clearDB);
+
+  const testUsers = [
         {
         password: "helpme",
         email: "someone@gmail.com",
         firstName: "Betty",
         lastName: "White",
-        avatar: "cat",
         roles: ['user']
         },
         {
@@ -23,13 +24,14 @@ describe("/users", () => {
         email: "someoneelse@gmail.com",
         firstName: "Georgia",
         lastName: "Beans",
-        avatar: "tree",
         roles: ['user']
         },
     ];
-  
-    afterEach(testUtils.clearDB);
-  
+
+  let users;
+  beforeAll(async () => {
+    users = await User.insertMany(testUsers);
+  });
 
   describe("GET /", () => {
     it("should return all users", async () => {
@@ -74,7 +76,7 @@ describe("/users", () => {
       user.lastName = "Smith";
       const res = await request(server).put("/users/" + user._id).send(user);
       expect(res.statusCode).toEqual(200);
-     
+
       const savedUser = await User.findOne({ _id: user._id }).lean();
       savedUser._id = savedUser._id.toString();
       expect(savedUser).toMatchObject(user);
@@ -86,7 +88,7 @@ describe("/users", () => {
       const res = await request(server).delete("/users/fake").send();
       expect(res.statusCode).toEqual(400);
     });
-    
+
     it("should delete the expected user", async () => {
       const { _id } = testUsers[1];
       const res = await request(server).delete("/users/" + _id).send({});
