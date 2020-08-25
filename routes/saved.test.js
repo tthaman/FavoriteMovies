@@ -103,7 +103,7 @@ describe("/saved", () => {
         const res = await request(server)
           .post("/saved/watchlist")
           .set('Authorization', 'Bearer ' + token0)
-          .send(movies[0])
+          .send(movies[0]);
         expect(res.statusCode).toEqual(200);
         const savedMovie = await Saved.findOne().lean();
         expect(savedMovie).toMatchObject({

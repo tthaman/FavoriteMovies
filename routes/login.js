@@ -5,12 +5,11 @@ const secret = 'spongebob squarepants';
 const bcrypt = require('bcrypt');
 
 const userDAO = require('../daos/user');
-const { isAuthorized } = require('../middleware/middleware');
 
 router.post("/signup", async (req, res, next) => {
     const userData = req.body;
     if (!userData.password || userData.password === "") {
-        res.status(400).send('Please provide a password'); 
+        res.status(400).send('Please provide a password');
     } else {
         const newUser = await userDAO.create(userData);
         if (newUser) {
@@ -18,13 +17,13 @@ router.post("/signup", async (req, res, next) => {
         } else {
             res.sendStatus(409);
         }
-    }   
+    }
 })
 
 router.post("/", async (req, res, next) => {
     const { email, password } = req.body;
     if (!password || password === "") {
-        res.status(400).send('Please provide a password'); 
+        res.status(400).send('Please provide a password');
     } else {
         let savedUser = await userDAO.getByEmail(email);
         if (savedUser) {
@@ -43,14 +42,14 @@ router.post("/", async (req, res, next) => {
         } else {
             res.sendStatus(401);
         }
-    }   
+    }
 })
 
-router.post("/password", isAuthorized, async (req, res, next) => {
+router.post("/password",  async (req, res, next) => {
     const { password } = req.body;
     const { email } = req.user;
     if (!password || password === "") {
-        res.status(400).send('Please provide a password'); 
+        res.status(400).send('Please provide a password');
     } else if (req.headers.authorization.includes('BAD')) {
         res.sendStatus(401);
     } else {
@@ -63,7 +62,7 @@ router.post("/password", isAuthorized, async (req, res, next) => {
     }
 })
 
-router.post("/logout", isAuthorized, async (req, res, next) => {
+router.post("/logout", async (req, res, next) => {
     if (req.headers.authorization.includes('BAD')) {
         res.sendStatus(401);
     } else {
