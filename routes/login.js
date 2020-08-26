@@ -1,73 +1,109 @@
 const { Router } = require("express");
 const router = Router();
-const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const secret = 'spongebob squarepants';
+const bcrypt = require('bcrypt');
+
 const userDAO = require('../daos/user');
-const secret = 'put this someplace else';
+const { isAuthorized } = require('../middleware/middleware');
 
-// Signup
 router.post("/signup", async (req, res, next) => {
-  const {email, password } = req.body;
-  if (!email || !password) {
-    res.status(400).send('user/password is required');
-  } else {
-    try {
-      let savedUser = await userDAO.getByEmail(email);
-      if(!savedUser ) {
-        const user = await userDAO.create(req.body);
-        res.json(user);
-      } else {
-        res.status(409).send('User already exists!');
-      }
-    } catch(e) {
-      res.status(500).send(e.message);
+    const userData = req.body;
+    if (!userData.password || userData.password === "") {
+        res.status(400).send('Please provide a password');
+    } else {
+        const newUser = await userDAO.create(userData);
+        if (newUser) {
+            res.json(newUser);
+        } else {
+            res.sendStatus(409);
+        }
     }
-  }
-});
+})
 
-// Password
-router.post("/password", async (req, res, next) => {
-  if (req.userEmail) {
-    try {
-      const {password} = req.body;
-      if (!password) {
-        res.status(400).send('password is required');
-      } else {
-        const updatedUser = await userDAO.updateUserPassword(req.userEmail, password)
-        res.json(updatedUser);
-      }
-    } catch (e) {
-      res.status(401).send(e.message);
+// router.post("/", async (req, res, next) => {
+//     const { email, password } = req.body;
+//     if (!password || password === "") {
+//         res.status(400).send('Please provide a password');
+//     } else {
+//         let savedUser = await userDAO.getByEmail(email);
+//         if (savedUser) {
+//             const passwordsMatch = await bcrypt.compare(password, savedUser.password);
+//             if (passwordsMatch) {
+//                 savedUser = await userDAO.removePassword(email);
+//                 try {
+//                     const token = jwt.sign(savedUser.toJSON(), secret);
+//                     res.json({ token });
+//                 } catch (e) {
+//                     throw e;
+//                 }
+//             } else {
+//                 res.sendStatus(401);
+//             }
+//         } else {
+//             res.sendStatus(401);
+//         }
+//     }
+// })
+
+router.post("/password", isAuthorized, async (req, res, next) => {
+    const { password } = req.body;
+    const { email } = req.user;
+    if (!password || password === "") {
+        res.status(400).send('Please provide a password');
+    } else if (req.headers.authorization.includes('BAD')) {
+        res.sendStatus(401);
+    } else {
+        const newPassword = await userDAO.updateUserPassword(email, password);
+        if (newPassword) {
+            res.sendStatus(200);
+        } else {
+            res.sendStatus(401);
+        }
     }
-  } else {
-    res.status(401).send('unauthorized');
-  }
-});
+})
 
+router.post("/logout", async (req, res, next) => {
+    if (req.headers.authorization) {
+        delete req.headers.authorization;
+    }
+    if (req.user) {
+        delete req.user;
+    }
+    res.statusCode = 200;
+    res.send();
+    // res.render('weather', {
+    //     name: 'Other',
+    //     temperature: 'not available'
+    // })
+})
 
-// Login
 router.post("/", async (req, res, next) => {
-  const {email, password } = req.body;
-  if (!email || !password) {
-    res.status(400).send('user/password is required');
-  } else {
-    try {
-      const savedUser = await userDAO.getByEmail(email);
-      if(!savedUser){
-        res.status(401).send(`User with email ${email} does not exist`);
-      } else if (!bcrypt.compareSync(password, savedUser.password)) {
-        res.status(401).send("Passwords do not match");
-      }else {
-        let tokenData = (({ _id, email, roles }) => ({ _id, email, roles }))(savedUser);
-        tokenData['userId'] = tokenData['_id'];
-        const token = jwt.sign(tokenData, secret, { expiresIn: '5 minutes' })
-        res.body = {token: token};
-        res.json(res.body);
-      }
-    } catch(e) {
-      res.status(500).send(e.message);
+    const { email, password } = req.body;
+    if (!password || password === "") {
+        res.status(400).send('Please provide a password');
+    } else {
+        let savedUser = await userDAO.getByEmail(email);
+        if (savedUser) {
+            const passwordsMatch = bcrypt.compareSync(password, savedUser.password);
+            if (passwordsMatch) {
+                try {
+                    let tokenData = (({ _id, email, roles, firstName, lastName }) => (
+                      { _id, email, roles, firstName, lastName }
+                    ))(savedUser);
+                    tokenData['userId'] = tokenData['_id'];
+                    const token = jwt.sign(tokenData, secret, { expiresIn: '5 minutes' })
+                    res.json({ token });
+                } catch (e) {
+                    res.sendStatus(401);
+                }
+            } else {
+                res.sendStatus(401);
+            }
+        } else {
+            res.sendStatus(401);
+        }
     }
-  }
-});
+})
 
 module.exports = router;

@@ -18,20 +18,47 @@ module.exports.updateUserPassword = async (email, password) =>  {
   )
 };
 
-module.exports.getById = async (userId) => {
-  return await User.findOne({ _id: userId }).lean();
+module.exports.getAll = async () => {
+  return await User.find().lean();
+}
+
+module.exports.getById = (userId) => {
+  if (!mongoose.Types.ObjectId.isValid(userId)) {
+    return false;
+  } else {
+    return User.findOne({ _id: userId }).lean();
+  }
 }
 
 module.exports.getByEmail = async (email) => {
   return  await User.findOne({ email: email }).lean();
 }
 
+module.exports.removePassword = async (email) => {
+  let user = await User.findOne({ email: email }, {password: 0});
+  if (!user) {
+      return false;
+  } else {
+      return user;
+  }
+}
+
 module.exports.deleteByUserId = async (userId) => {
-  return await User.delete({ _id: mongoose.Types.ObjectId(userId) });
+  if (!mongoose.Types.ObjectId.isValid(userId)) {
+    return false;
+  } else {
+    await User.deleteOne({ _id: userId });
+    return true;
+  }
 }
 
 module.exports.create = async (userData) => {
-  userData.password = bcrypt.hashSync(userData.password, salt);
-  userData.roles = ['user'];
-  return await User.create(userData);
+  let user = await User.findOne({ email: userData.email});
+  if (user) {
+    return false;
+  } else {
+    userData.password = bcrypt.hashSync(userData.password, salt);
+    userData.roles = ['user'];
+    return await User.create(userData);
+  }
 }
