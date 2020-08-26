@@ -37,8 +37,7 @@
     </header>
     <main class="form-container">
         <h1>Create an Account</h1>
-        <form action="/login/signup" method="POST" class="pure-form pure-form-aligned">
-            <fieldset>
+        <form action="/login/signup" method="post" enctype="application/x-www-form-urlencoded" class="pure-form pure-form-aligned">
                 <hr class="add-margin"/>
                 <div class="pure-control-group">
                     <label for="aligned-first">First Name</label>
@@ -57,7 +56,6 @@
                     <input name="password" type="password" id="aligned-password" placeholder="Password" required />
                 </div>
                 <button type="submit" class="pure-button pure-button-primary">Submit</button>
-            </fieldset>
         </form>
     </main>
 </body>
