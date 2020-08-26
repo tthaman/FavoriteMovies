@@ -7,5 +7,6 @@ router.use(bodyParser.urlencoded({ extended: true }));
 router.use("/login", require('./login'));
 router.use("/saved", require('./saved'));
 router.use("/review", require('./review'));
+router.use("/users", require('./users'));
 
 module.exports = router;

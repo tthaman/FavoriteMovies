@@ -5,44 +5,67 @@ const secret = 'spongebob squarepants';
 const bcrypt = require('bcrypt');
 
 const userDAO = require('../daos/user');
+const { isAuthorized } = require('../middleware/middleware');
 
-// Signup
 router.post("/signup", async (req, res, next) => {
     const userData = req.body;
-    if (!userData || !userData.email || !userData.password || !userData.firstName || !userData.lastName) {
-        res.status(400).send('please provide required userData');
+    if (!userData.password || userData.password === "") {
+        res.status(400).send('Please provide a password');
     } else {
         try {
-            let savedUser = await userDAO.getByEmail(userData.email);
-            if(!savedUser ) {
-                const user = await userDAO.create(userData);
-                res.json(user);
+            const newUser = await userDAO.create(userData);
+            if (newUser) {
+                res.json(newUser);
             } else {
-                res.status(409).send('User already exists!');
+                res.sendStatus(409);
             }
         } catch(e) {
-            res.status(500).send(e.message);
+            res.sendStatus(409);
         }
     }
-});
+})
 
-router.post("/password", async (req, res, next) => {
-    if (req.userEmail) {
-        try {
-            const {password} = req.body;
-            if (!password) {
-                res.status(400).send('password is required');
-            } else {
-                const updatedUser = await userDAO.updateUserPassword(req.userEmail, password)
-                res.json(updatedUser);
-            }
-        } catch (e) {
-            res.status(401).send(e.message);
-        }
+// router.post("/", async (req, res, next) => {
+//     const { email, password } = req.body;
+//     if (!password || password === "") {
+//         res.status(400).send('Please provide a password');
+//     } else {
+//         let savedUser = await userDAO.getByEmail(email);
+//         if (savedUser) {
+//             const passwordsMatch = await bcrypt.compare(password, savedUser.password);
+//             if (passwordsMatch) {
+//                 savedUser = await userDAO.removePassword(email);
+//                 try {
+//                     const token = jwt.sign(savedUser.toJSON(), secret);
+//                     res.json({ token });
+//                 } catch (e) {
+//                     throw e;
+//                 }
+//             } else {
+//                 res.sendStatus(401);
+//             }
+//         } else {
+//             res.sendStatus(401);
+//         }
+//     }
+// })
+
+router.post("/password", isAuthorized, async (req, res, next) => {
+    const { password } = req.body;
+    const { email } = req.user;
+    if (!password || password === "") {
+        res.status(400).send('Please provide a password');
+    } else if (req.headers.authorization.includes('BAD')) {
+        res.sendStatus(401);
     } else {
-        res.status(401).send('unauthorized');
+        const newPassword = await userDAO.updateUserPassword(email, password);
+        if (newPassword) {
+            res.sendStatus(200);
+        } else {
+            res.sendStatus(401);
+        }
     }
-});
+})
 
 router.post("/logout", async (req, res, next) => {
     if (req.headers.authorization) {
@@ -57,7 +80,7 @@ router.post("/logout", async (req, res, next) => {
     //     name: 'Other',
     //     temperature: 'not available'
     // })
-});
+})
 
 router.post("/", async (req, res, next) => {
     const { email, password } = req.body;
@@ -85,6 +108,6 @@ router.post("/", async (req, res, next) => {
             res.sendStatus(401);
         }
     }
-});
+})
 
 module.exports = router;

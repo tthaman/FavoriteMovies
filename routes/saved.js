@@ -1,9 +1,10 @@
 const { Router } = require("express");
 const router = Router();
 const savedDAO = require('../daos/saved');
+const { isAuthorized } = require('../middleware/middleware');
 
 //get user's savedMovieData...userId must have been set in request by middleware
-router.get("/", async (req, res, next) => {
+router.get("/", isAuthorized,async (req, res, next) => {
   const userId = req.userId;
   try {
     let saved = await savedDAO.getByUserId(userId);
@@ -20,7 +21,7 @@ router.get("/", async (req, res, next) => {
 });
 
 // Update users watchlist.
-router.post("/watchlist", async (req, res, next) => {
+router.post("/watchlist", isAuthorized,async (req, res, next) => {
   const aMovie = req.body;
   const userId = req.userId;
   if (!aMovie || JSON.stringify(aMovie) === '{}') {
@@ -38,7 +39,7 @@ router.post("/watchlist", async (req, res, next) => {
 });
 
 // Update users favorites.
-router.post("/favorites", async (req, res, next) => {
+router.post("/favorites", isAuthorized,async (req, res, next) => {
   const aMovie = req.body;
   const userId = req.userId;
   if (!aMovie || JSON.stringify(aMovie) === '{}' ) {

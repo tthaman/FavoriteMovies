@@ -73,34 +73,6 @@ describe("/saved", () => {
     users = (await User.insertMany([user0, user1])).map(i => i.toJSON());
   });
 
-  describe('Before login', () => {
-    describe('PUT /', () => {
-      it('should send 401 without a token', async () => {
-        const res = await request(server).put("/saved/watchlist").send(movies[0]);
-        expect(res.statusCode).toEqual(401);
-      });
-      it('should send 401 with a bad token', async () => {
-        const res = await request(server)
-          .put("/saved/watchlist" + movies[0]._id)
-          .set('Authorization', 'Bearer BAD')
-          .send();
-        expect(res.statusCode).toEqual(401);
-      });
-    });
-    describe('GET /', () => {
-      it('should send 401 without a token', async () => {
-        const res = await request(server).get("/saved").send();
-        expect(res.statusCode).toEqual(401);
-      });
-      it('should send 401 with a bad token', async () => {
-        const res = await request(server)
-          .get("/saved")
-          .set('Authorization', 'Bearer BAD')
-          .send();
-        expect(res.statusCode).toEqual(401);
-      });
-    });
-  });
   describe('after login', () => {
     const user0 = {
       email: 'user0@mail.com',

@@ -1,4 +1,3 @@
-
 const request = require("supertest");
 var jwt = require('jsonwebtoken');
 
@@ -17,14 +16,18 @@ describe("/login", () => {
     password: "helpme",
     email: "someone@gmail.com",
     firstName: "Betty",
-    lastName: "White"
-    };
+    lastName: "White",
+    // avatar: "cat",
+    roles: ['admin']
+  };
   const user1 = {
     password: "jellybeans",
     email: "someoneelse@gmail.com",
     firstName: "Georgia",
-    lastName: "Beans"
-    }
+    lastName: "Beans",
+    // avatar: "tree",
+    roles: ['user']
+  }
 
   describe("before signup", () => {
     describe("POST /", () => {
@@ -40,6 +43,13 @@ describe("/login", () => {
         expect(res.statusCode).toEqual(401);
       });
     });
+
+    // describe("POST /logout", () => {
+    //   it("should return 404", async () => {
+    //     const res = await request(server).post("/login/logout").send();
+    //     expect(res.statusCode).toEqual(404);
+    //   });
+    // });
   });
 
   describe("signup ", () => {
@@ -183,48 +193,48 @@ describe("/login", () => {
         expect(loginRes1.statusCode).toEqual(200);
       });
     });
-      // describe("POST /logout", () => {
-        // it("should reject bogus token", async () => {
-        //   const res = await request(server)
-        //     .post("/login/logout")
-        //     .set('Authorization', 'Bearer BAD')
-        //     .send();
-        //   expect(res.statusCode).toEqual(401);
-        // });
-        // it("should prevent only user0 from making a password change", async () => {
-        //   // const res = await request(server)
-        //   //   .post("/login/logout")
-        //   //   .set('Authorization', 'Bearer ' + token0)
-        //   //   .send();
-        //   // expect(res.statusCode).toEqual(200);
-        //   const res0 = await request(server)
-        //     .post("/login/password")
-        //     .set('Authorization', 'Bearer ' + token0)
-        //     .send({ password: '123' });
-        //   expect(res0.statusCode).toEqual(200);
-        //   const res1 = await request(server)
-        //     .post("/login/password")
-        //     .set('Authorization', 'Bearer ' + token1)
-        //     .send({ password: '123' });
-        //   expect(res1.statusCode).toEqual(200);
-        // });
-        // it("should prevent only user1 from making a password change", async () => {
-        //   const res = await request(server)
-        //     .post("/login/logout")
-        //     .set('Authorization', 'Bearer ' + token1)
-        //     .send();
-        //   expect(res.statusCode).toEqual(200);
-        //   const res0 = await request(server)
-        //     .post("/login/password")
-        //     .set('Authorization', 'Bearer ' + token0)
-        //     .send({ password: '123' });
-        //   expect(res0.statusCode).toEqual(200);
-        //   const res1 = await request(server)
-        //     .post("/login/password")
-        //     .set('Authorization', 'Bearer ' + token1)
-        //     .send({ password: '123' });
-        //   expect(res1.statusCode).toEqual(401);
-        // });
+    // describe("POST /logout", () => {
+    // it("should reject bogus token", async () => {
+    //   const res = await request(server)
+    //     .post("/login/logout")
+    //     .set('Authorization', 'Bearer BAD')
+    //     .send();
+    //   expect(res.statusCode).toEqual(401);
+    // });
+    // it("should prevent only user0 from making a password change", async () => {
+    //   // const res = await request(server)
+    //   //   .post("/login/logout")
+    //   //   .set('Authorization', 'Bearer ' + token0)
+    //   //   .send();
+    //   // expect(res.statusCode).toEqual(200);
+    //   const res0 = await request(server)
+    //     .post("/login/password")
+    //     .set('Authorization', 'Bearer ' + token0)
+    //     .send({ password: '123' });
+    //   expect(res0.statusCode).toEqual(200);
+    //   const res1 = await request(server)
+    //     .post("/login/password")
+    //     .set('Authorization', 'Bearer ' + token1)
+    //     .send({ password: '123' });
+    //   expect(res1.statusCode).toEqual(200);
+    // });
+    // it("should prevent only user1 from making a password change", async () => {
+    //   const res = await request(server)
+    //     .post("/login/logout")
+    //     .set('Authorization', 'Bearer ' + token1)
+    //     .send();
+    //   expect(res.statusCode).toEqual(200);
+    //   const res0 = await request(server)
+    //     .post("/login/password")
+    //     .set('Authorization', 'Bearer ' + token0)
+    //     .send({ password: '123' });
+    //   expect(res0.statusCode).toEqual(200);
+    //   const res1 = await request(server)
+    //     .post("/login/password")
+    //     .set('Authorization', 'Bearer ' + token1)
+    //     .send({ password: '123' });
+    //   expect(res1.statusCode).toEqual(401);
+    // });
     // });
   });
 });
