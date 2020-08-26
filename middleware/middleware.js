@@ -1,5 +1,3 @@
-const jwt = require('jsonwebtoken');
-const secret = 'spongebob squarepants';
 const tokenDAO = require('../daos/token');
 
 module.exports = {}

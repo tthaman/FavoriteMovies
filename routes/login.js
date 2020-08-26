@@ -1,7 +1,5 @@
 const { Router } = require("express");
 const router = Router();
-const jwt = require('jsonwebtoken');
-const secret = 'spongebob squarepants';
 const bcrypt = require('bcrypt');
 
 const userDAO = require('../daos/user');
@@ -61,7 +59,10 @@ router.post("/password", isAuthorized, async (req, res, next) => {
 })
 
 router.post("/logout", isAuthorized, async (req, res, next) => {
+    console.log(req.token);
     const success = await tokenDAO.delete(req.token);
+    console.log(req.token);
+    console.log(success);
         if (success) {
             res.sendStatus(200);
         } else {

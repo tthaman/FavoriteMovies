@@ -25,6 +25,8 @@ module.exports.getUser = async (tokenString) => {
 
 module.exports.delete = async (token) => {
     try {
+        const user = await Token.findOne({ token: token }).lean();
+        console.log(user);
         await Token.deleteOne({ token: token });
         return true;
     } catch (e) {
