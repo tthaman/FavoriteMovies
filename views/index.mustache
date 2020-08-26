@@ -1,9 +1,144 @@
-<html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <base href="/">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+    <link rel="stylesheet" href="css/normalize.css" type="text/css">
+    <link rel="stylesheet" href="css/sakura.css">
+    <link rel="stylesheet" href="https://unpkg.com/purecss@2.0.3/build/pure-min.css" integrity="sha384-cg6SkqEOCV1NbJoCu11+bm0NvBRc8IYLRGXkmNrqUBfTjmMYwNKPWBTIKyw9mHNJ" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/style.css">
+    <title>Movie Finder</title>
+</head>
 <body>
-Hello, World! Here are the items:
-<br>
-{{#movies}}
-    <div>{{.}}</div>
-{{/movies}}
+    <header class="pure-menu pure-menu-horizontal navbar">
+        <ul class="pure-menu-list header">
+            <a href="/" class="pure-menu-heading logo pure-menu-link">🎞️Movie Finder</a>
+            <li class="pure-menu-item">
+                <form action="/movies" method="GET" class="pure-form">
+                    <select name="searchType" class="searchType" id="search-type">
+                        <option>Title</option>
+                        <option>Director</option>
+                    </select>
+                    <input class="pure-input-rounded searchBar" type="text" name="query" placeholder="Search Movies..." required />
+                    <button type="submit" class="pure-button pure-button-primary rounded">Submit</button>
+                </form>
+            </li>
+            <li class="pure-menu-item">
+                <div class="pure-menu pure-menu-horizontal">
+                    <ul class="pure-menu-list header">
+                        <li class="pure-menu-item">
+                            <a href="/login/signup" class="pure-menu-link">Sign Up</a>
+                        </li>
+                        <li class="pure-menu-item">
+                            <a href="/login" class="pure-menu-link">Login</a>
+                        </li>
+                        <li class="pure-menu-item">
+                            <a href="/saved" class="pure-menu-link">Collection</a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+        </ul>
+    </header>
+    <main>
+        <h1>Movies ∙ Top Results <span class="options-button">Filter Results <i class="fas fa-filter"></i></span></h1>
+        <hr/>
+        <div class="search-options hideOptions">
+            <div class="grid-item">
+                <form action="/" method="get">
+
+                    <div class="flex-container">
+                        <fieldset>
+                            <legend>Filter By Movie Genre</legend>
+                            <div class="input-grid">
+                                <input type="checkbox" name="genre" id="action" value="action" class="pill"><label for="action">Action</label>
+                                <input type="checkbox" name="genre" id="adventure" value="adventure" class="pill"><label for="adventure">Adventure</label>
+                                <input type="checkbox" name="genre" id="drama" value="drama" class="pill"><label for="drama">Drama</label>
+                                <input type="checkbox" name="genre" id="comedy" value="comedy" class="pill"><label for="comedy">Comedy</label>
+                                <input type="checkbox" name="genre" id="horror" value="horror" class="pill"><label for="horror">Horror</label>
+                                <input type="checkbox" name="genre" id="animated" value="animated" class="pill"><label for="animated">Animated</label>
+                                <input type="checkbox" name="genre" id="thriller" value="thriller" class="pill"><label for="thriller">Thriller</label>
+                                <input type="checkbox" name="genre" id="crime" value="crime" class="pill"><label for="crime">Crime</label>
+                                <input type="checkbox" name="genre" id="history" value="history" class="pill"><label for="history">History</label>
+                                <input type="checkbox" name="genre" id="sci-fi" value="sci-fi" class="pill"><label for="sci-fi">Sci-fi</label>
+                                <input type="checkbox" name="genre" id="war" value="war" class="pill"><label for="war">War</label>
+                                <input type="checkbox" name="genre" id="biography" value="biography" class="pill"><label for="biography">Biography</label>
+                                <input type="checkbox" name="genre" id="western" value="western" class="pill"><label for="western">Western</label>
+                                <input type="checkbox" name="genre" id="fantasy" value="fantasy" class="pill"><label for="fantasy">Fantasy</label>
+                                <input type="checkbox" name="genre" id="romance" value="romance" class="pill"><label for="romance">Romance</label>
+                            </div>
+                        </fieldset>
+                        </div>
+                        <div class="pure-form sort-options">
+                            <fieldset>
+                                <legend>Sort Options</legend>
+                                <div class="sort-grid">
+                                    <label class="option" for="year">Year<input class="option" type="radio" name="sortType" id="year" /></label>
+                                    <label class="option" for="imdb">IMdb Rating<input class="option" type="radio" name="sortType" id="imdb" /></label>
+                                    <label class="option" for="tomato">Rotten Tomatoes<input class="option" type="radio" name="sortType" id="tomato" /></label>
+                                </div>
+                            </fieldset>
+                        </div>
+                    </div>
+                    <div class="grid-item">
+                        <fieldset>
+                            <legend>Filter By Streaming Service</legend>
+                            <div class="flex-container">
+                                <div class="service-grid">
+                                    <input type="checkbox" name="service" id="hulu" value="hulu" class="pill"><label for="hulu">Hulu</label>
+                                    <input type="checkbox" name="service" id="netflix" value="netflix" class="pill"><label for="netflix">Netflix</label>
+                                    <input type="checkbox" name="service" id="prime" value="prime" class="pill"><label for="prime">Prime Video</label>
+                                    <input type="checkbox" name="service" id="disney" value="disney" class="pill"><label for="disney">Disney+</label>
+                                </div>
+                            </div>
+                        </fieldset>
+                        <fieldset>
+                            <legend>Filter By Age</legend>
+                            <div class="flex-container">
+                                <div class="age-grid">
+                                    <input type="checkbox" name="age" id="7+" value="7+" class="pill"><label for="7+">7+</label>
+                                    <input type="checkbox" name="age" id="13+" value="13+" class="pill"><label for="13+">13+</label>
+                                    <input type="checkbox" name="age" id="18+" value="18+" class="pill"><label for="18+">18+</label>
+                                </div>
+                            </div>
+                        </fieldset>
+                        <button type="submit" class="pure-button pure-button-primary rounded position-absolute">Filter</button>
+                    </div>
+                </form>
+            </div>
+            <hr/>
+            <section class="movie-container">
+                {{#movieArray}}
+                <div class="movie-card">
+                    <a href="./movies/{{ID}}">
+                        <h2>{{Title}}</h2>
+                        <p class="movie-card-subtitle">{{Directors}} ∙ {{Year}} ∙ {{Age}}</p>
+                        <div class="flex-container">
+                            <p>Available on
+                                {{#Netflix}} Netflix{{/Netflix}}{{^Netflix}}{{/Netflix}}                            
+                                {{#Hulu}} Hulu{{/Hulu}}{{^Hulu}}{{/Hulu}}                            
+                                {{#Disney+}} Disney+{{/Disney+}}{{^Disney+}}{{/Disney+}}                            
+                                {{#Prime Video}} Prime Video{{/Prime Video}}{{^Prime Video}}{{/Prime Video}}                            
+                            </p>
+                        </div>
+                    </a>
+                </div>
+                {{/movieArray}}
+            </section>
+            <!-- <div class="center">
+                <div class="pagination">
+                <a href="#">&laquo;</a>
+                <a href="#" class="active">1</a>
+                <a href="#">2</a>
+                <a href="#">3</a>
+                <a href="#">4</a>
+                <a href="#">5</a>
+                <a href="#">6</a>
+                <a href="#">&raquo;</a>
+                </div>
+            </div> -->
+        </main>
+    <script src="/javaScript/app.js"></script>
 </body>
 </html>
