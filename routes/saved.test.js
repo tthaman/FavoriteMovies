@@ -52,8 +52,25 @@ describe("/saved", () => {
     "Runtime" : 101 };
   let movies;
 
+  const user0 = {
+    email: 'user0@mail.com',
+    password: '123password',
+    firstName: 'Dudley',
+    lastName: 'Doright'
+  };
+  const user1 = {
+    email: 'user0@mail.com',
+    password: '123password',
+    firstName: 'Doris',
+    lastName: 'Dowrong'
+  };
+  let users;
+
+  let token0;
+
   beforeEach(async () => {
     movies = (await Movies.insertMany([movie0, movie1])).map(i => i.toJSON());
+    users = (await User.insertMany([user0, user1])).map(i => i.toJSON());
   });
 
   describe('Before login', () => {
@@ -93,11 +110,11 @@ describe("/saved", () => {
     };
     let token0;
 
-    beforeEach(async () => {
-      console.log(await request(server).post("/login/signup").send(user0));
-      const res0 = await request(server).post("/login").send(user0.email, user0.password);
-      token0 = res0.body.token;
-    });
+    // beforeEach(async () => {
+    //   console.log(await request(server).post("/login/signup").send(user0));
+    //   const res0 = await request(server).post("/login").send(user0.email, user0.password);
+    //   token0 = res0.body.token;
+    // });
 
     describe("POST /saved/watchlist", () => {
       it('should send 200 to normal user and save movie', async () => {
