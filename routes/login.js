@@ -11,7 +11,7 @@ const { isAuthorized } = require('../middleware/middleware');
 router.post("/signup", async (req, res, next) => {
     const userData = req.body;
     if (!userData.password || userData.password === "") {
-        res.status(400).send('Please provide a password'); 
+        res.status(400).send('Please provide a password');
     } else {
         const newUser = await userDAO.create(userData);
         if (newUser) {
@@ -19,7 +19,7 @@ router.post("/signup", async (req, res, next) => {
         } else {
             res.sendStatus(409);
         }
-    }   
+    }
 })
 
 router.post("/", async (req, res, next) => {

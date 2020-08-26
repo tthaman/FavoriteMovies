@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <base href="/">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+        <link rel="stylesheet" href="css/normalize.css" type="text/css">
+        <link rel="stylesheet" href="css/sakura.css">
+        <link rel="stylesheet" href="https://unpkg.com/purecss@2.0.3/build/pure-min.css" integrity="sha384-cg6SkqEOCV1NbJoCu11+bm0NvBRc8IYLRGXkmNrqUBfTjmMYwNKPWBTIKyw9mHNJ" crossorigin="anonymous">
+        <link rel="stylesheet" href="css/style.css">
+        <title>Movie Finder</title>
+    </head>
+<body>
+    <header class="pure-menu pure-menu-horizontal navbar">
+        <ul class="pure-menu-list header">
+            <a href="/" class="pure-menu-heading logo pure-menu-link">🎞️Movie Finder</a>
+            <li class="pure-menu-item">
+                
+            </li>
+            <li class="pure-menu-item">
+                <div class="pure-menu pure-menu-horizontal">
+                    <ul class="pure-menu-list header">
+                        <li class="pure-menu-item">
+                            <a href="/login/signup" class="pure-menu-link">Sign Up</a>
+                        </li>
+                        <li class="pure-menu-item">
+                            <a href="/login" class="pure-menu-link">Login</a>
+                        </li>
+                        <li class="pure-menu-item">
+                            <a href="/" class="pure-menu-link">Search</a>
+                        </li>
+                        <li class="pure-menu-item">
+                            <a href="/saved" class="pure-menu-link">Collection</a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+        </ul>
+    </header>
+    <main class="review-container">
+        {{#movieData}}
+        <h1>User Reviews</h1>
+        <h2>{{Title}}</h2>
+        <p>{{numReviews}} reviews ∙ <a href="/reviews/{{ID}}/add-review">Rate this movie</a></p>
+        {{/movieData}}
+        <div class="star-rating">
+            <h4 class="no-top-margin">Average User Rating</h4>
+            {{#userStarRating}}
+                {{#.}}<span class="fa fa-star checked"></span>{{/.}}{{^.}}<span class="fa fa-star"></span>{{/.}}
+            {{/userStarRating}}
+            <p>{{avgRating}} / 5 ({{numReviews}})</p>
+        </div>
+        <hr class="no-margin"/>
+        <ul class="review-list">
+            {{#reviews}}
+            <li class="review">
+                <div class="review-rating">
+                    <h3 class="review-stars"><span class="fa fa-star checked"></span> {{rating}} / 5</h3>
+                    <p class="review-subtitle">{{createdAt}} ∙ {{userId.firstName}} {{userId.lastName}}</p>
+                </div> 
+                <p>{{review}}</p>
+            </li>
+            {{/reviews}}
+        </ul>
+        
+    </main>
+</body>
+</html>

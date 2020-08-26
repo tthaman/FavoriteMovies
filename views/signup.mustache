@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <base href="/">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+        <link rel="stylesheet" href="css/normalize.css" type="text/css">
+        <link rel="stylesheet" href="css/sakura.css">
+        <link rel="stylesheet" href="https://unpkg.com/purecss@2.0.3/build/pure-min.css" integrity="sha384-cg6SkqEOCV1NbJoCu11+bm0NvBRc8IYLRGXkmNrqUBfTjmMYwNKPWBTIKyw9mHNJ" crossorigin="anonymous">
+        <link rel="stylesheet" href="css/style.css">
+        <title>Movie Finder</title>
+    </head>
+<body>
+    <header class="pure-menu pure-menu-horizontal navbar">
+        <ul class="pure-menu-list header">
+            <a href="/" class="pure-menu-heading logo pure-menu-link">🎞️Movie Finder</a>
+            <li class="pure-menu-item">
+                
+            </li>
+            <li class="pure-menu-item">
+                <div class="pure-menu pure-menu-horizontal">
+                    <ul class="pure-menu-list header">
+                        <li class="pure-menu-item">
+                            <a href="/login/signup" class="pure-menu-link">Sign Up</a>
+                        </li>
+                        <li class="pure-menu-item">
+                            <a href="/login" class="pure-menu-link">Login</a>
+                        </li>
+                        <li class="pure-menu-item">
+                            <a href="/" class="pure-menu-link">Search</a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+        </ul>
+    </header>
+    <main class="form-container">
+        <h1>Create an Account</h1>
+        <form action="/login/signup" method="post" enctype="application/x-www-form-urlencoded" class="pure-form pure-form-aligned">
+                <hr class="add-margin"/>
+                <div class="pure-control-group">
+                    <label for="aligned-first">First Name</label>
+                    <input name="firstName" type="text" id="aligned-first" placeholder="First Name" required />
+                </div>
+                <div class="pure-control-group">
+                    <label for="aligned-last">Last Name</label>
+                    <input name="lastName" type="text" id="aligned-last" placeholder="Last Name" required />
+                </div>
+                <div class="pure-control-group">
+                    <label for="aligned-email">Email Address</label>
+                    <input name="email" type="email" id="aligned-email" placeholder="Email Address" required />
+                </div>
+                <div class="pure-control-group">
+                    <label for="aligned-password">Password</label>
+                    <input name="password" type="password" id="aligned-password" placeholder="Password" required />
+                </div>
+                <button type="submit" class="pure-button pure-button-primary">Submit</button>
+        </form>
+    </main>
+</body>
+</html>
