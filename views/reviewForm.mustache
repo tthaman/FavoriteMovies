@@ -40,7 +40,8 @@
     </header>
     <main class="review-form-container">
         <h1 class="center">Movie Review Form</h1>
-        <form class="pure-form pure-form-stacked">
+        {{#movieData}}
+        <form action="/reviews/{{ID}}/add-review" method="post" class="pure-form pure-form-stacked">
             <fieldset>
                 <hr class="add-margin"/>
                 <label for="rating">Star Rating</label>
@@ -57,6 +58,7 @@
             </fieldset>
             <button type="submit" class="pure-button pure-button-primary">Submit</button>
         </form>
+        {{/movieData}}
     </main>
 </body>
 </html>
