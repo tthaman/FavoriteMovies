@@ -92,11 +92,13 @@ describe("/saved", () => {
       lastName: 'Doright'
     };
     let token0;
+
     beforeEach(async () => {
-      await request(server).post("/login/signup").send(user0);
-      const res0 = await request(server).post("/login").send({email: user0.email, password: user0.password});
+      console.log(await request(server).post("/login/signup").send(user0));
+      const res0 = await request(server).post("/login").send(user0.email, user0.password);
       token0 = res0.body.token;
     });
+
     describe("POST /saved/watchlist", () => {
       it('should send 200 to normal user and save movie', async () => {
         const res = await request(server)
@@ -110,87 +112,12 @@ describe("/saved", () => {
           userId: (await User.findOne({ email: user0.email }).lean())._id,
         });
       });
-      it('should send 200 to admin user and create order with repeat items', async () => {
-        const res = await request(server)
-          .post("/saved/watchlist")
-          .set('Authorization', 'Bearer ' + adminToken)
-          .send([items[1], items[1]].map(i => i._id));
-        expect(res.statusCode).toEqual(200);
-        const storedOrder = await Order.findOne().lean();
-        expect(storedOrder).toMatchObject({
-          items: [items[1]._id, items[1]._id],
-          userId: (await User.findOne({ email: user1.email }))._id,
-          total: 24
-        });
-      });
-      it('should send 400 with a bad item _id', async () => {
-        const res = await request(server)
-          .post("/saved")
-          .set('Authorization', 'Bearer ' + adminToken)
-          .send([items[1], '5f1b8d9ca0ef055e6e5a1f6b'].map(i => i._id));
-        expect(res.statusCode).toEqual(400);
-        const storedOrder = await Order.findOne().lean();
-        expect(storedOrder).toBeNull();
-      });
     });
-    describe("GET /:id", () => {
-      let order0Id, order1Id;
-      beforeEach(async () => {
-        const res0 = await request(server)
-          .post("/saved")
-          .set('Authorization', 'Bearer ' + token0)
-          .send(items.map(i => i._id));
-        order0Id = res0.body._id;
-        const res1 = await request(server)
-          .post("/saved")
-          .set('Authorization', 'Bearer ' + adminToken)
-          .send([items[1]].map(i => i._id));
-        order1Id = res1.body._id;
-      });
-      it('should send 200 to normal user with their order', async () => {
-        const res = await request(server)
-          .get("/saved/" + order0Id)
-          .set('Authorization', 'Bearer ' + token0)
-          .send();
-        expect(res.statusCode).toEqual(200);
-        expect(res.body).toMatchObject({
-          items: [item0, item1],
-          userId: (await User.findOne({ email: user0.email }))._id.toString(),
-          total: 22
-        });
-      });
-      it("should send 404 to normal user with someone else's order", async () => {
-        const res = await request(server)
-          .get("/saved/" + order1Id)
-          .set('Authorization', 'Bearer ' + token0)
-          .send();
-        expect(res.statusCode).toEqual(404);
-      });
-      it("should send 200 to admin user with their order", async () => {
-        const res = await request(server)
-          .get("/saved/" + order1Id)
-          .set('Authorization', 'Bearer ' + adminToken)
-          .send();
-        expect(res.statusCode).toEqual(200);
-        expect(res.body).toMatchObject({
-          items: [item1],
-          userId: (await User.findOne({ email: user1.email }))._id.toString(),
-          total: 12
-        });
-      });
-      it("should send 200 to admin user with someone else's order", async () => {
-        const res = await request(server)
-          .get("/saved/" + order0Id)
-          .set('Authorization', 'Bearer ' + adminToken)
-          .send();
-        expect(res.statusCode).toEqual(200);
-        expect(res.body).toMatchObject({
-          items: [item0, item1],
-          userId: (await User.findOne({ email: user0.email }))._id.toString(),
-          total: 22
-        });
-      });
-    });
+
+
+
+
+
     describe("GET /", () => {
       let order0Id, order1Id;
       beforeEach(async () => {

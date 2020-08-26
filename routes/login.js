@@ -6,19 +6,25 @@ const bcrypt = require('bcrypt');
 
 const userDAO = require('../daos/user');
 
+// Signup
 router.post("/signup", async (req, res, next) => {
     const userData = req.body;
-    if (!userData.password || userData.password === "") {
-        res.status(400).send('Please provide a password');
+    if (!userData || !userData.email || !userData.password || !userData.firstName || !userData.lastName) {
+        res.status(400).send('please provide required userData');
     } else {
-        const newUser = await userDAO.create(userData);
-        if (newUser) {
-            res.json(newUser);
-        } else {
-            res.sendStatus(409);
+        try {
+            let savedUser = await userDAO.getByEmail(userData.email);
+            if(!savedUser ) {
+                const user = await userDAO.create(userData);
+                res.json(user);
+            } else {
+                res.status(409).send('User already exists!');
+            }
+        } catch(e) {
+            res.status(500).send(e.message);
         }
     }
-})
+});
 
 router.post("/password", async (req, res, next) => {
     if (req.userEmail) {
