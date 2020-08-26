@@ -54,7 +54,6 @@ describe("/saved", () => {
 
   beforeEach(async () => {
     movies = (await Movies.insertMany([movie0, movie1])).map(i => i.toJSON());
-    console.log(movies);
   });
 
   describe('Before login', () => {
@@ -95,7 +94,7 @@ describe("/saved", () => {
     let token0;
     beforeEach(async () => {
       await request(server).post("/login/signup").send(user0);
-      const res0 = await request(server).post("/login").send(user0);
+      const res0 = await request(server).post("/login").send({email: user0.email, password: user0.password});
       token0 = res0.body.token;
     });
     describe("POST /saved/watchlist", () => {

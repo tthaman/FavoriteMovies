@@ -17,17 +17,13 @@ describe("/login", () => {
     password: "helpme",
     email: "someone@gmail.com",
     firstName: "Betty",
-    lastName: "White",
-    // avatar: "cat",
-    roles: ['admin']
+    lastName: "White"
     };
   const user1 = {
     password: "jellybeans",
     email: "someoneelse@gmail.com",
     firstName: "Georgia",
-    lastName: "Beans",
-    // avatar: "tree",
-    roles: ['user']
+    lastName: "Beans"
     }
 
   describe("before signup", () => {
@@ -44,13 +40,6 @@ describe("/login", () => {
         expect(res.statusCode).toEqual(401);
       });
     });
-
-    // describe("POST /logout", () => {
-    //   it("should return 404", async () => {
-    //     const res = await request(server).post("/login/logout").send();
-    //     expect(res.statusCode).toEqual(404);
-    //   });
-    // });
   });
 
   describe("signup ", () => {
