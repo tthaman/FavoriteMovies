@@ -1,10 +1,9 @@
 const { Router } = require("express");
 const router = Router();
-const jwt = require('jsonwebtoken');
-const secret = 'spongebob squarepants';
 const bcrypt = require('bcrypt');
 
 const userDAO = require('../daos/user');
+const tokenDAO = require('../daos/token');
 const { isAuthorized } = require('../middleware/middleware');
 
 router.post("/signup", async (req, res, next) => {
@@ -25,80 +24,19 @@ router.post("/signup", async (req, res, next) => {
     }
 })
 
-// router.post("/", async (req, res, next) => {
-//     const { email, password } = req.body;
-//     if (!password || password === "") {
-//         res.status(400).send('Please provide a password');
-//     } else {
-//         let savedUser = await userDAO.getByEmail(email);
-//         if (savedUser) {
-//             const passwordsMatch = await bcrypt.compare(password, savedUser.password);
-//             if (passwordsMatch) {
-//                 savedUser = await userDAO.removePassword(email);
-//                 try {
-//                     const token = jwt.sign(savedUser.toJSON(), secret);
-//                     res.json({ token });
-//                 } catch (e) {
-//                     throw e;
-//                 }
-//             } else {
-//                 res.sendStatus(401);
-//             }
-//         } else {
-//             res.sendStatus(401);
-//         }
-//     }
-// })
-
-router.post("/password", isAuthorized, async (req, res, next) => {
-    const { password } = req.body;
-    const { email } = req.user;
-    if (!password || password === "") {
-        res.status(400).send('Please provide a password');
-    } else if (req.headers.authorization.includes('BAD')) {
-        res.sendStatus(401);
-    } else {
-        const newPassword = await userDAO.updateUserPassword(email, password);
-        if (newPassword) {
-            res.sendStatus(200);
-        } else {
-            res.sendStatus(401);
-        }
-    }
-})
-
-router.post("/logout", async (req, res, next) => {
-    if (req.headers.authorization) {
-        delete req.headers.authorization;
-    }
-    if (req.user) {
-        delete req.user;
-    }
-    res.statusCode = 200;
-    res.send();
-    // res.render('weather', {
-    //     name: 'Other',
-    //     temperature: 'not available'
-    // })
-})
-
 router.post("/", async (req, res, next) => {
     const { email, password } = req.body;
     if (!password || password === "") {
-        res.status(400).send('Please provide a password');
+        res.status(400).send('Please provide a password'); 
     } else {
-        let savedUser = await userDAO.getByEmail(email);
+        const savedUser = await userDAO.getByEmail(email);
         if (savedUser) {
-            const passwordsMatch = bcrypt.compareSync(password, savedUser.password);
+            const passwordsMatch = await bcrypt.compare(password, savedUser.password);
             if (passwordsMatch) {
-                try {
-                    let tokenData = (({ _id, email, roles, firstName, lastName }) => (
-                      { _id, email, roles, firstName, lastName }
-                    ))(savedUser);
-                    tokenData['userId'] = tokenData['_id'];
-                    const token = jwt.sign(tokenData, secret, { expiresIn: '5 minutes' })
-                    res.json({ token });
-                } catch (e) {
+                if (savedUser) {
+                    const token = await tokenDAO.create(email, password);
+                    res.json(token);
+                } else {
                     res.sendStatus(401);
                 }
             } else {
@@ -107,7 +45,33 @@ router.post("/", async (req, res, next) => {
         } else {
             res.sendStatus(401);
         }
+    }   
+})
+
+router.post("/password", isAuthorized, async (req, res, next) => {
+    const { password } = req.body;
+    if (!password || password === "") {
+        res.status(400).send('Please provide a password'); 
+    } else {
+        const newPassword = await userDAO.updateUserPassword(req.token, password);
+        if (newPassword) {
+            res.sendStatus(200);
+        } else {
+            res.sendStatus(401);
+        }
     }
+})
+
+router.post("/logout", isAuthorized, async (req, res, next) => {
+    console.log(req.token);
+    const success = await tokenDAO.delete(req.token);
+    console.log(req.token);
+    console.log(success);
+        if (success) {
+            res.sendStatus(200);
+        } else {
+            res.sendStatus(401);
+        }
 })
 
 module.exports = router;
