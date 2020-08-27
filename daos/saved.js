@@ -27,7 +27,7 @@ module.exports.updateWatchlist = async (userId, watchlist) =>  {
 };
 
 // update favorites array
-module.exports.updateWatchlist = async (userId, favorites) =>  {
+module.exports.updateFavorites = async (userId, favorites) =>  {
   return await Saved.updateOne(
     { userId: mongoose.Types.ObjectId(userId) },
     {
