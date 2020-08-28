@@ -4,9 +4,9 @@ const reviewDAO = require('../daos/review');
 
 //get user's reviews...userId must have been set in request by middleware
 router.get("/", async (req, res, next) => {
-  const userId = req.userId;
+  const email = req.email;
   try {
-    let saved = await reviewDAO.getByUserId(userId);
+    let saved = await reviewDAO.getByUserId(email);
     if (saved) {
       res.render('index', {
         movies: ['item one', 'other', 'new item']

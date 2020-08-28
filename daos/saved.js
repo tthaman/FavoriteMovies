@@ -3,12 +3,12 @@ const Saved = require('../models/saved');
 
 module.exports = {};
 
-module.exports.getByUserId = async (userId) => {
-  return await Saved.findOne({ userId: userId }).lean();
+module.exports.getByEmail = async (email) => {
+  return await Saved.findOne({ email: email }).lean();
 }
 
-module.exports.deleteByUserId = async (userId) => {
-  return await Saved.delete({ userId: mongoose.Types.ObjectId(userId) });
+module.exports.deleteByEmail = async (email) => {
+  return await Saved.delete({ email: email });
 }
 
 module.exports.create = async (saveMe) => {
@@ -16,9 +16,9 @@ module.exports.create = async (saveMe) => {
 }
 
 // update watchlist array
-module.exports.updateWatchlist = async (userId, watchlist) =>  {
+module.exports.updateWatchlist = async (email, watchlist) =>  {
   return await Saved.updateOne(
-    { userId: mongoose.Types.ObjectId(userId) },
+    { email: email },
     {
       $set: { watchlist: watchlist },
       $currentDate: { lastModified: true }
@@ -27,9 +27,9 @@ module.exports.updateWatchlist = async (userId, watchlist) =>  {
 };
 
 // update favorites array
-module.exports.updateFavorites = async (userId, favorites) =>  {
+module.exports.updateFavorites = async (email, favorites) =>  {
   return await Saved.updateOne(
-    { userId: mongoose.Types.ObjectId(userId) },
+    { email: email },
     {
       $set: { favorites: favorites },
       $currentDate: { lastModified: true }

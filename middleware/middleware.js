@@ -8,9 +8,9 @@ module.exports.isAuthorized = async (req, res, next) => {
         const token = authorization.split(' ')[1];
         if (token) {
             req.token = token;
-            const userId = await tokenDAO.getUser(token);
-            if (userId) {
-                req.userId = userId;
+            const email = await tokenDAO.getUser(token);
+            if (email) {
+                req.email = email;
                 next();
             } else {
                 res.sendStatus(401);

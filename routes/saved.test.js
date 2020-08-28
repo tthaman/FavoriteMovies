@@ -74,17 +74,15 @@ describe("/saved", () => {
   beforeEach(async () => {
     await Movies.insertMany(testMovies);
     await request(server).post("/login/signup").send(testUsers[0]);
-    // const res0 = await request(server).post("/login").send(testUsers[0]);
-    // token0 = res0.body.token;
-    // await request(server).post("/login/signup").send(testUsers[1]);
-    // const res1 = await request(server).post("/login").send(testUsers[1]);
-    // token1 = res1.body.token;
+    const res0 = await request(server).post("/login").send(testUsers[0]);
+    token0 = res0.body.token;
+    await request(server).post("/login/signup").send(testUsers[1]);
+    const res1 = await request(server).post("/login").send(testUsers[1]);
+    token1 = res1.body.token;
   });
 
   describe("POST /saved", () => {
     it("should save movie0 to watchlist for user0", async () => {
-      const res0 = await request(server).post("/login").send(testUsers[0]);
-      const token0 = res0.body.token;
       const res = await request(server)
         .post("/saved/watchlist")
         .set('Authorization', 'Bearer ' + token0)
