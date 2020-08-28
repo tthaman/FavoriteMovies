@@ -13,7 +13,7 @@ router.post("/signup", async (req, res, next) => {
     } else {
         const newUser = await userDAO.create(userData);
         if (newUser) {
-            res.json(newUser);
+            res.render('indexLoggedIn', { name: newUser.firstName});
         } else {
             res.sendStatus(409);
         }
@@ -31,7 +31,7 @@ router.post("/", async (req, res, next) => {
             if (passwordsMatch) {
                 if (savedUser) {
                     const token = await tokenDAO.create(email, password);
-                    res.json(token);
+                    res.render('indexLoggedIn', { name: savedUser.firstName});
                 } else {
                     res.sendStatus(401);
                 }
@@ -65,6 +65,7 @@ router.post("/logout", isAuthorized, async (req, res, next) => {
     console.log(success);
         if (success) {
             res.sendStatus(200);
+            res.render('login');
         } else {
             res.sendStatus(401);
         }
