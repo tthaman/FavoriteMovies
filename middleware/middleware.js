@@ -22,6 +22,7 @@ module.exports.isAuthorized = async (req, res, next) => {
             res.sendStatus(401);
     }
 }
+
 module.exports.isAdmin = (req, res, next) => {
     if (req.user.roles.includes('admin')) {
         next();

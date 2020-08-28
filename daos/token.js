@@ -15,12 +15,17 @@ module.exports.create = async (userId) => {
 }
 
 module.exports.getUser = async (tokenString) => {
-    const token = await Token.findOne({ token: tokenString });
-    if (token) {
-        return token.userId;
-    } else {
-        return false;
+    try {
+        const token = await Token.findOne({token: tokenString});
+        if (token) {
+            return token.userId;
+        } else {
+            return false;
+        }
+    } catch (e) {
+        console.log(e);
     }
+
 }
 
 module.exports.delete = async (token) => {
