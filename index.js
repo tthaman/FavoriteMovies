@@ -4,7 +4,7 @@ require('dotenv').config()
 
 const port = process.env.PORT || 5000;
 
-mongoose.connect('mongodb://localhost/prod', {
+mongoose.connect(process.env.MONGO_CONNECTION_STRING, {
   useNewUrlParser: true,
   useCreateIndex: true,
   useUnifiedTopology: true
