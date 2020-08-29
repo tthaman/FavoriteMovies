@@ -2,11 +2,15 @@ const { Router } = require("express");
 const router = Router();
 
 const movieDAO = require("../daos/movie");
-const { isAuthorized } = require("../middleware/middleware");
+const { isAuthorized, isAdmin } = require("../middleware/middleware");
 
-// GET /movies Retrieves all movies
+//GET /movies Retrieves all movies
 router.get("/", async (req, res, next) => {
-  return res.json(await movieDAO.getAll());
+  const movies = await movieDAO.getAll();
+  res.statusCode = 200;
+  res.render("index", {
+    "movieArray": movies
+  });
 });
 
 // GET /movies/:id Retrieves a specific movie

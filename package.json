@@ -1,5 +1,5 @@
 {
-  "name": "favorite_movies",
+  "name": "movie_finder",
   "version": "0.1.0",
   "private": true,
   "engines": {
@@ -23,7 +23,8 @@
   },
   "devDependencies": {
     "@shelf/jest-mongodb": "^1.1.5",
-    "supertest": "^4.0.2"
+    "supertest": "^4.0.2",
+    "cheerio": "^1.0.0-rc.3"
   },
   "scripts": {
     "start": "nodemon index.js",

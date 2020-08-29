@@ -11,10 +11,14 @@ router.post("/signup", async (req, res, next) => {
     if (!userData.password || userData.password === "") {
         res.status(400).send('Please provide a password');
     } else {
-        const newUser = await userDAO.create(userData);
-        if (newUser) {
-            res.json(newUser);
-        } else {
+        try {
+            const newUser = await userDAO.create(userData);
+            if (newUser) {
+                res.json(newUser);
+            } else {
+                res.sendStatus(409);
+            }
+        } catch(e) {
             res.sendStatus(409);
         }
     }

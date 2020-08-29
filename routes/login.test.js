@@ -110,6 +110,7 @@ describe("/login", () => {
       });
       it("should return 200 and a token when password matches", async () => {
         const res = await request(server).post("/login").send(user);
+        console.log(res);
         expect(res.statusCode).toEqual(200);
         expect(typeof res.body.token).toEqual('string');
       });
