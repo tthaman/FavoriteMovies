@@ -1,6 +1,7 @@
 const { Router } = require("express");
 const router = Router();
 const savedDAO = require('../daos/saved');
+const movieDAO = require('../daos/movie');
 const { isAuthorized } = require('../middleware/middleware');
 
 //get user's savedMovieData...userId must have been set in request by middleware
@@ -35,23 +36,32 @@ router.get("/", isAuthorized, async (req, res, next) => {
 router.post("/watchlist", isAuthorized,async (req, res, next) => {
   const aMovie = req.body;
   const email = req.email;
+  let watchlist;
+  let favorites;
+  let updatedCollection;
   if (!aMovie || JSON.stringify(aMovie) === '{}') {
     //res.render(error html)
     res.status(400).send('Please provide movie to be added to watchlist"');
   } else {
     try {
-      const savedEntry = await savedDAO.getByEmail(email);
+      let savedEntry = await savedDAO.getByEmail(email);
       if (savedEntry) {
-          const updatedWL = savedEntry.watchlist.push(aMovie._id);
-          const updatedEntry = await savedDAO.updateWatchlist(email, updatedWL)
+        const updatedWL = savedEntry.watchlist.push(aMovie._id);
+        updatedCollection = await savedDAO.updateWatchlist(email, updatedWL)
+        favorites = getMovies(updatedCollection.movieFavorites);
       } else {
-        const newEntry = await savedDAO.create(
-          {email: email, watchlist: [aMovie._id], favoriteMovies:[]}
-          )
+        updatedCollection = await savedDAO.create(
+          {email: email, watchList: [aMovie._id], favoriteMovies:[]}
+        )
+        favorites = [];
       }
-      //res.render(movie view)
-      res.json(updatedWL);
-    } catch (err) {
+      watchlist = await getMovies((updatedCollection.toJSON()).watchList);
+      res.statusCode = 200;
+      res.render("collection", {
+        "watchList": watchlist,
+        "favoriteMovies": favorites
+      });
+    } catch (e) {
       //res.render(error html)
     }
   }
@@ -61,16 +71,48 @@ router.post("/watchlist", isAuthorized,async (req, res, next) => {
 router.post("/favorites", isAuthorized,async (req, res, next) => {
   const aMovie = req.body;
   const email = req.email;
-  if (!aMovie || JSON.stringify(aMovie) === '{}' ) {
+  let watchlist;
+  let favorites;
+  let updatedCollection;
+  if (!aMovie || JSON.stringify(aMovie) === '{}') {
     //res.render(error html)
-    res.status(400).send('Please provide movie to be added to favorites"');
+    res.status(400).send('Please provide movie to be added to watchlist"');
   } else {
-    const currentFavs = await savedDAO.getByUserId().favoriteMovies;
-
-    const updatedFav = await savedDAO.updateFavorites(email, aMovie._id);
-    //res.render(movie view)
-    res.json(updatedFav);
+    try {
+      let savedEntry = await savedDAO.getByEmail(email);
+      if (savedEntry) {
+        const updatedFavs = savedEntry.movieFavorites.push(aMovie._id);
+        updatedCollection = await savedDAO.updateFavorites(email, updatedFavs)
+        watchlist = getMovies(updatedCollection.watchList);
+      } else {
+        updatedCollection = await savedDAO.create(
+          {email: email, movieFavorites: [aMovie._id], favoriteMovies:[]}
+        )
+        watchlist = [];
+      }
+      favorites = await getMovies((updatedCollection.toJSON()).movieFavorites);
+      res.statusCode = 200;
+      res.render("collection", {
+        "watchList": watchlist,
+        "favoriteMovies": favorites
+      });
+    } catch (e) {
+      //res.render(error html)
+    }
   }
 });
+
+async function getMovies(someMovieIDs) {
+  let movies = [];
+  for (const id of someMovieIDs) {
+    try {
+      let aMovie = await movieDAO.getMovie(id.toJSON());
+      movies.push(aMovie);
+    } catch(e) {
+      console.log(`Problem finding movie with ID ${id}`);
+    }
+  }
+  return movies;
+}
 
 module.exports = router;

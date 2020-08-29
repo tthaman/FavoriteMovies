@@ -68,11 +68,12 @@ describe("/saved", () => {
 
   module.exports = { testUsers };
 
+  let movies;
   let token0;
   let token1;
 
   beforeEach(async () => {
-    await Movies.insertMany(testMovies);
+    movies = await Movies.insertMany(testMovies);
     await request(server).post("/login/signup").send(testUsers[0]);
     const res0 = await request(server).post("/login").send(testUsers[0]);
     token0 = res0.body.token;
@@ -81,34 +82,38 @@ describe("/saved", () => {
     token1 = res1.body.token;
   });
 
-  describe("POST /saved", () => {
-    it("should save movie0 to watchlist for user0", async () => {
-      const res = await request(server)
+  describe("saved/ ", () => {
+    it("should touch all routes", async () => {
+      const res0 = await request(server)
         .post("/saved/watchlist")
         .set('Authorization', 'Bearer ' + token0)
-        .send(testMovies[0]);
-      expect(res.statusCode).toEqual(200);
-    });
-    it("should save movie1 to watchlist for user1", async () => {
-      const res = await request(server)
-        .post("/saved/watchlist")
-        .set('Authorization', 'Bearer ' + token1)
-        .send(testMovies[1]);
-      expect(res.statusCode).toEqual(200);
-    });
-    it("should save movie0 to favorites for user0", async () => {
-      const res = await request(server)
+        .send(movies[0]);
+      expect(res0.statusCode).toEqual(200);
+      const res1 = await request(server)
         .post("/saved/favorites")
         .set('Authorization', 'Bearer ' + token0)
-        .send(testMovies[0]);
-      expect(res.statusCode).toEqual(200);
-    });
-    it("should save movie1 to favorites for user1", async () => {
-      const res = await request(server)
+        .send(movies[1]);
+      expect(res1.statusCode).toEqual(200);
+      const res2 = await request(server)
+        .get("/saved")
+        .set('Authorization', 'Bearer ' + token0)
+        .send();
+      expect(res2.statusCode).toEqual(200);
+      const res3 = await request(server)
+        .post("/saved/watchlist")
+        .set('Authorization', 'Bearer ' + token1)
+        .send(movies[0]);
+      expect(res3.statusCode).toEqual(200);
+      const res4 = await request(server)
         .post("/saved/favorites")
         .set('Authorization', 'Bearer ' + token1)
-        .send(testMovies[1]);
-      expect(res.statusCode).toEqual(200);
+        .send(movies[1]);
+      expect(res4.statusCode).toEqual(200);
+      const res5 = await request(server)
+        .get("/saved")
+        .set('Authorization', 'Bearer ' + token1)
+        .send();
+      expect(res5.statusCode).toEqual(200);
     });
   });
 });

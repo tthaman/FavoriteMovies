@@ -8,7 +8,7 @@ module.exports.getAll = async () => {
 }
 
 module.exports.getMovie = async (movieId) => {
-  const aMovie = await Movie.findOne({ ID: movieId }).lean();
+  const aMovie = await Movie.findOne({ _id: movieId }).lean();
   return aMovie;
 }
 
@@ -17,7 +17,7 @@ module.exports.createMovie = async (movieObj) => {
 }
 
 module.exports.updateMovie = async (movieId, newMovie) => {
-  return await Movie.updateOne({ ID: movieId }, { $set: newMovie });
+  return await Movie.updateOne({ _id: movieId }, { $set: newMovie });
 }
 
 module.exports.deleteMovie = async (movieId) => {

@@ -12,7 +12,8 @@ module.exports.deleteByEmail = async (email) => {
 }
 
 module.exports.create = async (saveMe) => {
-  return await Saved.create(saveMe);
+  const aCollection = await Saved.create(saveMe);
+  return aCollection;
 }
 
 // update watchlist array
