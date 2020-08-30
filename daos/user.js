@@ -12,7 +12,7 @@ module.exports.updateUserPassword = async (token, password) =>  {
   if (user) {
     newPassword = await bcrypt.hashSync(password, salt);
     return await User.updateOne(
-        { email: user.userId }, 
+        { email: user.userId },
         {
         $set: { password: newPassword },
         $currentDate: { lastModified: true }
@@ -43,7 +43,8 @@ module.exports.updateUserPassword = async (token, password) =>  {
 // }
 
 module.exports.getByEmail = async (email) => {
-  return  await User.findOne({ email: email }).lean();
+  const aUser =  await User.findOne({ email: email }).lean();
+  return aUser;
 }
 
 // module.exports.deleteByUserId = async (userId) => {
@@ -62,6 +63,7 @@ module.exports.create = async (userData) => {
   } else {
     userData.password = bcrypt.hashSync(userData.password, salt);
     userData.roles = ['user'];
-    return await User.create(userData);
+    const aUser = await User.create(userData);
+    return aUser;
   }
 }

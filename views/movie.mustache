@@ -75,7 +75,7 @@
                     {{#movieData}}
                     <tr>
                         <td class="stats">{{IMDb}}</td>
-                        <td class="stats">{{Rotten Tomatoes}}</td>
+                        <td class="stats">{{RottenTomatoes}}</td>
                         <td class="stats">{{Age}}</td>
                         <td class="stats">{{Runtime}}</td>
                     </tr>
@@ -115,10 +115,10 @@
                             {{^Prime Video}}<p class="available-icon"><i class="fas fa-times available-false"></i></p>{{/Prime Video}}
                         </td>
                         <td class="stats">
-                            {{#Disney+}}<p class="availability">Available</p>{{/Disney+}}
-                            {{^Disney+}}<p class="availability">Not Available</p>{{/Disney+}}
-                            {{#Disney+}}<p class="available-icon"><i class="fas fa-check available-true"></i></p>{{/Disney+}}
-                            {{^Disney+}}<p class="available-icon"><i class="fas fa-times available-false"></i></p>{{/Disney+}}
+                            {{#DisneyPlus}}<p class="availability">Available</p>{{/DisneyPlus}}
+                            {{^DisneyPlus}}<p class="availability">Not Available</p>{{/DisneyPlus}}
+                            {{#DisneyPlus}}<p class="available-icon"><i class="fas fa-check available-true"></i></p>{{/DisneyPlus}}
+                            {{^DisneyPlus}}<p class="available-icon"><i class="fas fa-times available-false"></i></p>{{/DisneyPlus}}
                         </td>
                         {{/movieData}}
                     </tr>
@@ -136,13 +136,13 @@
                     {{/firstReviewStarRating}}
                     {{rating}} / 5
                     <p class="review-subtitle">{{createdAt}} ∙ {{userId.firstName}} {{userId.lastName}}</p>
-                </div> 
+                </div>
                 <p>{{review}}</p>
                 {{/firstReview}}
                 {{^firstReview}}
                 <div class="review-rating">
                     No Reviews
-                </div> 
+                </div>
                 {{/firstReview}}
             </div>
             {{#movieData}}
@@ -153,7 +153,7 @@
                 <p><a href="/reviews/{{ID}}/add-review">Rate this movie</a></p>
                 {{/firstReview}}
             {{/movieData}}
-            
+
         </section>
     </main>
 </body>
