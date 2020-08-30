@@ -9,10 +9,6 @@ router.use("/login", require('./login'));
 router.use("/saved", require('./saved'));
 router.use("/movie", require('./movie'));
 
-router.get("/", (req, res, next) => {
-  res.render('index');
-})
-
 router.get("/login/", (req, res, next) => {
   res.render('login');
 })
