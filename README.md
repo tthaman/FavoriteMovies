@@ -22,7 +22,7 @@ POST /login/logout		Logs a user out<br/>
 POST /login/password 	Allows user to change password<br/>
 
 ### Saved Endpoints (All of these routes require authentication)
-GET /saved  		            Retrieves a users collection of watchlist and favorite movies<br/>
+GET /saved  		            Retrieves all saved movies for a user<br/>
 POST /saved/watchlist           Adds movie to users watchlist<br/>
 POST /saved/movieFavorites      Adds movie to users favorites<br/>
 DELETE /saved/watchlist	        Removes a movie from users watchlist<br/>
@@ -35,28 +35,30 @@ POST /review         Adds movie review by user<br/>
 PUT /review          Updates a movie review for user <br/>
 DELETE /review	     Removes a review of a movie by a user <br/>
 
-## Route Status
+## Phase Two Progress
+### Route Status
 All login routes complete<br/>
 All login route tests complete<br/>
 All saved routes in progress<br/>
 All saved route tests in progress<br/>
-Movie routes?<br/>
 Movie route test?<br/>
-Review route not started<br/>
-Review route tests not started<br/>
-Not sure if we'll need user routes.  We may not have time to develop admin features.<br/>
-
-##UI
+### UI
 UI has been created to interact with the routes<br/>
 All mustache files for views have been created<br/>
 
-## Deployment
+### Deployment
 Movie data has been loaded to MongoDB Atlas<br/>
 Heroku cluster created and connected to MongoDB Atlas with auto deploy from github master functioning<br/>
 App renders???<br/>
 
-##Notes
-Time permitting, a migration may be created to load the data to mongo atlas<br/>
+### Still in Progress
+Adding pagination</br>
+Developing admin features.<br/>
+Completing /movie routes</br>
+Review route tests<br/>
+Review routes<br/>
+Adding frontend event listeners to /saved post routes</br>
+Migration to load the data to mongo atlas<br/>
 
-##Deployment URL
+### Deployment URL
 https://secret-retreat-78826.herokuapp.com/
