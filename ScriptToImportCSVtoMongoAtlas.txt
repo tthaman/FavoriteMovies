@@ -1,0 +1,1 @@
+mongoimport --uri "mongodb+srv://tthaman:<PASSWORD>@cluster0.2ak3m.mongodb.net/movieFinder" --collection movies --type csv --file ~/Downloads/MoviesOnStreamingPlatforms_updated.csv --headerline
