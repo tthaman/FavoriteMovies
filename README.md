@@ -22,7 +22,7 @@ POST /login/logout		Logs a user out<br/>
 POST /login/password 	Allows user to change password<br/>
 
 ### Saved Endpoints (All of these routes require authentication)
-GET /saved  		            Retrieves all saved movies for a user<br/>
+GET /saved  		            Retrieves a users collection of watchlist and favorite movies<br/>
 POST /saved/watchlist           Adds movie to users watchlist<br/>
 POST /saved/movieFavorites      Adds movie to users favorites<br/>
 DELETE /saved/watchlist	        Removes a movie from users watchlist<br/>
@@ -38,8 +38,8 @@ DELETE /review	     Removes a review of a movie by a user <br/>
 ## Route Status
 All login routes complete<br/>
 All login route tests complete<br/>
-All saved routes complete<br/>
-All saved route tests complete<br/>
+All saved routes in progress<br/>
+All saved route tests in progress<br/>
 Movie routes?<br/>
 Movie route test?<br/>
 Review route not started<br/>
