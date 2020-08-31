@@ -15,7 +15,7 @@
         <ul class="pure-menu-list header">
             <a href="/" class="pure-menu-heading logo pure-menu-link">🎞️Movie Finder</a>
             <li class="pure-menu-item">
-                <form action="/movies" method="GET" class="pure-form">
+                <form action="/movie" method="GET" class="pure-form">
                     <select name="searchType" class="searchType" id="search-type">
                         <option>Title</option>
                         <option>Director</option>
@@ -46,7 +46,7 @@
         <hr/>
         <div class="search-options hideOptions">
             <div class="grid-item">
-                <form action="/" method="get">
+                <form action="/movie" method="get">
 
                     <div class="flex-container">
                         <fieldset>
@@ -74,9 +74,9 @@
                             <fieldset>
                                 <legend>Sort Options</legend>
                                 <div class="sort-grid">
-                                    <label class="option" for="year">Year<input class="option" type="radio" name="sortType" id="year" /></label>
-                                    <label class="option" for="imdb">IMdb Rating<input class="option" type="radio" name="sortType" id="imdb" /></label>
-                                    <label class="option" for="tomato">Rotten Tomatoes<input class="option" type="radio" name="sortType" id="tomato" /></label>
+                                    <label class="option" for="year">Year<input class="option" type="radio" name="filterByYear" id="year" /></label>
+                                    <label class="option" for="imdb">IMdb Rating<input class="option" type="radio" name="filterByIMDB" id="imdb" /></label>
+                                    <label class="option" for="tomato">Rotten Tomatoes<input class="option" type="radio" name="filterByRottenTomatoes" id="tomato" /></label>
                                 </div>
                             </fieldset>
                         </div>
@@ -116,10 +116,10 @@
                         <p class="movie-card-subtitle">{{Directors}} ∙ {{Year}} ∙ {{Age}}</p>
                         <div class="flex-container">
                             <p>Available on
-                                {{#Netflix}} Netflix{{/Netflix}}{{^Netflix}}{{/Netflix}}
-                                {{#Hulu}} Hulu{{/Hulu}}{{^Hulu}}{{/Hulu}}
-                                {{#DisneyPlus}} Disney+{{/DisneyPlus}}{{^DisneyPlus}}{{/DisneyPlus}}
-                                {{#PrimeVideo}} Prime Video{{/PrimeVideo}}{{^PrimeVideo}}{{/PrimeVideo}}
+                                {{#Netflix}} Netflix{{/Netflix}}{{^Netflix}}{{/Netflix}}                            
+                                {{#Hulu}} Hulu{{/Hulu}}{{^Hulu}}{{/Hulu}}                            
+                                {{#Disney+}} Disney+{{/Disney+}}{{^Disney+}}{{/Disney+}}                            
+                                {{#Prime Video}} Prime Video{{/Prime Video}}{{^Prime Video}}{{/Prime Video}}                            
                             </p>
                         </div>
                     </a>
