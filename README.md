@@ -39,10 +39,9 @@ DELETE /review	     Removes a review of a movie by a user <br/>
 ### Route Status
 All login routes complete<br/>
 All login route tests complete<br/>
-All saved routes complete<br/>
-All saved route tests complete<br/>
+All saved routes in progress<br/>
+All saved route tests in progress<br/>
 Movie route test?<br/>
-
 ### UI
 UI has been created to interact with the routes<br/>
 All mustache files for views have been created<br/>

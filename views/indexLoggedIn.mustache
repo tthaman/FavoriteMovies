@@ -126,18 +126,14 @@
                 </div>
                 {{/movieArray}}
             </section>
-            <!-- <div class="center">
-                <div class="pagination">
-                <a href="#">&laquo;</a>
-                <a href="#" class="active">1</a>
-                <a href="#">2</a>
-                <a href="#">3</a>
-                <a href="#">4</a>
-                <a href="#">5</a>
-                <a href="#">6</a>
-                <a href="#">&raquo;</a>
-                </div>
-            </div> -->
+           <form action="/" method="get">
+                <select name="page">
+                    {{#pages}}
+                        <option value="{{.}}">Page {{.}}</option>
+                    {{/pages}}
+                </select>
+            <button type="submit">Go To Page</button>
+            </form>
         </main>
     <script src="/javaScript/app.js"></script>
 </body>
