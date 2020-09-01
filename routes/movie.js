@@ -7,16 +7,21 @@ const { isAuthorized, isAdmin } = require("../middleware/middleware");
 //GET /movies Retrieves all movies
 router.get("/", async (req, res, next) => {
   console.log(req.query)
-  const movies = await movieDAO.getAll();
+  let { page } = req.query;
+  page = page ? Number(page) : 1;
+  const pages = await movieDAO.getPages();
+  const movies = await movieDAO.getAll(page);
   res.statusCode = 200;
   res.render("index", {
-    "movieArray": movies
+    "movieArray": movies,
+    "pages": pages,
+    "currentPage": page
   });
 });
 
 // GET /movies/:id Retrieves a specific movie
 router.get("/:id", async (req, res, next) => {
-  const movie = await movieDAO.getMovie(req.params.id));
+  const movie = await movieDAO.getMovie(req.params.id);
   res.render("movie", {
     "movieData": movie
   });

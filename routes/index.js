@@ -22,9 +22,14 @@ router.get("/login/logout", (req, res, next) => {
 })
 
 router.use("/", async (req, res, next) => {
-  const movies = await movieDAO.getAll();
+  let { page } = req.query;
+  page = page ? Number(page) : 1;
+  const movies = await movieDAO.getAll(page);
+  const pages = await movieDAO.getPages();
   res.render("index", {
-    "movieArray": movies
+    "movieArray": movies,
+    "pages": pages,
+    "currentPage": page
   });
 });
 
