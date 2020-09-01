@@ -2,8 +2,8 @@ const Movie = require('../models/movie');
 
 module.exports = {};
 
-module.exports.getAll = async () => {
-  const movies = await Movie.find().lean();
+module.exports.getAll = async (page) => {
+  const movies = await Movie.find().limit(20).skip(20*page).lean();
   return movies;
 }
 
@@ -22,4 +22,9 @@ module.exports.updateMovie = async (movieId, newMovie) => {
 
 module.exports.deleteMovie = async (movieId) => {
   return await Movie.deleteOne({ ID: movieId });
+}
+
+module.exports.getPages = async () => {
+  const totalMovies = (await Movie.find().lean()).length;
+  return Math.ceil(totalMovies / 20);
 }

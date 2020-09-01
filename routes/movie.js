@@ -7,10 +7,14 @@ const { isAuthorized, isAdmin } = require("../middleware/middleware");
 //GET /movies Retrieves all movies
 router.get("/", async (req, res, next) => {
   console.log(req.query)
-  const movies = await movieDAO.getAll();
+  let { page } = req.query;
+  page = page ? Number(page) : 0;
+  const pages = await movieDAO.getPages();
+  const movies = await movieDAO.getAll(page);
   res.statusCode = 200;
   res.render("index", {
-    "movieArray": movies
+    "movieArray": movies,
+    "numPages": pages,
   });
 });
 
