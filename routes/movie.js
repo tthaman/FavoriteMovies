@@ -15,6 +15,7 @@ router.get("/", async (req, res, next) => {
   res.render("index", {
     "movieArray": movies,
     "pages": pages,
+    "currentPage": page
   });
 });
 

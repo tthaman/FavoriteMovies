@@ -28,7 +28,8 @@ router.use("/", async (req, res, next) => {
   const pages = await movieDAO.getPages();
   res.render("index", {
     "movieArray": movies,
-    "pages": pages
+    "pages": pages,
+    "currentPage": page
   });
 });
 
