@@ -27,15 +27,25 @@
             <li class="pure-menu-item">
                 <div class="pure-menu pure-menu-horizontal">
                     <ul class="pure-menu-list header">
-                        <li class="pure-menu-item">
-                            <a href="/login/signup" class="pure-menu-link">Sign Up</a>
-                        </li>
-                        <li class="pure-menu-item">
-                            <a href="/login" class="pure-menu-link">Login</a>
-                        </li>
-                        <li class="pure-menu-item">
-                            <a href="/saved" class="pure-menu-link">Collection</a>
-                        </li>
+                        {{#name}}
+                            <li class="pure-menu-item">
+                                Welcome, {{ name }}!
+                            </li>
+                            <li class="pure-menu-item">
+                                <a href="/login/logout" class="pure-menu-link">Logout</a>
+                            </li>
+                            <li class="pure-menu-item">
+                                <a href="/saved" class="pure-menu-link">Collection</a>
+                            </li>
+                        {{/name}}
+                        {{^name}}
+                            <li class="pure-menu-item">
+                                <a href="/login/signup" class="pure-menu-link">Sign Up</a>
+                            </li>
+                            <li class="pure-menu-item">
+                                <a href="/login" class="pure-menu-link">Login</a>
+                            </li>
+                        {{/name}}
                     </ul>
                 </div>
             </li>
@@ -111,7 +121,7 @@
             <section class="movie-container">
                 {{#movieArray}}
                 <div class="movie-card">
-                    <a href="./movies/{{ID}}">
+                    <a href="./movie/{{_id}}">
                         <h2>{{Title}}</h2>
                         <p class="movie-card-subtitle">{{Directors}} ∙ {{Year}} ∙ {{Age}}</p>
                         <div class="flex-container">
