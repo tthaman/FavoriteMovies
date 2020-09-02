@@ -8,6 +8,7 @@ router.use(bodyParser.urlencoded({ extended: true }));
 router.use("/login", require('./login'));
 router.use("/saved", require('./saved'));
 router.use("/movie", require('./movie'));
+router.use("/reviews", require('./review'));
 
 router.get("/login/", (req, res, next) => {
   res.render('login');
