@@ -111,7 +111,7 @@
             <section class="movie-container">
                 {{#movieArray}}
                 <div class="movie-card">
-                    <a href="./movies/{{ID}}">
+                    <a href="./movie/{{_id}}">
                         <h2>{{Title}}</h2>
                         <p class="movie-card-subtitle">{{Directors}} ∙ {{Year}} ∙ {{Age}}</p>
                         <div class="flex-container">
@@ -126,18 +126,17 @@
                 </div>
                 {{/movieArray}}
             </section>
-            <!-- <div class="center">
-                <div class="pagination">
-                <a href="#">&laquo;</a>
-                <a href="#" class="active">1</a>
-                <a href="#">2</a>
-                <a href="#">3</a>
-                <a href="#">4</a>
-                <a href="#">5</a>
-                <a href="#">6</a>
-                <a href="#">&raquo;</a>
-                </div>
-            </div> -->
+            <div class="pagination">
+                <form action="/" method="get">
+                    <select name="page">
+                        {{#pages}}
+                            <option value="{{.}}">Page {{.}}</option>
+                        {{/pages}}
+                    </select>
+                <button type="submit">Go To Page</button>
+                </form>
+                <p>Page {{currentPage}}</p>
+            </div>
         </main>
     <script src="/javaScript/app.js"></script>
 </body>

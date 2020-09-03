@@ -37,6 +37,7 @@
     </header>
     <main class="form-container">
         <h1>Create an Account</h1>
+        {{#message}}<p class="center">Please signup for an account to perform this action</p>{{/message}}
         <form action="/login/signup" method="post" enctype="application/x-www-form-urlencoded" class="pure-form pure-form-aligned">
                 <hr class="add-margin"/>
                 <div class="pure-control-group">

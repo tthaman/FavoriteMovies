@@ -15,7 +15,7 @@
         <ul class="pure-menu-list header">
             <a href="/" class="pure-menu-heading logo pure-menu-link">🎞️Movie Finder</a>
             <li class="pure-menu-item">
-                <form action="/movies" method="GET" class="pure-form">
+                <form action="/movie" method="GET" class="pure-form">
                     <select name="searchType" class="searchType" id="search-type">
                         <option>Title</option>
                         <option>Director</option>
@@ -27,15 +27,25 @@
             <li class="pure-menu-item">
                 <div class="pure-menu pure-menu-horizontal">
                     <ul class="pure-menu-list header">
-                        <li class="pure-menu-item">
-                            <a href="/login/signup" class="pure-menu-link">Sign Up</a>
-                        </li>
-                        <li class="pure-menu-item">
-                            <a href="/login" class="pure-menu-link">Login</a>
-                        </li>
-                        <li class="pure-menu-item">
-                            <a href="/saved" class="pure-menu-link">Collection</a>
-                        </li>
+                        {{#name}}
+                            <li class="pure-menu-item">
+                                Welcome, {{ name }}!
+                            </li>
+                            <li class="pure-menu-item">
+                                <a href="/login/logout" class="pure-menu-link">Logout</a>
+                            </li>
+                            <li class="pure-menu-item">
+                                <a href="/saved" class="pure-menu-link">Collection</a>
+                            </li>
+                        {{/name}}
+                        {{^name}}
+                            <li class="pure-menu-item">
+                                <a href="/login/signup" class="pure-menu-link">Sign Up</a>
+                            </li>
+                            <li class="pure-menu-item">
+                                <a href="/login" class="pure-menu-link">Login</a>
+                            </li>
+                        {{/name}}
                     </ul>
                 </div>
             </li>
@@ -46,27 +56,27 @@
         <hr/>
         <div class="search-options hideOptions">
             <div class="grid-item">
-                <form action="/" method="get">
+                <form action="/movie" method="get">
 
                     <div class="flex-container">
                         <fieldset>
                             <legend>Filter By Movie Genre</legend>
                             <div class="input-grid">
-                                <input type="checkbox" name="genre" id="action" value="action" class="pill"><label for="action">Action</label>
-                                <input type="checkbox" name="genre" id="adventure" value="adventure" class="pill"><label for="adventure">Adventure</label>
-                                <input type="checkbox" name="genre" id="drama" value="drama" class="pill"><label for="drama">Drama</label>
-                                <input type="checkbox" name="genre" id="comedy" value="comedy" class="pill"><label for="comedy">Comedy</label>
-                                <input type="checkbox" name="genre" id="horror" value="horror" class="pill"><label for="horror">Horror</label>
-                                <input type="checkbox" name="genre" id="animated" value="animated" class="pill"><label for="animated">Animated</label>
-                                <input type="checkbox" name="genre" id="thriller" value="thriller" class="pill"><label for="thriller">Thriller</label>
-                                <input type="checkbox" name="genre" id="crime" value="crime" class="pill"><label for="crime">Crime</label>
-                                <input type="checkbox" name="genre" id="history" value="history" class="pill"><label for="history">History</label>
-                                <input type="checkbox" name="genre" id="sci-fi" value="sci-fi" class="pill"><label for="sci-fi">Sci-fi</label>
-                                <input type="checkbox" name="genre" id="war" value="war" class="pill"><label for="war">War</label>
-                                <input type="checkbox" name="genre" id="biography" value="biography" class="pill"><label for="biography">Biography</label>
-                                <input type="checkbox" name="genre" id="western" value="western" class="pill"><label for="western">Western</label>
-                                <input type="checkbox" name="genre" id="fantasy" value="fantasy" class="pill"><label for="fantasy">Fantasy</label>
-                                <input type="checkbox" name="genre" id="romance" value="romance" class="pill"><label for="romance">Romance</label>
+                                <input type="checkbox" name="genre" id="action" value="Action" class="pill"><label for="action">Action</label>
+                                <input type="checkbox" name="genre" id="adventure" value="Adventure" class="pill"><label for="adventure">Adventure</label>
+                                <input type="checkbox" name="genre" id="drama" value="Drama" class="pill"><label for="drama">Drama</label>
+                                <input type="checkbox" name="genre" id="comedy" value="Comedy" class="pill"><label for="comedy">Comedy</label>
+                                <input type="checkbox" name="genre" id="horror" value="Horror" class="pill"><label for="horror">Horror</label>
+                                <input type="checkbox" name="genre" id="animated" value="Animated" class="pill"><label for="animated">Animated</label>
+                                <input type="checkbox" name="genre" id="thriller" value="Thriller" class="pill"><label for="thriller">Thriller</label>
+                                <input type="checkbox" name="genre" id="crime" value="Crime" class="pill"><label for="crime">Crime</label>
+                                <input type="checkbox" name="genre" id="history" value="History" class="pill"><label for="history">History</label>
+                                <input type="checkbox" name="genre" id="sci-fi" value="Sci-Fi" class="pill"><label for="sci-fi">Sci-fi</label>
+                                <input type="checkbox" name="genre" id="war" value="War" class="pill"><label for="war">War</label>
+                                <input type="checkbox" name="genre" id="biography" value="Biography" class="pill"><label for="biography">Biography</label>
+                                <input type="checkbox" name="genre" id="western" value="Western" class="pill"><label for="western">Western</label>
+                                <input type="checkbox" name="genre" id="fantasy" value="Fantasy" class="pill"><label for="fantasy">Fantasy</label>
+                                <input type="checkbox" name="genre" id="romance" value="Romance" class="pill"><label for="romance">Romance</label>
                             </div>
                         </fieldset>
                         </div>
@@ -74,9 +84,9 @@
                             <fieldset>
                                 <legend>Sort Options</legend>
                                 <div class="sort-grid">
-                                    <label class="option" for="year">Year<input class="option" type="radio" name="sortType" id="year" /></label>
-                                    <label class="option" for="imdb">IMdb Rating<input class="option" type="radio" name="sortType" id="imdb" /></label>
-                                    <label class="option" for="tomato">Rotten Tomatoes<input class="option" type="radio" name="sortType" id="tomato" /></label>
+                                    <label class="option" for="year">Year<input class="option" type="radio" name="filterByYear" id="year" /></label>
+                                    <label class="option" for="imdb">IMdb Rating<input class="option" type="radio" name="filterByIMDB" id="imdb" /></label>
+                                    <label class="option" for="tomato">Rotten Tomatoes<input class="option" type="radio" name="filterByRottenTomatoes" id="tomato" /></label>
                                 </div>
                             </fieldset>
                         </div>
@@ -111,33 +121,32 @@
             <section class="movie-container">
                 {{#movieArray}}
                 <div class="movie-card">
-                    <a href="./movies/{{ID}}">
+                    <a href="./movie/{{_id}}">
                         <h2>{{Title}}</h2>
                         <p class="movie-card-subtitle">{{Directors}} ∙ {{Year}} ∙ {{Age}}</p>
                         <div class="flex-container">
                             <p>Available on
-                                {{#Netflix}} Netflix{{/Netflix}}{{^Netflix}}{{/Netflix}}
-                                {{#Hulu}} Hulu{{/Hulu}}{{^Hulu}}{{/Hulu}}
-                                {{#DisneyPlus}} Disney+{{/DisneyPlus}}{{^DisneyPlus}}{{/DisneyPlus}}
-                                {{#PrimeVideo}} Prime Video{{/PrimeVideo}}{{^PrimeVideo}}{{/PrimeVideo}}
+                                {{#Netflix}} Netflix{{/Netflix}}{{^Netflix}}{{/Netflix}}                            
+                                {{#Hulu}} Hulu{{/Hulu}}{{^Hulu}}{{/Hulu}}                            
+                                {{#Disney+}} Disney+{{/Disney+}}{{^Disney+}}{{/Disney+}}                            
+                                {{#Prime Video}} Prime Video{{/Prime Video}}{{^Prime Video}}{{/Prime Video}}                            
                             </p>
                         </div>
                     </a>
                 </div>
                 {{/movieArray}}
             </section>
-            <!-- <div class="center">
-                <div class="pagination">
-                <a href="#">&laquo;</a>
-                <a href="#" class="active">1</a>
-                <a href="#">2</a>
-                <a href="#">3</a>
-                <a href="#">4</a>
-                <a href="#">5</a>
-                <a href="#">6</a>
-                <a href="#">&raquo;</a>
-                </div>
-            </div> -->
+            <div class="pagination">
+                <form action="/" method="get">
+                    <select name="page">
+                        {{#pages}}
+                            <option value="{{.}}">Page {{.}}</option>
+                        {{/pages}}
+                    </select>
+                <button type="submit">Go To Page</button>
+                </form>
+                <p>Page {{currentPage}}</p>
+            </div>
         </main>
     <script src="/javaScript/app.js"></script>
 </body>
