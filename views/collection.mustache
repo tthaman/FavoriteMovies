@@ -36,16 +36,19 @@
     </header>
     <main>
         <h1>Your Collection</h1>
+        <p>{{message}}</p>
         <hr/>
         <h3>Your Favorite Movies</h3>
         <section class="movie-container">
             {{#favoriteMovies}}
             <div class="movie-card">
-                <a href="/movies/{{ID}}">
+                <a href="/movie/{{_id}}">
                     <h2>{{Title}}</h2>
                 </a>
-                <p data-favoriteid="{{ID}}" class="movie-card-icons remove-icon"><span>Remove </span><i class="far fa-trash-alt icon"></i></p>
-                <a href="/movies/{{ID}}">
+                <form action="/saved/favorites/{{_id}}/remove" method="post">
+                    <input class="hidden-input" type="radio" name="favorites" checked>
+                    <button type="submit" class="remove-button" id="favorites">Remove<i class="far fa-trash-alt icon"></i></button>
+                </form>                <a href="/movie/{{_id}}">
                     <p class="movie-card-subtitle">{{Directors}} ∙ {{Year}} ∙ {{Age}}</p>
                     <div class="flex-container">
                         <p>Available on
@@ -64,11 +67,14 @@
         <section class="movie-container">
             {{#watchList}}
             <div class="movie-card">
-                <a href="/movies/{{ID}}">
+                <a href="/movie/{{_id}}">
                     <h2>{{Title}}</h2>
                 </a>
-                <p data-watchlistid="{{ID}}" class="movie-card-icons remove-icon"><span>Remove </span><i class="far fa-trash-alt icon"></i></p>
-                <a href="/movies/{{ID}}">
+                <form action="/saved/watchlist/{{_id}}/remove" method="post">
+                    <input class="hidden-input" type="radio" name="favorites" checked>
+                    <button type="submit" class="remove-button" id="favorites">Remove<i class="far fa-trash-alt icon"></i></button>
+                </form>
+                <a href="/movie/{{_id}}">
                     <p class="movie-card-subtitle">{{Directors}} ∙ {{Year}} ∙ {{Age}}</p>
                     <div class="flex-container">
                         <p>Available on

@@ -348,3 +348,13 @@ label {
 .add-margin {
     margin-bottom: 2rem !important;
 }
+
+/* ------- COLLECTIONS PAGE -------- */
+
+.remove-button {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    border-radius: 1rem;
+    font-size: 1.4rem;
+}

@@ -54,12 +54,12 @@
         </div>
         <div class="button-container">
             {{#movieData}}
-            <form action="/saved/favorites" method="post">
-                <input class="hidden-input" type="radio" value="favorites" checked="checked">
+            <form action="/saved/favorites/{{_id}}" method="post">
+                <input class="hidden-input" type="radio" name="favorites" checked>
                 <button data-movieid="{{_id}}" id="favorites" class="pure-button margin-right pure-button-primary rounded"><i class="fas fa-heart"></i> Favorites</button>
             </form>
-            <form action="/saved/watchlist" method="post">
-                <input class="hidden-input" type="radio" value="watchlist" checked="checked">
+            <form action="/saved/watchlist/{{_id}}" method="post">
+                <input class="hidden-input" type="radio" name="watchlist" checked>
                 <button data-movieid="{{_id}}" id="watchList" class="pure-button pure-button-primary rounded"><i class="fas fa-plus"></i> Watchlist</button>
             </form>
             {{/movieData}}
