@@ -4,6 +4,7 @@ const bcrypt = require('bcrypt');
 
 const userDAO = require('../daos/user');
 const tokenDAO = require('../daos/token');
+const movieDAO = require("../daos/movie");
 const { isAuthorized } = require('../middleware/middleware');
 
 router.post("/signup", async (req, res, next) => {
@@ -35,7 +36,8 @@ router.post("/", async (req, res, next) => {
             if (passwordsMatch) {
                 if (savedUser) {
                     const token = await tokenDAO.create(email, password);
-                    res.render('indexLoggedIn', { name: savedUser.firstName});
+                    const movies = await movieDAO.getAll();
+                    res.render('indexLoggedIn', { name: savedUser.firstName, "movieArray": movies });
                 } else {
                     res.sendStatus(401);
                 }
