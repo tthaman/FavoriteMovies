@@ -296,6 +296,12 @@ label {
     padding: 2rem;
 }
 
+.review-form-subtitle {
+    color: #777;
+    text-align: center;
+    margin-bottom: 0;
+}
+
 .review-subtitle {
     color: #777;
     font-size: 1.5rem;
