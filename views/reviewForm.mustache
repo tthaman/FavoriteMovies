@@ -40,6 +40,7 @@
     </header>
     <main class="review-form-container">
         <h1 class="center">Movie Review Form</h1>
+        <p class="review-form-subtitle">Add a review of the film {{title}}</p>
         {{#message}}<h3 class="center">Review Successfully Added</h3>{{/message}}
         <form action="/reviews/{{id}}/add-review" method="post" class="pure-form pure-form-stacked">
             <fieldset>
