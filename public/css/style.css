@@ -296,6 +296,12 @@ label {
     padding: 2rem;
 }
 
+.review-form-subtitle {
+    color: #777;
+    text-align: center;
+    margin-bottom: 0;
+}
+
 .review-subtitle {
     color: #777;
     font-size: 1.5rem;
@@ -347,4 +353,14 @@ label {
 
 .add-margin {
     margin-bottom: 2rem !important;
+}
+
+/* ------- COLLECTIONS PAGE -------- */
+
+.remove-button {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    border-radius: 1rem;
+    font-size: 1.4rem;
 }

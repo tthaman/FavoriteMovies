@@ -2,8 +2,15 @@ const { Router } = require("express");
 const router = Router();
 const bodyParser = require('body-parser');
 const movieDAO = require("../daos/movie");
+const session = require('express-session');
 
 router.use(bodyParser.urlencoded({ extended: true }));
+router.use(session({
+  secret: 'password',
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: false }
+}))
 
 router.use("/login", require('./login'));
 router.use("/saved", require('./saved'));
@@ -27,11 +34,21 @@ router.use("/", async (req, res, next) => {
   page = page ? Number(page) : 1;
   const movies = await movieDAO.getAll(page);
   const pages = await movieDAO.getPages();
-  res.render("index", {
-    "movieArray": movies,
-    "pages": pages,
-    "currentPage": page
-  });
+  if(req.session.name) {
+    res.render("index", {
+      "movieArray": movies,
+      "pages": pages,
+      "currentPage": page,
+      "name": req.session.name,
+      "isLoggedIn": true
+    });
+  } else {
+    res.render("index", {
+      "movieArray": movies,
+      "pages": pages,
+      "currentPage": page
+    });
+  }
 });
 
 

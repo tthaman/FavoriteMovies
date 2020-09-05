@@ -12,6 +12,14 @@ router.get("/", async (req, res, next) => {
   const pages = await movieDAO.getPages();
   const movies = await movieDAO.getAll(page);
   res.statusCode = 200;
+  if (req.session.token) {
+    res.render("index", {
+      "movieArray": movies,
+      "pages": pages,
+      "currentPage": page,
+      "isLoggedIn": true
+    })
+  }
   res.render("index", {
     "movieArray": movies,
     "pages": pages,
