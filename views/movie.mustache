@@ -19,7 +19,7 @@
             </li>
             <li class="pure-menu-item">
                 <div class="pure-menu pure-menu-horizontal">
-                    <ul class="pure-menu-list header">
+                    <ul class="pure-menu-list navigation-links">
                         <li class="pure-menu-item">
                             <a href="/login/signup" class="pure-menu-link">Sign Up</a>
                         </li>
@@ -38,26 +38,30 @@
         </ul>
     </header>
     <main class="movie-page-container">
-        {{#movieData}}
-        <h1 class="title">{{movieData.Title}}</h1>
-        <h3>{{movieData.Directors}} ∙ {{movieData.Year}}</h3>
-        {{/movieData}}
-        <div class="star-rating">
-            <h4 class="no-top-margin">Average User Rating</h4>
-            {{#userStarRating}}
-                {{#.}}<span class="fa fa-star checked"></span>{{/.}}{{^.}}<span class="fa fa-star"></span>{{/.}}
-            {{/userStarRating}}
-            {{^userStarRating}}
-                <span class="far fa-star blocked"></span>
-                <span class="far fa-star blocked"></span>
-                <span class="far fa-star blocked"></span>
-                <span class="far fa-star blocked"></span>
-                <span class="far fa-star blocked"></span>
-            {{/userStarRating}}
-            <p>{{#avgRating}}{{avgRating}} / 5 ({{numReviews}}){{/avgRating}}{{^avgRating}}no reviews{{/avgRating}}</p>
-            {{#movieData}}
-                <p><a href="/reviews/{{_id}}/add-review">Rate this movie</a></p>
-            {{/movieData}}
+        <div class="movie-page-grid-container">
+            <div class="main-movie-info">
+                {{#movieData}}
+                <h1 class="title">{{movieData.Title}}</h1>
+                <h3>{{movieData.Directors}} ∙ {{movieData.Year}}</h3>
+                {{/movieData}}
+            </div>
+            <div class="star-rating">
+                <h4 class="no-top-margin">Average User Rating</h4>
+                {{#userStarRating}}
+                    {{#.}}<span class="fa fa-star checked"></span>{{/.}}{{^.}}<span class="fa fa-star"></span>{{/.}}
+                {{/userStarRating}}
+                {{^userStarRating}}
+                    <span class="far fa-star blocked"></span>
+                    <span class="far fa-star blocked"></span>
+                    <span class="far fa-star blocked"></span>
+                    <span class="far fa-star blocked"></span>
+                    <span class="far fa-star blocked"></span>
+                {{/userStarRating}}
+                <p>{{#avgRating}}{{avgRating}} / 5 ({{numReviews}}){{/avgRating}}{{^avgRating}}no reviews{{/avgRating}}</p>
+                {{#movieData}}
+                    <p><a href="/reviews/{{_id}}/add-review">Rate this movie</a></p>
+                {{/movieData}}
+            </div>
         </div>
         <div class="button-container">
             {{#movieData}}
@@ -72,8 +76,8 @@
             {{/movieData}}
         </div>
         <hr/>
-        <section>
-            <table class="pure-table pure-table-bordered table">
+        <section class="table">
+            <table class="pure-table pure-table-bordered">
                 <thead>
                     <tr>
                         <th>IMdb Score</th>
@@ -94,8 +98,8 @@
                 </tbody>
             </table>
         </section>
-        <section>
-            <table class="pure-table pure-table-bordered table">
+        <section class="table">
+            <table class="pure-table pure-table-bordered">
                 <thead>
                     <tr>
                         <th>Hulu</th>

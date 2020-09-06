@@ -26,7 +26,7 @@
             </li>
             <li class="pure-menu-item">
                 <div class="pure-menu pure-menu-horizontal">
-                    <ul class="pure-menu-list header">
+                    <ul class="pure-menu-list navigation-links">
                         {{#isLoggedIn}}
                             {{#name}}
                                 <li class="pure-menu-item">
@@ -57,9 +57,8 @@
         <h1>Movies ∙ Top Results <span class="options-button">Filter Results <i class="fas fa-filter"></i></span></h1>
         <hr/>
         <div class="search-options hideOptions">
-            <div class="grid-item">
+            <div class="grid-item-two">
                 <form action="/movie/filter" method="get">
-
                     <div class="flex-container">
                         <fieldset>
                             <legend>Filter By Movie Genre</legend>
