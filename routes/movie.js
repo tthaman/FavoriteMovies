@@ -5,7 +5,7 @@ const movieDAO = require("../daos/movie");
 const { isAuthorized, isAdmin } = require("../middleware/middleware");
 
 // GET /movies/search/:search_text Retrieves potential matches
-router.get("/search/:search_text", async (req, res, next) => {
+router.get("/search", async (req, res, next) => {
   if (req.query.searchType == "Title")
     const movies = await movieDAO.searchTitle(req.query.query);
   else {
