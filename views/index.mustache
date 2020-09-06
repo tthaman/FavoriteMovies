@@ -15,7 +15,7 @@
         <ul class="pure-menu-list header">
             <a href="/" class="pure-menu-heading logo pure-menu-link">🎞️Movie Finder</a>
             <li class="pure-menu-item">
-                <form action="/movie" method="GET" class="pure-form">
+                <form action="/movie/search" method="GET" class="pure-form">
                     <select name="searchType" class="searchType" id="search-type">
                         <option>Title</option>
                         <option>Director</option>
@@ -58,7 +58,7 @@
         <hr/>
         <div class="search-options hideOptions">
             <div class="grid-item">
-                <form action="/movie" method="get">
+                <form action="/movie/filter" method="get">
 
                     <div class="flex-container">
                         <fieldset>
