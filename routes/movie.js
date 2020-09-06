@@ -6,9 +6,9 @@ const { isAuthorized, isAdmin } = require("../middleware/middleware");
 
 // GET /movies/search/:search_text Retrieves potential matches
 router.get("/search", async (req, res, next) => {
-  if (req.query.searchType == "Title")
+  if (req.query.searchType == "Title") {
     const movies = await movieDAO.searchTitle(req.query.query);
-  else {
+  } else {
     const movies = await movieDAO.searchDirector(req.query.query);
   }
   res.statusCode = 200;

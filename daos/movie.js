@@ -55,10 +55,10 @@ module.exports.filterMovie = async (movieObj) => {
   const ageInt = { "0": 0, "7+": 7, "13+": 13, "18+": 18 };
   const movies = await Movie.find({
     Genres: { $in: genres },
-    Netflix: services.includes("netflix"),
-    Hulu: services.includes("hulu"),
-    PrimeVideo: services.includes("prime"),
-    DisneyPlus: services.includes("disney"),
+    Netflix: services.includes("netflix") ? 1 : 0,
+    Hulu: services.includes("hulu") ? 1 : 0,
+    PrimeVideo: services.includes("prime") ? 1 : 0,
+    DisneyPlus: services.includes("disney") ? 1 : 0,
     Year: { $lt: currentYear - ageInt[age] + 1 },
   })
     .sort(order)
