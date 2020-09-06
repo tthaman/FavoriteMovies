@@ -13,9 +13,9 @@
 <body>
     <header class="pure-menu pure-menu-horizontal navbar">
         <ul class="pure-menu-list header">
-            <a href="/" class="pure-menu-heading logo pure-menu-link">🎞️Movie Finder</a>
+            <a href="/" class="pure-menu-heading logo pure-menu-link">:film_frames:Movie Finder</a>
             <li class="pure-menu-item">
-                <form action="/movie" method="GET" class="pure-form">
+                <form action="/movie/search" method="GET" class="pure-form">
                     <select name="searchType" class="searchType" id="search-type">
                         <option>Title</option>
                         <option>Director</option>
@@ -58,8 +58,7 @@
         <hr/>
         <div class="search-options hideOptions">
             <div class="grid-item">
-                <form action="/movie" method="get">
-
+                <form action="/movie/filter" method="get">
                     <div class="flex-container">
                         <fieldset>
                             <legend>Filter By Movie Genre</legend>
@@ -128,10 +127,10 @@
                         <p class="movie-card-subtitle">{{Directors}} ∙ {{Year}} ∙ {{Age}}</p>
                         <div class="flex-container">
                             <p>Available on
-                                {{#Netflix}} Netflix{{/Netflix}}{{^Netflix}}{{/Netflix}}                            
-                                {{#Hulu}} Hulu{{/Hulu}}{{^Hulu}}{{/Hulu}}                            
-                                {{#Disney+}} Disney+{{/Disney+}}{{^Disney+}}{{/Disney+}}                            
-                                {{#Prime Video}} Prime Video{{/Prime Video}}{{^Prime Video}}{{/Prime Video}}                            
+                                {{#Netflix}} Netflix{{/Netflix}}{{^Netflix}}{{/Netflix}}
+                                {{#Hulu}} Hulu{{/Hulu}}{{^Hulu}}{{/Hulu}}
+                                {{#Disney+}} Disney+{{/Disney+}}{{^Disney+}}{{/Disney+}}
+                                {{#Prime Video}} Prime Video{{/Prime Video}}{{^Prime Video}}{{/Prime Video}}
                             </p>
                         </div>
                     </a>

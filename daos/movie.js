@@ -42,6 +42,8 @@ module.exports.filterMovie = async (movieObj) => {
       "Biography",
       "Romance",
     ];
+  } else {
+    genres = genres.split(",");
   }
   if (!service) {
     services = ["hulu", "prime", "netflix", "disney"];
@@ -49,21 +51,15 @@ module.exports.filterMovie = async (movieObj) => {
   if (!age) {
     age = "0";
   }
-  if (!sort) {
-    sort = title;
-  }
   const ageInt = { "0": 0, "7+": 7, "13+": 13, "18+": 18 };
   const movies = await Movie.find({
-    Genres: { $in: genres },
     Netflix: services.includes("netflix") ? 1 : 0,
     Hulu: services.includes("hulu") ? 1 : 0,
     PrimeVideo: services.includes("prime") ? 1 : 0,
     DisneyPlus: services.includes("disney") ? 1 : 0,
     Year: { $lt: currentYear - ageInt[age] + 1 },
-  })
-    .sort(order)
-    .lean();
-  return movies;
+  }).lean();
+  return movies.filter((movie) => genres.some((v) => movie.Genres.includes(v)));
 };
 
 module.exports.searchTitle = async (titleString) => {
@@ -73,9 +69,9 @@ module.exports.searchTitle = async (titleString) => {
   return movies;
 };
 
-module.exports.searchDirector = async (directoryString) => {
+module.exports.searchDirector = async (directorString) => {
   const movies = await Movie.find({
-    Directors: { $regex: `.*${directoryString}.*` },
+    Directors: { $regex: `.*${directorString}.*` },
   }).lean();
   return movies;
 };
