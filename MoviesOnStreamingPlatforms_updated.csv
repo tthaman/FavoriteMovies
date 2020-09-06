@@ -1,4 +1,3 @@
-MoviesOnStreamingPlatforms_updated
 ,ID,Title,Year,Age,IMDb,RottenTomatoes,Netflix,Hulu,PrimeVideo,DisneyPlus,Type,Directors,Genres,Country,Language,Runtime
 0,1,Inception,2010,13,8.8,87%,1,0,0,0,0,Christopher Nolan,"Action,Adventure,Sci-Fi,Thriller","United States,United Kingdom","English,Japanese,French",148
 1,2,The Matrix,1999,18,8.7,87%,1,0,0,0,0,"Lana Wachowski,Lilly Wachowski","Action,Sci-Fi",United States,English,136
