@@ -67,9 +67,9 @@ module.exports.filterMovie = async (movieObj) => {
 };
 
 module.exports.searchTitle = async (titleString) => {
-  const movies = await Movie.findOne({
+  const movies = await Movie.find({
     Title: { $regex: `.*${titleString}.*` },
-  });
+  }).lean();
   return movies;
 };
 
