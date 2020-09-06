@@ -4,9 +4,15 @@ module.exports = {};
 
 module.exports.getAll = async (page) => {
   if (page > 0) {
-    return await Movie.find().limit(20).skip(20 * (page - 1)).lean();
+    return await Movie.find()
+      .limit(20)
+      .skip(20 * (page - 1))
+      .lean();
   } else {
-    return await Movie.find().limit(20).skip(20 * page).lean();
+    return await Movie.find()
+      .limit(20)
+      .skip(20 * page)
+      .lean();
   }
 };
 
@@ -61,7 +67,16 @@ module.exports.filterMovie = async (movieObj) => {
 };
 
 module.exports.searchTitle = async (titleString) => {
-  const movies = await Movie.findOne({"Title" : {$regex : `.*${titleString}.*`}});
+  const movies = await Movie.findOne({
+    Title: { $regex: `.*${titleString}.*` },
+  });
+  return movies;
+};
+
+module.exports.searchDirector = async (directoryString) => {
+  const movies = await Movie.find({
+    Directors: { $regex: `.*${directoryString}.*` },
+  }).lean();
   return movies;
 };
 
@@ -70,9 +85,8 @@ module.exports.getPages = async () => {
   const movies = await Movie.find().lean();
   const totalMovies = movies.length;
   const numPages = Math.ceil(totalMovies / 20);
-  for(let i = 1; i <= numPages; i++) {
+  for (let i = 1; i <= numPages; i++) {
     pageArray.push(i);
   }
   return pageArray;
-}
-
+};
