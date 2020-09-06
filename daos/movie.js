@@ -42,8 +42,6 @@ module.exports.filterMovie = async (movieObj) => {
       "Biography",
       "Romance",
     ];
-  } else {
-    genres = genres.split(",");
   }
   if (!service) {
     services = ["hulu", "prime", "netflix", "disney"];
