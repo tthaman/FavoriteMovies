@@ -4,9 +4,15 @@ module.exports = {};
 
 module.exports.getAll = async (page) => {
   if (page > 0) {
-    return await Movie.find().limit(20).skip(20 * (page - 1)).lean();
+    return await Movie.find()
+      .limit(20)
+      .skip(20 * (page - 1))
+      .lean();
   } else {
-    return await Movie.find().limit(20).skip(20 * page).lean();
+    return await Movie.find()
+      .limit(20)
+      .skip(20 * page)
+      .lean();
   }
 };
 
@@ -43,25 +49,38 @@ module.exports.filterMovie = async (movieObj) => {
   if (!age) {
     age = "0";
   }
-  if (!sort) {
-    sort = title;
-  }
   const ageInt = { "0": 0, "7+": 7, "13+": 13, "18+": 18 };
   const movies = await Movie.find({
-    Genres: { $in: genres },
-    Netflix: services.includes("netflix"),
-    Hulu: services.includes("hulu"),
-    PrimeVideo: services.includes("prime"),
-    DisneyPlus: services.includes("disney"),
+    Netflix: services.includes("netflix") ? 1 : 0,
+    Hulu: services.includes("hulu") ? 1 : 0,
+    PrimeVideo: services.includes("prime") ? 1 : 0,
+    DisneyPlus: services.includes("disney") ? 1 : 0,
     Year: { $lt: currentYear - ageInt[age] + 1 },
-  })
-    .sort(order)
-    .lean();
+  }).lean();
+  return movies.filter((movie) => genres.some((v) => movie.Genres.includes(v)));
+};
+
+module.exports.searchTitle = async (titleString) => {
+  const movies = await Movie.find({
+    Title: { $regex: `.*${titleString}.*` },
+  }).lean();
   return movies;
 };
 
 module.exports.searchTitle = async (titleString) => {
-  const movies = await Movie.findOne({"Title" : {$regex : `.*${titleString}.*`}});
+  const movies = await Movie.find(
+    { $text: {$search: titleString}},
+    { score: {$meta: "textScore"}}
+    )
+    .sort({ score: { $meta: "textScore" }})
+    .limit(20).lean();
+  return movies;
+};
+
+module.exports.searchDirector = async (directorString) => {
+  const movies = await Movie.find({
+    Directors: { $regex: `${directorString}`, '$options' : 'i' },
+  }).lean();
   return movies;
 };
 
@@ -70,9 +89,8 @@ module.exports.getPages = async () => {
   const movies = await Movie.find().lean();
   const totalMovies = movies.length;
   const numPages = Math.ceil(totalMovies / 20);
-  for(let i = 1; i <= numPages; i++) {
+  for (let i = 1; i <= numPages; i++) {
     pageArray.push(i);
   }
   return pageArray;
-}
-
+};

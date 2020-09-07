@@ -15,7 +15,7 @@
         <ul class="pure-menu-list header">
             <a href="/" class="pure-menu-heading logo pure-menu-link">🎞️Movie Finder</a>
             <li class="pure-menu-item">
-                <form action="/movie" method="GET" class="pure-form">
+                <form action="/movie/search" method="GET" class="pure-form">
                     <select name="searchType" class="searchType" id="search-type">
                         <option>Title</option>
                         <option>Director</option>
@@ -26,7 +26,7 @@
             </li>
             <li class="pure-menu-item">
                 <div class="pure-menu pure-menu-horizontal">
-                    <ul class="pure-menu-list header">
+                    <ul class="pure-menu-list navigation-links">
                         {{#isLoggedIn}}
                             {{#name}}
                                 <li class="pure-menu-item">
@@ -57,9 +57,8 @@
         <h1>Movies ∙ Top Results <span class="options-button">Filter Results <i class="fas fa-filter"></i></span></h1>
         <hr/>
         <div class="search-options hideOptions">
-            <div class="grid-item">
-                <form action="/movie" method="get">
-
+            <div class="grid-item-two">
+                <form action="/movie/filter" method="get">
                     <div class="flex-container">
                         <fieldset>
                             <legend>Filter By Movie Genre</legend>
@@ -120,6 +119,7 @@
                 </form>
             </div>
             <hr/>
+            <p class="center">{{message}}</p>
             <section class="movie-container">
                 {{#movieArray}}
                 <div class="movie-card">
@@ -128,16 +128,17 @@
                         <p class="movie-card-subtitle">{{Directors}} ∙ {{Year}} ∙ {{Age}}</p>
                         <div class="flex-container">
                             <p>Available on
-                                {{#Netflix}} Netflix{{/Netflix}}{{^Netflix}}{{/Netflix}}                            
-                                {{#Hulu}} Hulu{{/Hulu}}{{^Hulu}}{{/Hulu}}                            
-                                {{#Disney+}} Disney+{{/Disney+}}{{^Disney+}}{{/Disney+}}                            
-                                {{#Prime Video}} Prime Video{{/Prime Video}}{{^Prime Video}}{{/Prime Video}}                            
+                                {{#Netflix}} Netflix{{/Netflix}}{{^Netflix}}{{/Netflix}}
+                                {{#Hulu}} Hulu{{/Hulu}}{{^Hulu}}{{/Hulu}}
+                                {{#Disney+}} Disney+{{/Disney+}}{{^Disney+}}{{/Disney+}}
+                                {{#Prime Video}} Prime Video{{/Prime Video}}{{^Prime Video}}{{/Prime Video}}
                             </p>
                         </div>
                     </a>
                 </div>
                 {{/movieArray}}
             </section>
+            {{#showPagination}}
             <div class="pagination">
                 <form action="/" method="get">
                     <select name="page">
@@ -149,6 +150,8 @@
                 </form>
                 <p>Page {{currentPage}}</p>
             </div>
+            {{/showPagination}}
+            {{^showPagination}}{{/showPagination}}
         </main>
     <script src="/javaScript/app.js"></script>
 </body>

@@ -3,10 +3,12 @@ const router = Router();
 const bodyParser = require('body-parser');
 const movieDAO = require("../daos/movie");
 const session = require('express-session');
+require('dotenv').config()
+
 
 router.use(bodyParser.urlencoded({ extended: true }));
 router.use(session({
-  secret: 'password',
+  secret: process.env.SECRET,
   resave: false,
   saveUninitialized: true,
   cookie: { secure: false }
@@ -40,13 +42,15 @@ router.use("/", async (req, res, next) => {
       "pages": pages,
       "currentPage": page,
       "name": req.session.name,
-      "isLoggedIn": true
+      "isLoggedIn": true,
+      "showPagination": true,
     });
   } else {
     res.render("index", {
       "movieArray": movies,
       "pages": pages,
-      "currentPage": page
+      "currentPage": page,
+      "showPagination": true,
     });
   }
 });
