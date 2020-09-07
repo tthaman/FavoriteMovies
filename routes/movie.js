@@ -10,13 +10,30 @@ router.get("/search", async (req, res, next) => {
   let movies;
   if (req.query.searchType === "Title") {
     movies = await movieDAO.searchTitle(req.query.query);
+    if (movies.length === 0) {
+      res.render("index", {
+        message: `No results for "${req.query.query}"`
+      })
+    } else {
+        res.statusCode = 200;
+        res.render("index", {
+        movieArray: movies,
+    });
+    }
   } else {
     movies = await movieDAO.searchDirector(req.query.query);
+    if (movies.length === 0) {
+      res.render("index", {
+        message: `No results for "${req.query.query}"`
+      })
+    } else {
+        res.statusCode = 200;
+        res.render("index", {
+        movieArray: movies,
+    });
+    }
   }
-  res.statusCode = 200;
-  res.render("index", {
-    movieArray: movies,
-  });
+  
 });
 
 // GET /movies/filter Retrieves potential matches
@@ -49,23 +66,44 @@ router.get("/:id", async (req, res, next) => {
   const avgRating = (avgArray && avgArray.length > 0) ? avgArray[0].averageRating : 0
 
   let reviews = await reviewDAO.findAllByMovieId(id);
-  res.render("movie", {
-    // Single movie object from database
-    "movieData": movieData,
-    // Average rating toFixed(1)
-    "avgRating": avgRating,
-    // An array of review objects
-    "reviews": reviews,
-    // The length of reviews array (integer)
-    "numReviews": reviews.length,
-    // The first item from the reviews array
-    "firstReview": reviews[0],
-    // Boolean array with length of 5 for the first review
-    // 3.2 = [true, true, true, false, false]
-    "firstReviewStarRating":  (reviews && reviews.length > 0) ? convertStarRating(reviews[0].rating) : null,
-    // Boolean array for average rating
-    "userStarRating": convertStarRating(avgRating)
-  })
+  if(req.session.token) {
+    res.render("movie", {
+      // Single movie object from database
+      "movieData": movieData,
+      // Average rating toFixed(1)
+      "avgRating": avgRating,
+      // An array of review objects
+      "reviews": reviews,
+      // The length of reviews array (integer)
+      "numReviews": reviews.length,
+      // The first item from the reviews array
+      "firstReview": reviews[0],
+      // Boolean array with length of 5 for the first review
+      // 3.2 = [true, true, true, false, false]
+      "firstReviewStarRating":  (reviews && reviews.length > 0) ? convertStarRating(reviews[0].rating) : null,
+      // Boolean array for average rating
+      "userStarRating": convertStarRating(avgRating),
+      "isLoggedIn": true
+    })
+  } else {
+    res.render("movie", {
+      // Single movie object from database
+      "movieData": movieData,
+      // Average rating toFixed(1)
+      "avgRating": avgRating,
+      // An array of review objects
+      "reviews": reviews,
+      // The length of reviews array (integer)
+      "numReviews": reviews.length,
+      // The first item from the reviews array
+      "firstReview": reviews[0],
+      // Boolean array with length of 5 for the first review
+      // 3.2 = [true, true, true, false, false]
+      "firstReviewStarRating":  (reviews && reviews.length > 0) ? convertStarRating(reviews[0].rating) : null,
+      // Boolean array for average rating
+      "userStarRating": convertStarRating(avgRating)
+    })
+  }
 });
 
 //GET /movies Retrieves all movies
@@ -82,13 +120,16 @@ router.get("/", async (req, res, next) => {
       pages: pages,
       currentPage: page,
       isLoggedIn: true,
+      showPagination: true,
+    });
+  } else {
+    res.render("index", {
+      movieArray: movies,
+      pages: pages,
+      currentPage: page,
+      showPagination: true,
     });
   }
-  res.render("index", {
-    movieArray: movies,
-    pages: pages,
-    currentPage: page,
-  });
 });
 
 module.exports = router;

@@ -17,24 +17,40 @@
             <a href="/" class="pure-menu-heading logo pure-menu-link">🎞️Movie Finder</a>
             <li class="pure-menu-item">
             </li>
-            <li class="pure-menu-item">
-                <div class="pure-menu pure-menu-horizontal">
-                    <ul class="pure-menu-list navigation-links">
-                        <li class="pure-menu-item">
-                            <a href="/login/signup" class="pure-menu-link">Sign Up</a>
-                        </li>
-                        <li class="pure-menu-item">
-                            <a href="/login" class="pure-menu-link">Login</a>
-                        </li>
-                        <li class="pure-menu-item">
-                            <a href="/" class="pure-menu-link">Search</a>
-                        </li>
-                        <li class="pure-menu-item">
-                            <a href="/saved" class="pure-menu-link">Collection</a>
-                        </li>
-                    </ul>
-                </div>
-            </li>
+            {{#isLoggedIn}}
+                <li class="pure-menu-item">
+                    <div class="pure-menu pure-menu-horizontal">
+                        <ul class="pure-menu-list navigation-links">
+                            <li class="pure-menu-item">
+                                <a href="/logout" class="pure-menu-link">Logout</a>
+                            </li>
+                            <li class="pure-menu-item">
+                                <a href="/" class="pure-menu-link">Search</a>
+                            </li>
+                            <li class="pure-menu-item">
+                                <a href="/saved" class="pure-menu-link">Collection</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+            {{/isLoggedIn}}
+            {{^isLoggedIn}}
+                <li class="pure-menu-item">
+                    <div class="pure-menu pure-menu-horizontal">
+                        <ul class="pure-menu-list navigation-links">
+                            <li class="pure-menu-item">
+                                <a href="/login/signup" class="pure-menu-link">Sign Up</a>
+                            </li>
+                            <li class="pure-menu-item">
+                                <a href="/login" class="pure-menu-link">Login</a>
+                            </li>
+                            <li class="pure-menu-item">
+                                <a href="/" class="pure-menu-link">Search</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+            {{/isLoggedIn}}
         </ul>
     </header>
     <main class="movie-page-container">

@@ -119,6 +119,7 @@
                 </form>
             </div>
             <hr/>
+            <p class="center">{{message}}</p>
             <section class="movie-container">
                 {{#movieArray}}
                 <div class="movie-card">
@@ -137,6 +138,7 @@
                 </div>
                 {{/movieArray}}
             </section>
+            {{#showPagination}}
             <div class="pagination">
                 <form action="/" method="get">
                     <select name="page">
@@ -148,6 +150,8 @@
                 </form>
                 <p>Page {{currentPage}}</p>
             </div>
+            {{/showPagination}}
+            {{^showPagination}}{{/showPagination}}
         </main>
     <script src="/javaScript/app.js"></script>
 </body>
