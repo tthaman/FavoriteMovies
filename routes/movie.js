@@ -31,7 +31,9 @@ router.get("/", async (req, res, next) => {
 router.get("/:id", async (req, res, next) => {
   const movie = await movieDAO.getMovie(req.params.id);
   res.render("movie", {
-    "movieData": movie
+    "movieData": movie,
+    "avgRating": '4.3',
+    "userStarRating": [true, true, true, true, false]
   });
 });
 
