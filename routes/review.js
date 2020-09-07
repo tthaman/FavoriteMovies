@@ -45,9 +45,9 @@ router.get('/:id', isAuthorized, async (req, res, next) => {
 router.get('/:id/add-review', isAuthorized, async (req, res, next) => {
   const { id } = req.params;
   const movie = await movieDAO.getMovie(id);
-  console.log(movie)
   if (movie) {
-    res.render("reviewForm", { id: id, title: movie.Title });
+    console.log(movie)
+    res.render("reviewForm", { id: movie._id, title: movie.Title });
   }
 });
 

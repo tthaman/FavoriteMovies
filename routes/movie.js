@@ -63,7 +63,7 @@ router.get("/:id", async (req, res, next) => {
     // 3.2 = [true, true, true, false, false]
     "firstReviewStarRating":  (reviews && reviews.length > 0) ? convertStarRating(reviews[0].rating) : null,
     // Boolean array for average rating
-    "userStarRating": avgRating
+    "userStarRating": convertStarRating(avgRating)
   })
 });
 
