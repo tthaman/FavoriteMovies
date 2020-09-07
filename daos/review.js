@@ -8,7 +8,7 @@ module.exports.findAllByUserId = async (userId) => {
 };
 
 module.exports.findAllByMovieId = async (movieId) => {
-  return await Review.find({ movieId: movieId }).lean();
+  return  await Review.find({ movieId: mongoose.Types.ObjectId(movieId)}).lean();
 };
 
 module.exports.deleteByUserId = async (userId) => {
@@ -39,15 +39,12 @@ module.exports.updateMovies = async (userId, movieId, review, rating) =>  {
 };
 
 module.exports.getAvgRatingByMovieId = async (movieId) => {
-  const reviews =  await Review.find({ movieId: '5f540c981ab13e19e21440d4' }).lean();
-
-  const result =  await Review.aggregate([
-    { $match : { movieId : '5f540c981ab13e19e21440d4' } },
+  return  await Review.aggregate([
+    { $match : { movieId : mongoose.Types.ObjectId(movieId) } },
     { $group : {
         _id : null,
         averageRating: {$avg: "$rating"}
     }},
     {$project: {_id: 0, movieId: movieId, averageRating: 1}}
   ])
-  return result;
 };
