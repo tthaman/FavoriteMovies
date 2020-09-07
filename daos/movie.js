@@ -23,8 +23,11 @@ module.exports.getMovie = async (movieId) => {
 
 module.exports.filterMovie = async (movieObj) => {
   const currentYear = new Date().getFullYear();
-  let { genres, service, age, order } = movieObj;
-  if (!genres) {
+  let { genre, service, age, order, filterByYear, filterByImdbRating, filterByRottenTomatoes } = movieObj;
+  let genres;
+  if (genre) {
+    genres = genre;
+  } else {
     genres = [
       "Action",
       "Comedy",

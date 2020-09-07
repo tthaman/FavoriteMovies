@@ -8,7 +8,7 @@ const reviewDAO = require("../daos/review");
 // GET /movies/search/:search_text Retrieves potential matches
 router.get("/search", async (req, res, next) => {
   let movies;
-  if (req.query.searchType == "Title") {
+  if (req.query.searchType === "Title") {
     movies = await movieDAO.searchTitle(req.query.query);
   } else {
     movies = await movieDAO.searchDirector(req.query.query);
@@ -21,7 +21,7 @@ router.get("/search", async (req, res, next) => {
 
 // GET /movies/filter Retrieves potential matches
 router.get("/filter", async (req, res, next) => {
-  const movies = await movieDAO.filter(req.query);
+  const movies = await movieDAO.filterMovie(req.query);
   res.statusCode = 200;
   res.render("index", {
     movieArray: movies,
