@@ -42,13 +42,15 @@ router.use("/", async (req, res, next) => {
       "pages": pages,
       "currentPage": page,
       "name": req.session.name,
-      "isLoggedIn": true
+      "isLoggedIn": true,
+      "showPagination": true,
     });
   } else {
     res.render("index", {
       "movieArray": movies,
       "pages": pages,
-      "currentPage": page
+      "currentPage": page,
+      "showPagination": true,
     });
   }
 });
