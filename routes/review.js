@@ -5,18 +5,6 @@ const movieDAO = require('../daos/movie');
 
 const { isAuthorized } = require("../middleware/middleware");
 
-// Check for saved movie with userId.  If found, update movies array.  Else, create saved movie with 1 instance in movies.
-router.put("/:id", async (req, res, next) => {
-  const noteId = req.params.id;
-  const note = req.body;
-  if (!note || JSON.stringify(note) === '{}' ) {
-    res.status(400).send('note is required"');
-  } else {
-    const updatednote = await noteDAO.updateById(noteId, note);
-    res.json(updatednote);
-  }
-});
-
 function convertStarRating(rating) {
   const roundedRating = Math.round(rating)
   let ratingArray = [false, false, false, false, false];
@@ -26,7 +14,7 @@ function convertStarRating(rating) {
   return ratingArray
 }
 
-router.get('/:id', isAuthorized, async (req, res, next) => {
+router.get('/:id', async (req, res, next) => {
   const { id } = req.params;
   const movieData = await movieDAO.getMovie(id);
   const reviews = await reviewDAO.findAllByMovieId(id);
@@ -38,7 +26,7 @@ router.get('/:id', isAuthorized, async (req, res, next) => {
     "numReviews": reviews.length,
     "movieData": movieData,
     "avgRating": avgRating,
-    "userStarRating": avgRating
+    "userStarRating": avgRating ? convertStarRating(avgRating) : convertStarRating(0)
   });
 });
 
