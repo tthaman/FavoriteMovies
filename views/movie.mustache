@@ -17,24 +17,40 @@
             <a href="/" class="pure-menu-heading logo pure-menu-link">🎞️Movie Finder</a>
             <li class="pure-menu-item">
             </li>
-            <li class="pure-menu-item">
-                <div class="pure-menu pure-menu-horizontal">
-                    <ul class="pure-menu-list navigation-links">
-                        <li class="pure-menu-item">
-                            <a href="/login/signup" class="pure-menu-link">Sign Up</a>
-                        </li>
-                        <li class="pure-menu-item">
-                            <a href="/login" class="pure-menu-link">Login</a>
-                        </li>
-                        <li class="pure-menu-item">
-                            <a href="/" class="pure-menu-link">Search</a>
-                        </li>
-                        <li class="pure-menu-item">
-                            <a href="/saved" class="pure-menu-link">Collection</a>
-                        </li>
-                    </ul>
-                </div>
-            </li>
+            {{#isLoggedIn}}
+                <li class="pure-menu-item">
+                    <div class="pure-menu pure-menu-horizontal">
+                        <ul class="pure-menu-list navigation-links">
+                            <li class="pure-menu-item">
+                                <a href="/logout" class="pure-menu-link">Logout</a>
+                            </li>
+                            <li class="pure-menu-item">
+                                <a href="/" class="pure-menu-link">Search</a>
+                            </li>
+                            <li class="pure-menu-item">
+                                <a href="/saved" class="pure-menu-link">Collection</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+            {{/isLoggedIn}}
+            {{^isLoggedIn}}
+                <li class="pure-menu-item">
+                    <div class="pure-menu pure-menu-horizontal">
+                        <ul class="pure-menu-list navigation-links">
+                            <li class="pure-menu-item">
+                                <a href="/login/signup" class="pure-menu-link">Sign Up</a>
+                            </li>
+                            <li class="pure-menu-item">
+                                <a href="/login" class="pure-menu-link">Login</a>
+                            </li>
+                            <li class="pure-menu-item">
+                                <a href="/" class="pure-menu-link">Search</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+            {{/isLoggedIn}}
         </ul>
     </header>
     <main class="movie-page-container">
@@ -90,7 +106,7 @@
                     {{#movieData}}
                     <tr>
                         <td class="stats">{{#IMDb}}{{IMDb}}{{/IMDb}}{{^IMDb}}-{{/IMDb}}</td>
-                        <td class="stats">{{#Rotten Tomatoes}}{{Rotten Tomatoes}}{{/Rotten Tomatoes}}{{^Rotten Tomatoes}}-{{/Rotten Tomatoes}}</td>
+                        <td class="stats">{{#RottenTomatoes}}{{RottenTomatoes}}{{/RottenTomatoes}}{{^RottenTomatoes}}-{{/RottenTomatoes}}</td>
                         <td class="stats">{{#Age}}{{Age}}{{/Age}}{{^Age}}-{{/Age}}</td>
                         <td class="stats">{{#Runtime}}{{Runtime}}{{/Runtime}}{{^Runtime}}-{{/Runtime}}</td>
                     </tr>
@@ -124,10 +140,10 @@
                             {{^Netflix}}<p class="available-icon"><i class="fas fa-times available-false"></i></p>{{/Netflix}}
                         </td>
                         <td class="stats">
-                            {{#Prime Video}}<p class="availability">Available</p>{{/Prime Video}}
-                            {{^Prime Video}}<p class="availability">Not Available</p>{{/Prime Video}}
-                            {{#Prime Video}}<p class="available-icon"><i class="fas fa-check available-true"></i></p>{{/Prime Video}}
-                            {{^Prime Video}}<p class="available-icon"><i class="fas fa-times available-false"></i></p>{{/Prime Video}}
+                            {{#PrimeVideo}}<p class="availability">Available</p>{{/PrimeVideo}}
+                            {{^PrimeVideo}}<p class="availability">Not Available</p>{{/PrimeVideo}}
+                            {{#PrimeVideo}}<p class="available-icon"><i class="fas fa-check available-true"></i></p>{{/PrimeVideo}}
+                            {{^PrimeVideo}}<p class="available-icon"><i class="fas fa-times available-false"></i></p>{{/PrimeVideo}}
                         </td>
                         <td class="stats">
                             {{#DisneyPlus}}<p class="availability">Available</p>{{/DisneyPlus}}
