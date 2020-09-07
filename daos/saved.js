@@ -45,20 +45,20 @@ module.exports.getByEmail = async (email) => {
 
 module.exports.removeFromWatchlist = async (id) => {
   return await Saved.updateOne(
-    { $pull: { watchList: id }}  
+    { $pull: { watchList: id }}
   )
 }
 
 module.exports.removeFromFavoriteMovies = async (id) => {
   return await Saved.updateOne(
-    { $pull: { favoriteMovies: id }}  
+    { $pull: { favoriteMovies: id }}
   )
 }
 
 module.exports.populateWatchlist = async (email) => {
-  return await Saved.find({ email: email }).populate('watchList');
+  return await Saved.find({ email: email }).populate('watchList').lean();
 }
 
 module.exports.populateFavorites = async (email) => {
-  return await Saved.find({ email: email }).populate('favoriteMovies');
+  return await Saved.find({ email: email }).populate('favoriteMovies').lean();
 }
