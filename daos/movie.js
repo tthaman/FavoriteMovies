@@ -67,9 +67,19 @@ module.exports.searchTitle = async (titleString) => {
   return movies;
 };
 
+module.exports.searchTitle = async (titleString) => {
+  const movies = await Movie.find(
+    { $text: {$search: titleString}},
+    { score: {$meta: "textScore"}}
+    )
+    .sort({ score: { $meta: "textScore" }})
+    .limit(20).lean();
+  return movies;
+};
+
 module.exports.searchDirector = async (directorString) => {
   const movies = await Movie.find({
-    Directors: { $regex: `.*${directorString}.*` },
+    Directors: { $regex: `${directorString}`, '$options' : 'i' },
   }).lean();
   return movies;
 };

@@ -7,15 +7,33 @@ const reviewDAO = require("../daos/review");
 
 // GET /movies/search/:search_text Retrieves potential matches
 router.get("/search", async (req, res, next) => {
+  let movies;
   if (req.query.searchType == "Title") {
-    const movies = await movieDAO.searchTitle(req.query.query);
+    movies = await movieDAO.searchTitle(req.query.query);
+    if (movies.length === 0) {
+      res.render("index", {
+        message: `No results for "${req.query.query}"`
+      })
+    } else {
+        res.statusCode = 200;
+        res.render("index", {
+        movieArray: movies,
+    });
+    }
   } else {
-    const movies = await movieDAO.searchDirector(req.query.query);
+    movies = await movieDAO.searchDirector(req.query.query);
+    if (movies.length === 0) {
+      res.render("index", {
+        message: `No results for "${req.query.query}"`
+      })
+    } else {
+        res.statusCode = 200;
+        res.render("index", {
+        movieArray: movies,
+    });
+    }
   }
-  res.statusCode = 200;
-  res.render("index", {
-    movieArray: movies,
-  });
+  
 });
 
 // GET /movies/filter Retrieves potential matches
@@ -81,12 +99,14 @@ router.get("/", async (req, res, next) => {
       pages: pages,
       currentPage: page,
       isLoggedIn: true,
+      showPagination: true,
     });
   }
   res.render("index", {
     movieArray: movies,
     pages: pages,
     currentPage: page,
+    showPagination: true,
   });
 });
 
