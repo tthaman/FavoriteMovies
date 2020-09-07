@@ -7,10 +7,11 @@ const reviewDAO = require("../daos/review");
 
 // GET /movies/search/:search_text Retrieves potential matches
 router.get("/search", async (req, res, next) => {
+  let movies;
   if (req.query.searchType == "Title") {
-    const movies = await movieDAO.searchTitle(req.query.query);
+    movies = await movieDAO.searchTitle(req.query.query);
   } else {
-    const movies = await movieDAO.searchDirector(req.query.query);
+    movies = await movieDAO.searchDirector(req.query.query);
   }
   res.statusCode = 200;
   res.render("index", {
@@ -63,7 +64,7 @@ router.get("/:id", async (req, res, next) => {
     // 3.2 = [true, true, true, false, false]
     "firstReviewStarRating":  (reviews && reviews.length > 0) ? convertStarRating(reviews[0].rating) : null,
     // Boolean array for average rating
-    "userStarRating": avgRating
+    "userStarRating": convertStarRating(avgRating)
   })
 });
 
