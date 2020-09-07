@@ -162,10 +162,14 @@
             </div>
             {{#movieData}}
                 {{#firstReview}}
-                <p><a href="/reviews/{{_id}}">View all reviews</a> | <a href="/reviews/{{ID}}/add-review">Rate this movie</a></p>
+                    {{#movieData}}
+                        <p><a href="/reviews/{{_id}}">View all reviews</a> | <a href="/reviews/{{_id}}/add-review">Rate this movie</a></p>
+                    {{/movieData}}
                 {{/firstReview}}
                 {{^firstReview}}
-                <p><a href="/reviews/{{_id}}/add-review">Rate this movie</a></p>
+                    {{#movieData}}
+                        <p><a href="/reviews/{{_id}}/add-review">Rate this movie</a></p>
+                    {{/movieData}}
                 {{/firstReview}}
             {{/movieData}}
 
