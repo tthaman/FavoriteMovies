@@ -20,7 +20,7 @@
             </li>
             <li class="pure-menu-item">
                 <div class="pure-menu pure-menu-horizontal">
-                    <ul class="pure-menu-list header">
+                    <ul class="pure-menu-list navigation-links">
                         <li class="pure-menu-item">
                             <a href="/login/signup" class="pure-menu-link">Sign Up</a>
                         </li>
@@ -28,7 +28,7 @@
                             <a href="/login" class="pure-menu-link">Login</a>
                         </li>
                         <li class="pure-menu-item">
-                            <a href="/" class="pure-menu-link">Search</a>
+                            <a href="/" class="pure-menu-link">Home</a>
                         </li>
                     </ul>
                 </div>
@@ -37,6 +37,7 @@
     </header>
     <main class="form-container">
         <h1>Create an Account</h1>
+        {{#message}}<p class="center">Please signup for an account to perform this action</p>{{/message}}
         <form action="/login/signup" method="post" enctype="application/x-www-form-urlencoded" class="pure-form pure-form-aligned">
                 <hr class="add-margin"/>
                 <div class="pure-control-group">

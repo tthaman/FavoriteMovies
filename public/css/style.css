@@ -1,6 +1,6 @@
 /* ------- HEADER / NAVBAR -------- */
 
-.header {
+.navigation-links, .header {
     display: flex !important;
     justify-content: space-between;
     align-items: center;
@@ -212,21 +212,38 @@ label {
 
 .table {
     margin-bottom: 5rem;
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+    overflow-x: auto;
 }
 
 .movie-page-container {
     position: relative;
 }
 
+.movie-page-grid-container {
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    grid-gap: 1rem;
+    align-items: center;
+}
+
 .star-rating {
-    position: absolute;
-    text-align: center;
-    top: 0rem;
-    right: 7rem;
+    margin-top: 3rem;
 }
 
 .button-container {
     padding: 2rem 0rem 3rem 0rem;
+    display: flex;
+}
+
+.hidden-input {
+    display: none;
+}
+
+.margin-right {
+    margin-right: 2rem;
 }
 
 .availability {
@@ -252,11 +269,12 @@ label {
 /* ------- PAGINATION -------- */
 
 .center {
-    text-align: center;
+    text-align: center !important;
 }
 
 .pagination {
-    display: inline-block;
+    display: flex;
+    justify-content: space-between;
 }
 
 .pagination a {
@@ -286,9 +304,19 @@ label {
     padding: 2rem;
 }
 
+.review-form-subtitle {
+    color: #777;
+    text-align: center;
+    margin-bottom: 0;
+}
+
 .review-subtitle {
     color: #777;
     font-size: 1.5rem;
+}
+
+.blocked {
+    color: lightgray;
 }
 
 .review-stars {
@@ -337,4 +365,185 @@ label {
 
 .add-margin {
     margin-bottom: 2rem !important;
+}
+
+/* ------- COLLECTIONS PAGE -------- */
+
+.remove-button {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    border-radius: 1rem;
+    font-size: 1.4rem;
+}
+
+/* ------- Media Queries -------- */
+
+@media all and (min-width: 1024px) and (max-width: 1280px) { 
+
+
+}
+
+@media all and (min-width: 768px) and (max-width: 1024px) { 
+    .search-options {
+        grid-template-columns: 1fr;
+    }
+    .grid-item {
+        order: 1;
+    }
+    .grid-item-two {
+        order: 2;
+    }
+    .input-grid, .service-grid {
+        grid-template-columns: repeat(2, 20px 1fr);
+    }
+    .logo {
+        display: none !important;
+    }
+    .header {
+        display: grid !important;
+        grid-template-columns: 1fr;
+        justify-items: center;
+    }
+    .navigation-links {
+        display: flex !important;
+        align-items: center;
+    }
+}
+
+@media all and (min-width: 480px) and (max-width: 768px) { 
+    .search-options {
+        grid-template-columns: 1fr;
+    }
+    .grid-item {
+        order: 1;
+    }
+    .grid-item-two {
+        order: 2;
+    }
+    .input-grid, .service-grid {
+        grid-template-columns: repeat(2, 20px 1fr);
+    }
+    .sort-grid {
+        grid-template-columns: 1fr;
+    }
+    .movie-container {
+        grid-template-columns: 1fr;
+    }
+    main {
+        padding: 0px 20px !important;
+    }
+    .logo {
+        display: none !important;
+    }
+    .header {
+        display: grid !important;
+        grid-template-columns: 1fr;
+        justify-items: center;
+    }
+    .navigation-links {
+        display: flex !important;
+        align-items: center;
+    }
+    .options-button {
+        display: block;
+        padding: 1rem 0rem 0rem 0rem;
+    }
+    .movie-page-grid-container {
+        grid-template-columns: 1fr;
+    }
+    .main-movie-info {
+        text-align: center;
+    }
+    .star-rating {
+        text-align: center;
+    }
+    .review-form-container {
+        padding-bottom: 2rem !important;
+    }
+    .stats {
+        font-size: 2.7rem !important;
+    }
+    .availability {
+        font-size: 1rem;
+    }
+    .form-container, .review-form-container {
+        margin: 5rem 2rem;
+    }
+}
+
+@media all and (max-width: 480px) { 
+    .search-options {
+        grid-template-columns: 1fr;
+    }
+    .grid-item {
+        order: 1;
+    }
+    .grid-item-two {
+        order: 2;
+    }
+    .input-grid, .service-grid, .age-grid {
+        grid-template-columns: 20px 1fr;
+    }
+    .sort-grid {
+        grid-template-columns: 1fr;
+    }
+    .movie-container {
+        grid-template-columns: 1fr;
+    }
+    main {
+        padding: 0px 20px !important;
+    }
+    .logo {
+        display: none !important;
+    }
+    .header {
+        display: grid !important;
+        grid-template-columns: 1fr;
+        justify-items: center;
+    }
+    .navigation-links {
+        display: flex !important;
+        align-items: center;
+    }
+    .searchBar {
+        display: inline !important;
+        margin-bottom: 0 !important;
+        width: 150px;
+    }
+    .searchType {
+        display: inline !important;
+        width: 90px;
+    }
+    .pure-button {
+        margin: 0 !important;
+    }
+    .options-button {
+        display: block;
+        padding: 1rem 0rem 0rem 0rem;
+    }
+    .form-container, .review-form-container {
+        margin: 5rem 2rem;
+    }
+    .pure-form-aligned,.pure-form-aligned, label {
+        display: block !important;
+    }
+    .movie-page-grid-container {
+        grid-template-columns: 1fr;
+    }
+    .main-movie-info {
+        text-align: center;
+    }
+    .star-rating {
+        text-align: center;
+    }
+    .stats {
+        font-size: 1.7rem !important;
+    }
+    .availability {
+        font-size: 1rem;
+    }
+    .review-form-container {
+        padding-bottom: 2rem !important;
+    }
 }

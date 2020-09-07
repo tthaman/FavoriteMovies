@@ -20,7 +20,7 @@
             </li>
             <li class="pure-menu-item">
                 <div class="pure-menu pure-menu-horizontal">
-                    <ul class="pure-menu-list header">
+                    <ul class="pure-menu-list navigation-links">
                         <li class="pure-menu-item">
                             <a href="/login/signup" class="pure-menu-link">Sign Up</a>
                         </li>
@@ -42,7 +42,7 @@
         {{#movieData}}
         <h1>User Reviews</h1>
         <h2>{{Title}}</h2>
-        <p>{{numReviews}} reviews ∙ <a href="/reviews/{{ID}}/add-review">Rate this movie</a></p>
+        <p>{{numReviews}} reviews ∙ <a href="/reviews/{{_id}}/add-review">Rate this movie</a></p>
         {{/movieData}}
         <div class="star-rating">
             <h4 class="no-top-margin">Average User Rating</h4>

@@ -20,12 +20,9 @@
             </li>
             <li class="pure-menu-item">
                 <div class="pure-menu pure-menu-horizontal">
-                    <ul class="pure-menu-list header">
+                    <ul class="pure-menu-list navigation-links">
                         <li class="pure-menu-item">
-                            <a href="/login/signup" class="pure-menu-link">Sign Up</a>
-                        </li>
-                        <li class="pure-menu-item">
-                            <a href="/login" class="pure-menu-link">Login</a>
+                            <a href="/logout" class="pure-menu-link">Logout</a>
                         </li>
                         <li class="pure-menu-item">
                             <a href="/" class="pure-menu-link">Search</a>
@@ -40,8 +37,9 @@
     </header>
     <main class="review-form-container">
         <h1 class="center">Movie Review Form</h1>
-        {{#movieData}}
-        <form action="/reviews/{{ID}}/add-review" method="post" class="pure-form pure-form-stacked">
+        <p class="review-form-subtitle">Add a review of the film {{title}}</p>
+        {{#message}}<h3 class="center">Review Successfully Added</h3>{{/message}}
+        <form action="/reviews/{{id}}/add-review" method="post" class="pure-form review-form pure-form-stacked">
             <fieldset>
                 <hr class="add-margin"/>
                 <label for="rating">Star Rating</label>
@@ -58,7 +56,6 @@
             </fieldset>
             <button type="submit" class="pure-button pure-button-primary">Submit</button>
         </form>
-        {{/movieData}}
     </main>
 </body>
 </html>

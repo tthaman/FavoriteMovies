@@ -19,7 +19,7 @@
             </li>
             <li class="pure-menu-item">
                 <div class="pure-menu pure-menu-horizontal">
-                    <ul class="pure-menu-list header">
+                    <ul class="pure-menu-list navigation-links">
                         <li class="pure-menu-item">
                             <a href="/login/signup" class="pure-menu-link">Sign Up</a>
                         </li>
@@ -38,31 +38,46 @@
         </ul>
     </header>
     <main class="movie-page-container">
-        {{#movieData}}
-        <h1 class="title">{{movieData.Title}}</h1>
-        <h3>{{movieData.Directors}} ∙ {{movieData.Year}}</h3>
-        {{/movieData}}
-        <div class="star-rating">
-            <h4 class="no-top-margin">Average User Rating</h4>
-            {{#userStarRating}}
-                {{#.}}<span class="fa fa-star checked"></span>{{/.}}{{^.}}<span class="fa fa-star"></span>{{/.}}
-            {{/userStarRating}}
-            <p>{{avgRating}} / 5 ({{numReviews}})</p>
-            {{#movieData}}
-                <p><a href="/reviews/{{ID}}/add-review">Rate this movie</a></p>
-            {{/movieData}}
-        </div>
-        <form action="">
-            <div class="button-container">
+        <div class="movie-page-grid-container">
+            <div class="main-movie-info">
                 {{#movieData}}
-                    <button data-movieid="{{ID}}" id="favorites" class="pure-button pure-button-primary rounded"><i class="fas fa-heart"></i> Favorites</button>
-                    <button data-movieid="{{ID}}" id="watchList" class="pure-button pure-button-primary rounded"><i class="fas fa-plus"></i> Watchlist</button>
+                <h1 class="title">{{movieData.Title}}</h1>
+                <h3>{{movieData.Directors}} ∙ {{movieData.Year}}</h3>
                 {{/movieData}}
             </div>
-        </form>
+            <div class="star-rating">
+                <h4 class="no-top-margin">Average User Rating</h4>
+                {{#userStarRating}}
+                    {{#.}}<span class="fa fa-star checked"></span>{{/.}}{{^.}}<span class="fa fa-star"></span>{{/.}}
+                {{/userStarRating}}
+                {{^userStarRating}}
+                    <span class="far fa-star blocked"></span>
+                    <span class="far fa-star blocked"></span>
+                    <span class="far fa-star blocked"></span>
+                    <span class="far fa-star blocked"></span>
+                    <span class="far fa-star blocked"></span>
+                {{/userStarRating}}
+                <p>{{#avgRating}}{{avgRating}} / 5 ({{numReviews}}){{/avgRating}}{{^avgRating}}no reviews{{/avgRating}}</p>
+                {{#movieData}}
+                    <p><a href="/reviews/{{_id}}/add-review">Rate this movie</a></p>
+                {{/movieData}}
+            </div>
+        </div>
+        <div class="button-container">
+            {{#movieData}}
+            <form action="/saved/favorites/{{_id}}" method="post">
+                <input class="hidden-input" type="radio" name="favorites" checked>
+                <button data-movieid="{{_id}}" id="favorites" class="pure-button margin-right pure-button-primary rounded"><i class="fas fa-heart"></i> Favorites</button>
+            </form>
+            <form action="/saved/watchlist/{{_id}}" method="post">
+                <input class="hidden-input" type="radio" name="watchlist" checked>
+                <button data-movieid="{{_id}}" id="watchList" class="pure-button pure-button-primary rounded"><i class="fas fa-plus"></i> Watchlist</button>
+            </form>
+            {{/movieData}}
+        </div>
         <hr/>
-        <section>
-            <table class="pure-table pure-table-bordered table">
+        <section class="table">
+            <table class="pure-table pure-table-bordered">
                 <thead>
                     <tr>
                         <th>IMdb Score</th>
@@ -74,17 +89,17 @@
                 <tbody>
                     {{#movieData}}
                     <tr>
-                        <td class="stats">{{IMDb}}</td>
-                        <td class="stats">{{RottenTomatoes}}</td>
-                        <td class="stats">{{Age}}</td>
-                        <td class="stats">{{Runtime}}</td>
+                        <td class="stats">{{#IMDb}}{{IMDb}}{{/IMDb}}{{^IMDb}}-{{/IMDb}}</td>
+                        <td class="stats">{{#Rotten Tomatoes}}{{Rotten Tomatoes}}{{/Rotten Tomatoes}}{{^Rotten Tomatoes}}-{{/Rotten Tomatoes}}</td>
+                        <td class="stats">{{#Age}}{{Age}}{{/Age}}{{^Age}}-{{/Age}}</td>
+                        <td class="stats">{{#Runtime}}{{Runtime}}{{/Runtime}}{{^Runtime}}-{{/Runtime}}</td>
                     </tr>
                     {{/movieData}}
                 </tbody>
             </table>
         </section>
-        <section>
-            <table class="pure-table pure-table-bordered table">
+        <section class="table">
+            <table class="pure-table pure-table-bordered">
                 <thead>
                     <tr>
                         <th>Hulu</th>
@@ -127,7 +142,7 @@
         </section>
         <hr/>
         <section>
-            <h2>User Reviews ({{ numReviews }})</h2>
+            <h2>User Reviews {{#numReviews}}({{ numReviews }}){{/numReviews}}{{^numReviews}}(0){{/numReviews}}</h2>
             <div class="review">
                 {{#firstReview}}
                 <div class="review-rating">
@@ -147,15 +162,14 @@
             </div>
             {{#movieData}}
                 {{#firstReview}}
-                <p><a href="/reviews/{{ID}}">View all reviews</a> | <a href="/reviews/{{ID}}/add-review">Rate this movie</a></p>
+                <p><a href="/reviews/{{_id}}">View all reviews</a> | <a href="/reviews/{{ID}}/add-review">Rate this movie</a></p>
                 {{/firstReview}}
                 {{^firstReview}}
-                <p><a href="/reviews/{{ID}}/add-review">Rate this movie</a></p>
+                <p><a href="/reviews/{{_id}}/add-review">Rate this movie</a></p>
                 {{/firstReview}}
             {{/movieData}}
 
         </section>
     </main>
 </body>
-<script src="/javaScript/app2.js"></script>
 </html>

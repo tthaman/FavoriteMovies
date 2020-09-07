@@ -1,6 +1,8 @@
 const { Router } = require("express");
 const router = Router();
 const bcrypt = require('bcrypt');
+const session = require('express-session')
+
 
 const userDAO = require('../daos/user');
 const tokenDAO = require('../daos/token');
@@ -14,7 +16,7 @@ router.post("/signup", async (req, res, next) => {
         try {
             const newUser = await userDAO.create(userData);
             if (newUser) {
-                res.json(newUser);
+                res.redirect("/login");
             } else {
                 res.sendStatus(409);
             }
@@ -35,7 +37,11 @@ router.post("/", async (req, res, next) => {
             if (passwordsMatch) {
                 if (savedUser) {
                     const token = await tokenDAO.create(email, password);
-                    res.json(token);
+                    const oneHour = 3600000;
+                    req.session.token = token;
+                    req.session.cookie.maxAge = oneHour;
+                    req.session.name = savedUser.firstName;
+                    res.redirect('/');
                 } else {
                     res.sendStatus(401);
                 }
@@ -69,6 +75,7 @@ router.post("/logout", isAuthorized, async (req, res, next) => {
     console.log(success);
         if (success) {
             res.sendStatus(200);
+            res.render('login');
         } else {
             res.sendStatus(401);
         }

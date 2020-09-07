@@ -21,7 +21,8 @@ module.exports.updateWatchlist = async (email, watchlist) =>  {
   return await Saved.updateOne(
     { email: email },
     {
-      $set: { watchlist: watchlist },
+      //This only adds unique ids so no duplicates
+      $addToSet: {watchList: {$each: watchlist}},
       $currentDate: { lastModified: true }
     }
   )
@@ -32,8 +33,32 @@ module.exports.updateFavorites = async (email, favorites) =>  {
   return await Saved.updateOne(
     { email: email },
     {
-      $set: { favorites: favorites },
+      $addToSet: { favoriteMovies: {$each: favorites }},
       $currentDate: { lastModified: true }
     }
   )
 };
+
+module.exports.getByEmail = async (email) => {
+  return await Saved.findOne({ email: email }).lean();
+}
+
+module.exports.removeFromWatchlist = async (id) => {
+  return await Saved.updateOne(
+    { $pull: { watchList: id }}
+  )
+}
+
+module.exports.removeFromFavoriteMovies = async (id) => {
+  return await Saved.updateOne(
+    { $pull: { favoriteMovies: id }}
+  )
+}
+
+module.exports.populateWatchlist = async (email) => {
+  return await Saved.find({ email: email }).populate('watchList').lean();
+}
+
+module.exports.populateFavorites = async (email) => {
+  return await Saved.find({ email: email }).populate('favoriteMovies').lean();
+}

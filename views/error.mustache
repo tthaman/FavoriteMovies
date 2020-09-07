@@ -1,0 +1,60 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <base href="/">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+    <link rel="stylesheet" href="css/normalize.css" type="text/css">
+    <link rel="stylesheet" href="css/sakura.css">
+    <link rel="stylesheet" href="https://unpkg.com/purecss@2.0.3/build/pure-min.css" integrity="sha384-cg6SkqEOCV1NbJoCu11+bm0NvBRc8IYLRGXkmNrqUBfTjmMYwNKPWBTIKyw9mHNJ" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/style.css">
+    <title>Movie Finder</title>
+</head>
+<body>
+    <header class="pure-menu pure-menu-horizontal navbar">
+        <ul class="pure-menu-list header">
+            <a href="/" class="pure-menu-heading logo pure-menu-link">🎞️Movie Finder</a>
+            <li class="pure-menu-item">
+                <form action="/movie" method="GET" class="pure-form">
+                    <select name="searchType" class="searchType" id="search-type">
+                        <option>Title</option>
+                        <option>Director</option>
+                    </select>
+                    <input class="pure-input-rounded searchBar" type="text" name="query" placeholder="Search Movies..." required />
+                    <button type="submit" class="pure-button pure-button-primary rounded">Submit</button>
+                </form>
+            </li>
+            <li class="pure-menu-item">
+                <div class="pure-menu pure-menu-horizontal">
+                    <ul class="pure-menu-list navigation-links">
+                        {{#isLoggedIn}}
+                            {{#name}}
+                                <li class="pure-menu-item">
+                                    Welcome, {{ name }}!
+                                </li>
+                            {{/name}}
+                            <li class="pure-menu-item">
+                                <a href="/login/logout" class="pure-menu-link">Logout</a>
+                            </li>
+                            <li class="pure-menu-item">
+                                <a href="/saved" class="pure-menu-link">Collection</a>
+                            </li>
+                        {{/isLoggedIn}}
+                        {{^isLoggedIn}}
+                            <li class="pure-menu-item">
+                                <a href="/login/signup" class="pure-menu-link">Sign Up</a>
+                            </li>
+                            <li class="pure-menu-item">
+                                <a href="/login" class="pure-menu-link">Login</a>
+                            </li>
+                        {{/isLoggedIn}}
+                    </ul>
+                </div>
+            </li>
+        </ul>
+    </header>
+    <main>
+       <h2>{{message}}</h2> 
+    </main>
+</body>
+</html>
