@@ -69,17 +69,10 @@ router.post("/password", isAuthorized, async (req, res, next) => {
     }
 })
 
-router.post("/logout", isAuthorized, async (req, res, next) => {
-    console.log(req.token);
-    const success = await tokenDAO.delete(req.token);
-    console.log(req.token);
-    console.log(success);
-        if (success) {
-            res.sendStatus(200);
-            res.render('login');
-        } else {
-            res.sendStatus(401);
-        }
+router.get("/logout", isAuthorized, async (req, res, next) => {
+    req.session.destroy(function(err) {
+        res.render('login');
+      })
 })
 
 module.exports = router;
