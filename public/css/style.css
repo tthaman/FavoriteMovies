@@ -179,6 +179,7 @@ label {
 
 .form-container {
     text-align: center;
+    width: 80%;
     max-width: 500px;
     margin: 0 auto;
     border: 1px solid #ddd;
@@ -340,6 +341,7 @@ label {
 
 .review-form-container {
     text-align: left;
+    width: 80%;
     max-width: 500px;
     margin: 0 auto;
     border: 1px solid #ddd;
@@ -430,9 +432,6 @@ label {
     .movie-container {
         grid-template-columns: 1fr;
     }
-    main {
-        padding: 0px 20px !important;
-    }
     .logo {
         display: none !important;
     }
@@ -468,7 +467,7 @@ label {
         font-size: 1rem;
     }
     .form-container, .review-form-container {
-        margin: 5rem 2rem;
+        margin: 5rem auto;
     }
 }
 
@@ -490,9 +489,6 @@ label {
     }
     .movie-container {
         grid-template-columns: 1fr;
-    }
-    main {
-        padding: 0px 20px !important;
     }
     .logo {
         display: none !important;
@@ -523,7 +519,7 @@ label {
         padding: 1rem 0rem 0rem 0rem;
     }
     .form-container, .review-form-container {
-        margin: 5rem 2rem;
+        margin: 5rem auto;
     }
     .pure-form-aligned,.pure-form-aligned, label {
         display: block !important;
