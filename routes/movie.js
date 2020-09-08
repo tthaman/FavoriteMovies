@@ -38,7 +38,7 @@ router.get("/search", async (req, res, next) => {
 
 // GET /movies/filter Retrieves potential matches
 router.get("/filter", async (req, res, next) => {
-  const movies = await movieDAO.filter(req.query);
+  const movies = await movieDAO.filterMovie(req.query);
   res.statusCode = 200;
   res.render("index", {
     movieArray: movies,
