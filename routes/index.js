@@ -36,6 +36,7 @@ router.use("/", async (req, res, next) => {
   page = page ? Number(page) : 1;
   const movies = await movieDAO.getAll(page);
   const pages = await movieDAO.getPages();
+  res.statusCode = 200;
   if(req.session.name) {
     res.render("index", {
       "movieArray": movies,
