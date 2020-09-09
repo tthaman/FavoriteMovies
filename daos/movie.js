@@ -43,20 +43,18 @@ module.exports.filterMovie = async (movieObj) => {
     ];
   }
   if (!service) {
-    services = ["hulu", "prime", "netflix", "disney"];
+    service = ["hulu", "prime", "netflix", "disney"];
   }
   if (!age) {
     age = "0";
   }
   const ageInt = { "0": "0", "7%2B": "7", "13%2B": "13", "18%2B": "18" };
   const movies = await Movie.find({
-    Netflix: services.includes("netflix") ? 1 : 0,
-    Hulu: services.includes("hulu") ? 1 : 0,
-    PrimeVideo: services.includes("prime") ? 1 : 0,
-    DisneyPlus: services.includes("disney") ? 1 : 0,
     Age: { $gte: ageInt[age] },
   }).lean();
-  return movies.filter((movie) => genres.some((v) => movie.Genres.includes(v)));
+  let result = movies.filter((movie) => genres.some((v) => movie.Genres.includes(v)));
+  result = result.filter((movie) => service.some((v) => movie[v]==1));
+  return result;
 };
 
 module.exports.searchTitle = async (titleString) => {
