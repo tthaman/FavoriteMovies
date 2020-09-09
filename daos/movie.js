@@ -22,45 +22,47 @@ module.exports.getMovie = async (movieId) => {
 };
 
 module.exports.filterMovie = async (movieObj) => {
-  const currentYear = new Date().getFullYear();
-  let { genre, service, age, order, filterByYear, filterByImdbRating, filterByRottenTomatoes } = movieObj;
-  let genres;
-  if (genre) {
-    genres = genre;
+  let { genre, service, age, filterByYear, filterByIMDB, filterByRottenTomatoes } = movieObj;
+  let genreExp;
+  let ageArray = [];
+  let genreSearch;
+
+  if(genre) {
+    if(Array.isArray(genre)) {
+      genre.forEach(aGenre => {
+        genreExp = genreExp + `.*${aGenre}.*|`;
+      });
+      genreExp = genreExp.substring(9, (genreExp.length - 1));
+      genreSearch = {$regex:genreExp};
+    } else {
+      genreSearch = {$regex:`.*${genre}.*`};
+    }
   } else {
-    genres = [
-      "Action",
-      "Comedy",
-      "Thriller",
-      "Sci-fi",
-      "Western",
-      "Adventure",
-      "Horror",
-      "Crime",
-      "War",
-      "Fantasy",
-      "Drama",
-      "Animated",
-      "History",
-      "Biography",
-      "Romance",
-    ];
+    genreSearch = {$regex:`.`};
   }
-  if (!service) {
-    services = ["hulu", "prime", "netflix", "disney"];
+
+  if(age) {
+    if (Array.isArray(age)) {
+      age.forEach(anAge => {
+        anAge = anAge.substring(0, anAge.length - 1);
+        ageArray.push(Number(anAge));
+      });
+    } else {
+      ageArray.push( Number(age.substring(0, age.length - 1)));
+    }
+  } else {
+    ageArray = [7,13,18]
   }
-  if (!age) {
-    age = "0";
-  }
-  const ageInt = { "0": 0, "7+": 7, "13+": 13, "18+": 18 };
+
   const movies = await Movie.find({
-    Netflix: services.includes("netflix") ? 1 : 0,
-    Hulu: services.includes("hulu") ? 1 : 0,
-    PrimeVideo: services.includes("prime") ? 1 : 0,
-    DisneyPlus: services.includes("disney") ? 1 : 0,
-    Year: { $lt: currentYear - ageInt[age] + 1 },
+    Genres: genreSearch,
+    Netflix: service.includes("netflix") ? 1 : 0,
+    Hulu: service.includes("hulu") ? 1 : 0,
+    PrimeVideo: service.includes("prime") ? 1 : 0,
+    DisneyPlus: service.includes("disney") ? 1 : 0,
+    Age: {$in: ageArray}
   }).lean();
-  return movies.filter((movie) => genres.some((v) => movie.Genres.includes(v)));
+  return movies;
 };
 
 module.exports.searchTitle = async (titleString) => {
