@@ -22,7 +22,6 @@ module.exports.getMovie = async (movieId) => {
 };
 
 module.exports.filterMovie = async (movieObj) => {
-  const currentYear = new Date().getFullYear();
   let { genres, service, age, order } = movieObj;
   if (!genres) {
     genres = [
@@ -49,13 +48,13 @@ module.exports.filterMovie = async (movieObj) => {
   if (!age) {
     age = "0";
   }
-  const ageInt = { "0": 0, "7+": 7, "13+": 13, "18+": 18 };
+  const ageInt = { "0": "0", "7%2B": "7", "13%2B": "13", "18%2B": "18" };
   const movies = await Movie.find({
     Netflix: services.includes("netflix") ? 1 : 0,
     Hulu: services.includes("hulu") ? 1 : 0,
     PrimeVideo: services.includes("prime") ? 1 : 0,
     DisneyPlus: services.includes("disney") ? 1 : 0,
-    Year: { $lt: currentYear - ageInt[age] + 1 },
+    Age: { $gte: ageInt[age] },
   }).lean();
   return movies.filter((movie) => genres.some((v) => movie.Genres.includes(v)));
 };
@@ -69,17 +68,18 @@ module.exports.searchTitle = async (titleString) => {
 
 module.exports.searchTitle = async (titleString) => {
   const movies = await Movie.find(
-    { $text: {$search: titleString}},
-    { score: {$meta: "textScore"}}
-    )
-    .sort({ score: { $meta: "textScore" }})
-    .limit(20).lean();
+    { $text: { $search: titleString } },
+    { score: { $meta: "textScore" } }
+  )
+    .sort({ score: { $meta: "textScore" } })
+    .limit(20)
+    .lean();
   return movies;
 };
 
 module.exports.searchDirector = async (directorString) => {
   const movies = await Movie.find({
-    Directors: { $regex: `${directorString}`, '$options' : 'i' },
+    Directors: { $regex: `${directorString}`, $options: "i" },
   }).lean();
   return movies;
 };
