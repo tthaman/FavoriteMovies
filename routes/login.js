@@ -6,7 +6,6 @@ const session = require('express-session')
 
 const userDAO = require('../daos/user');
 const tokenDAO = require('../daos/token');
-const movieDAO = require("../daos/movie");
 const { isAuthorized } = require('../middleware/middleware');
 
 router.post("/signup", async (req, res, next) => {
@@ -30,7 +29,7 @@ router.post("/signup", async (req, res, next) => {
 router.post("/", async (req, res, next) => {
     const { email, password } = req.body;
     if (!password || password === "") {
-        res.status(400).send('Please provide a password'); 
+        res.status(400).send('Please provide a password');
     } else {
         const savedUser = await userDAO.getByEmail(email);
         if (savedUser) {
@@ -52,13 +51,13 @@ router.post("/", async (req, res, next) => {
         } else {
             res.sendStatus(401);
         }
-    }   
+    }
 })
 
 router.post("/password", isAuthorized, async (req, res, next) => {
     const { password } = req.body;
     if (!password || password === "") {
-        res.status(400).send('Please provide a password'); 
+        res.status(400).send('Please provide a password');
     } else {
         const newPassword = await userDAO.updateUserPassword(req.token, password);
         if (newPassword) {
