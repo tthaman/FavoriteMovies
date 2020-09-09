@@ -4,7 +4,7 @@ const movieSchema = new mongoose.Schema({
   ID: { type: Number, required: true },
   Title: { type: String, required: true },
   Year: { type: Number, required: true },
-  Age: { type: String, required: true },
+  Age: { type: Number, required: true },
   IMDB: { type: Number },
   RottenTomatoes: { type: String },
   Netflix: { type: Number, default: 0 },
