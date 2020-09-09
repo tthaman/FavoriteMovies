@@ -5,7 +5,9 @@ module.exports = {
     // Example:
     // await db.collection('albums').updateOne({artist: 'The Beatles'}, {$set: {blacklisted: true}});
     await db.collection('movies').updateMany({},
-      { $set: { Age: { $concat: [ "$Age", "+" ] } } },
+      { $set: { Age: { $toString: "$Age" } } }, 
+      //{ $set: { Age: { $concat: ["$Age", "+"] } } },
+      //{ $set: { removed: false } },
       { multi: true }
     )
   },

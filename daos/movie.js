@@ -22,7 +22,7 @@ module.exports.getMovie = async (movieId) => {
 };
 
 module.exports.filterMovie = async (movieObj) => {
- // console.log(movieObj);
+ console.log(movieObj);
  // const currentYear = new Date().getFullYear();
  // let { genre, service, age, order } = movieObj;
   //console.log(movieObj);
@@ -70,7 +70,12 @@ module.exports.filterMovie = async (movieObj) => {
   //   // DisneyPlus: services.includes("disney") ? 1 : 0,
   //   // Year: { $lt: currentYear - ageInt[age] + 1 },
   // ]);
-  const movies = await Movie.find({ Genres: { $all: [genres] } });
+  const movies = await Movie.aggregate([
+    { $match: { Genres: { $all: [genres] }}},
+  //  { $set: { Age: { $toString: "$Age" } }}, 
+  //  { $set: { Age: { $cond: { if: { $not: {Age: ["$Age", '']}}, then: { $concat: ["$Age" , "+"]}, else: "7+, 13+, 18+" } }}  }
+  //  { $set: { RottenTomatoes: { $concat: [ "$RottenTomatoes", "+" ] } }}  
+  ]);
   console.log(movies);
   return movies;
 };
