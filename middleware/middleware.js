@@ -30,7 +30,7 @@ module.exports.isAuthorized = async (req, res, next) => {
         if (token) {
             next();
         } else {
-            res.render("signup", { message: true })
+            res.render("login", { message: true })
         }
 }
 
