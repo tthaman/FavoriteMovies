@@ -1,7 +1,6 @@
 const { Router } = require("express");
 const router = Router();
 const savedDAO = require('../daos/saved');
-const movieDAO = require('../daos/movie');
 const { isAuthorized } = require('../middleware/middleware');
 
 router.get("/", isAuthorized, async (req, res, next) => {
