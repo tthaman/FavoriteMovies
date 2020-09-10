@@ -29,7 +29,8 @@ module.exports.filterMovie = async (movieObj) => {
   let isHulu = 0;
   let isDisney = 0;
   let isNetflix = 0;
-  let isPrime = 0;
+  let isPrime = 0
+  let sortBy;
 
   if(genre) {
     if(Array.isArray(genre)) {
@@ -72,7 +73,11 @@ module.exports.filterMovie = async (movieObj) => {
     movieQuery.Age = {$in: ageArray}
   }
 
-  const movies = await Movie.find(movieQuery).lean();
+  if (filterByYear) sortBy = {Year: -1};
+  if (filterByIMDB) sortBy = {IMDb: -1};
+  if (filterByRottenTomatoes) sortBy = {RottenTomatoes: -1};
+
+  const movies = await Movie.find(movieQuery).lean().sort(sortBy);
   return movies;
 };
 

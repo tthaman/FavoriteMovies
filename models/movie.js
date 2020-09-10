@@ -3,10 +3,10 @@ const mongoose = require('mongoose');
 const movieSchema = new mongoose.Schema({
   ID: { type: Number, required: true },
   Title: { type: String, required: true },
-  Year: { type: Number, required: true },
+  Year: { type: Number, required: true , index: true },
   Age: { type: Number, required: true },
-  IMDB: { type: Number },
-  RottenTomatoes: { type: String },
+  IMDB: { type: Number , index: true },
+  RottenTomatoes: { type: String , index: true },
   Netflix: { type: Number, default: 0 },
   Hulu: { type: Number, default: 0 },
   PrimeVideo: { type: Number, default: 0 },
