@@ -46,25 +46,24 @@ module.exports.filterMovie = async (movieObj) => {
     genreSearch = {$regex:`.`};
   }
 
-  if (service && service.length > 0){
-    if (service.includes("netflix")) {isNetflix = 1}
-    if (service.includes("hulu")) {isHulu = 1}
-    if (service.includes("prime")) {isPrime = 1}
-    if (service.includes("disney")) {isDisney = 1}
-  } else {
-    isNetflix = 1;
-    isHulu = 1;
-    isPrime = 1;
-    isDisney = 1;
-  }
-
   const movieQuery = {
-    Genres: genreSearch,
-    Netflix: isNetflix,
-    Hulu: isHulu,
-    PrimeVideo: isPrime,
-    DisneyPlus: isDisney
+    Genres: genreSearch
   };
+
+  if (service){
+    if (service.includes("netflix")) {
+      movieQuery.Netflix = 1
+    }
+    if (service.includes("hulu")) {
+      movieQuery.Hulu = 1
+    }
+    if (service.includes("prime")) {
+      movieQuery.PrimeVideo = 1
+    }
+    if (service.includes("disney")) {
+      movieQuery.DisneyPlus = 1
+    }
+  }
 
   if(age) {
     if (Array.isArray(age)) {
