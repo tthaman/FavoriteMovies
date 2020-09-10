@@ -22,42 +22,63 @@ module.exports.getMovie = async (movieId) => {
 };
 
 module.exports.filterMovie = async (movieObj) => {
-  const currentYear = new Date().getFullYear();
-  let { genres, service, age, order } = movieObj;
-  if (!genres) {
-    genres = [
-      "Action",
-      "Comedy",
-      "Thriller",
-      "Sci-fi",
-      "Western",
-      "Adventure",
-      "Horror",
-      "Crime",
-      "War",
-      "Fantasy",
-      "Drama",
-      "Animated",
-      "History",
-      "Biography",
-      "Romance",
-    ];
+  let { genre, service, age, filterByYear, filterByIMDB, filterByRottenTomatoes } = movieObj;
+  let genreExp;
+  let ageArray = [];
+  let genreSearch;
+  let isHulu = 0;
+  let isDisney = 0;
+  let isNetflix = 0;
+  let isPrime = 0
+  let sortBy;
+
+  if(genre) {
+    if(Array.isArray(genre)) {
+      genre.forEach(aGenre => {
+        genreExp = genreExp + `.*${aGenre}.*|`;
+      });
+      genreExp = genreExp.substring(9, (genreExp.length - 1));
+      genreSearch = {$regex:genreExp};
+    } else {
+      genreSearch = {$regex:`.*${genre}.*`};
+    }
+  } else {
+    genreSearch = {$regex:`.`};
   }
-  if (!service) {
-    services = ["hulu", "prime", "netflix", "disney"];
+
+  if (service){
+    if (service.includes("netflix")) {isNetflix = 1}
+    if (service.includes("hulu")) {isHulu = 1}
+    if (service.includes("prime")) {isPrime = 1}
+    if (service.includes("disney")) {isDisney = 1}
   }
-  if (!age) {
-    age = "0";
+
+  const movieQuery = {
+    Genres: genreSearch,
+    Netflix: isNetflix,
+    Hulu: isHulu,
+    PrimeVideo: isPrime,
+    DisneyPlus: isDisney
+  };
+
+  if(age) {
+    if (Array.isArray(age)) {
+      age.forEach(anAge => {
+        anAge = anAge.substring(0, anAge.length - 1);
+        ageArray.push(Number(anAge));
+      });
+    } else {
+      ageArray.push( Number(age.substring(0, age.length - 1)));
+    }
+    movieQuery.Age = {$in: ageArray}
   }
-  const ageInt = { "0": 0, "7+": 7, "13+": 13, "18+": 18 };
-  const movies = await Movie.find({
-    Netflix: services.includes("netflix") ? 1 : 0,
-    Hulu: services.includes("hulu") ? 1 : 0,
-    PrimeVideo: services.includes("prime") ? 1 : 0,
-    DisneyPlus: services.includes("disney") ? 1 : 0,
-    Year: { $lt: currentYear - ageInt[age] + 1 },
-  }).lean();
-  return movies.filter((movie) => genres.some((v) => movie.Genres.includes(v)));
+
+  if (filterByYear) sortBy = {Year: -1};
+  if (filterByIMDB) sortBy = {IMDb: -1};
+  if (filterByRottenTomatoes) sortBy = {RottenTomatoes: -1};
+
+  const movies = await Movie.find(movieQuery).lean().sort(sortBy);
+  return movies;
 };
 
 module.exports.searchTitle = async (titleString) => {
