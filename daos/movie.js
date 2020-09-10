@@ -46,11 +46,16 @@ module.exports.filterMovie = async (movieObj) => {
     genreSearch = {$regex:`.`};
   }
 
-  if (service){
+  if (service && service.length > 0){
     if (service.includes("netflix")) {isNetflix = 1}
     if (service.includes("hulu")) {isHulu = 1}
     if (service.includes("prime")) {isPrime = 1}
     if (service.includes("disney")) {isDisney = 1}
+  } else {
+    isNetflix = 1;
+    isHulu = 1;
+    isPrime = 1;
+    isDisney = 1;
   }
 
   const movieQuery = {
@@ -64,11 +69,13 @@ module.exports.filterMovie = async (movieObj) => {
   if(age) {
     if (Array.isArray(age)) {
       age.forEach(anAge => {
-        anAge = anAge.substring(0, anAge.length - 1);
-        ageArray.push(Number(anAge));
+        // anAge = anAge.substring(0, anAge.length - 1);
+        // ageArray.push(Number(anAge));
+        ageArray.push(anAge);
       });
     } else {
-      ageArray.push( Number(age.substring(0, age.length - 1)));
+      // ageArray.push( Number(age.substring(0, age.length - 1)));
+      ageArray.push(age);
     }
     movieQuery.Age = {$in: ageArray}
   }
