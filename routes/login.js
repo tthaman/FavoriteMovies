@@ -54,19 +54,19 @@ router.post("/", async (req, res, next) => {
     }
 })
 
-router.post("/password", isAuthorized, async (req, res, next) => {
-    const { password } = req.body;
-    if (!password || password === "") {
-        res.status(400).send('Please provide a password');
-    } else {
-        const newPassword = await userDAO.updateUserPassword(req.token, password);
-        if (newPassword) {
-            res.sendStatus(200);
-        } else {
-            res.sendStatus(401);
-        }
-    }
-})
+// router.post("/password", isAuthorized, async (req, res, next) => {
+//     const { password } = req.body;
+//     if (!password || password === "") {
+//         res.status(400).send('Please provide a password');
+//     } else {
+//         const newPassword = await userDAO.updateUserPassword(req.token, password);
+//         if (newPassword) {
+//             res.sendStatus(200);
+//         } else {
+//             res.sendStatus(401);
+//         }
+//     }
+// })
 
 router.get("/logout", isAuthorized, async (req, res, next) => {
     req.session.destroy(function(err) {
