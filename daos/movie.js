@@ -22,61 +22,68 @@ module.exports.getMovie = async (movieId) => {
 };
 
 module.exports.filterMovie = async (movieObj) => {
- console.log(movieObj);
- // const currentYear = new Date().getFullYear();
- // let { genre, service, age, order } = movieObj;
-  //console.log(movieObj);
-  if (!movieObj.genre) {
-    movieObj.genre = [
-      "Action",
-      "Comedy",
-      "Thriller",
-      "Sci-fi",
-      "Western",
-      "Adventure",
-      "Horror",
-      "Crime",
-      "War",
-      "Fantasy",
-      "Drama",
-      "Animated",
-      "History",
-      "Biography",
-      "Romance",
-    ];
+  let { genre, service, age, filterByYear, filterByIMDB, filterByRottenTomatoes } = movieObj;
+  let genreExp;
+  let ageArray = [];
+  let genreSearch;
+  let isHulu = 0;
+  let isDisney = 0;
+  let isNetflix = 0;
+  let isPrime = 0
+  let sortBy;
+
+  if(genre) {
+    if(Array.isArray(genre)) {
+      genre.forEach(aGenre => {
+        genreExp = genreExp + `.*${aGenre}.*|`;
+      });
+      genreExp = genreExp.substring(9, (genreExp.length - 1));
+      genreSearch = {$regex:genreExp};
+    } else {
+      genreSearch = {$regex:`.*${genre}.*`};
+    }
+  } else {
+    genreSearch = {$regex:`.`};
   }
-  if (!movieObj.service) {
-    movieObj.service = ["hulu", "prime", "netflix", "disney"];
+
+  const movieQuery = {
+    Genres: genreSearch
+  };
+
+  if (service){
+    if (service.includes("netflix")) {
+      movieQuery.Netflix = 1
+    }
+    if (service.includes("hulu")) {
+      movieQuery.Hulu = 1
+    }
+    if (service.includes("prime")) {
+      movieQuery.PrimeVideo = 1
+    }
+    if (service.includes("disney")) {
+      movieQuery.DisneyPlus = 1
+    }
   }
-  if (!movieObj.age) {
-    movieObj.age = ["7", "13", "18"];
-  } 
-  //const ageInt = { "0": 0, "7+": 7, "13+": 13, "18+": 18 };
-  var genres = movieObj.genre.toString();
-  var service = movieObj.service.toString();
-  var age = movieObj.age.toString();
-  console.log(genres);
-  console.log(service);
-  console.log(age);
-  // const movies = await Movie.aggregate([
-  //   { $match: { 
-  //       $and: [
-  //         { 
-  //           "Age":  
-  //             "18+"  }] } } 
-  //   // Netflix: services.includes("netflix") ? 1 : 0,
-  //   // Hulu: services.includes("hulu") ? 1 : 0,
-  //   // PrimeVideo: services.includes("prime") ? 1 : 0,
-  //   // DisneyPlus: services.includes("disney") ? 1 : 0,
-  //   // Year: { $lt: currentYear - ageInt[age] + 1 },
-  // ]);
-  const movies = await Movie.aggregate([
-    { $match: { Genres: { $all: [genres] }}},
-  //  { $set: { Age: { $toString: "$Age" } }}, 
-  //  { $set: { Age: { $cond: { if: { $not: {Age: ["$Age", '']}}, then: { $concat: ["$Age" , "+"]}, else: "7+, 13+, 18+" } }}  }
-  //  { $set: { RottenTomatoes: { $concat: [ "$RottenTomatoes", "+" ] } }}  
-  ]);
-  console.log(movies);
+
+  if(age) {
+    if (Array.isArray(age)) {
+      age.forEach(anAge => {
+        // anAge = anAge.substring(0, anAge.length - 1);
+        // ageArray.push(Number(anAge));
+        ageArray.push(anAge);
+      });
+    } else {
+      // ageArray.push( Number(age.substring(0, age.length - 1)));
+      ageArray.push(age);
+    }
+    movieQuery.Age = {$in: ageArray}
+  }
+
+  if (filterByYear) sortBy = {Year: -1};
+  if (filterByIMDB) sortBy = {IMDb: -1};
+  if (filterByRottenTomatoes) sortBy = {RottenTomatoes: -1};
+
+  const movies = await Movie.find(movieQuery).lean().sort(sortBy);
   return movies;
 };
 
