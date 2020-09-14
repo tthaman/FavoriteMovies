@@ -150,6 +150,20 @@
                 </form>
                 <p>Page {{currentPage}}</p>
             </div>
+            <div class="pagination margin-bottom">
+                {{#isPrevPage}}
+                    <a href="/movie?page={{prevPage}}">Prev</a>
+                {{/isPrevPage}}
+                {{^isPrevPage}}
+                    <a class="disabled">Prev</a>
+                {{/isPrevPage}}
+                {{#isNextPage}}
+                    <a href="/movie?page={{nextPage}}">Next</a>
+                {{/isNextPage}}
+                {{^isNextPage}}
+                    <a class="disabled">Next</a>
+                {{/isNextPage}}
+            </div>
             {{/showPagination}}
             {{^showPagination}}{{/showPagination}}
         </main>

@@ -132,7 +132,7 @@ module.exports.getPages = async (array) => {
   let movies, totalMovies, numPages;
   let pageArray = [];
   if(!array) {
-    movies = await Movie.find().lean();
+    movies = await (await Movie.find().limit(600).lean());
     totalMovies = movies.length;
     numPages = Math.ceil(totalMovies / 20);
     for (let i = 1; i <= numPages; i++) {

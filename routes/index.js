@@ -36,12 +36,20 @@ router.use("/", async (req, res, next) => {
   page = page ? Number(page) : 1;
   const movies = await movieDAO.getAll(page);
   const pages = await movieDAO.getPages();
+  const isNextPage = page + 1 < pages.length ? true : false;
+  const isPrevPage = page - 1 !== 0 ? true : false;
+  const nextPage = page + 1;
+  const prevPage = page - 1;
   res.statusCode = 200;
   if(req.session.name) {
     res.render("index", {
       "movieArray": movies,
       "pages": pages,
       "currentPage": page,
+      "isPrevPage": isPrevPage,
+      "isNextPage": isNextPage,
+      "nextPage": nextPage,
+      "prevPage": prevPage,
       "name": req.session.name,
       "isLoggedIn": true,
       "showPagination": true,
@@ -50,6 +58,11 @@ router.use("/", async (req, res, next) => {
     res.render("index", {
       "movieArray": movies,
       "pages": pages,
+      "isPrevPage": isPrevPage,
+      "isNextPage": isNextPage,
+      "nextPage": nextPage,
+      "prevPage": prevPage,
+      "name": req.session.name,
       "currentPage": page,
       "showPagination": true,
     });

@@ -158,23 +158,37 @@ router.get("/:id", async (req, res, next) => {
 router.get("/", async (req, res, next) => {
   let { page } = req.query;
   page = page ? Number(page) : 1;
-  const pages = await movieDAO.getPages();
   const movies = await movieDAO.getAll(page);
+  const pages = await movieDAO.getPages();
+  const isNextPage = page + 1 < pages.length ? true : false;
+  const isPrevPage = page - 1 !== 0 ? true : false;
+  const nextPage = page + 1;
+  const prevPage = page - 1;
   res.statusCode = 200;
-  if (req.session.token) {
+  if(req.session.name) {
     res.render("index", {
-      movieArray: movies,
-      pages: pages,
-      currentPage: page,
-      isLoggedIn: true,
-      showPagination: true,
+      "movieArray": movies,
+      "pages": pages,
+      "currentPage": page,
+      "isPrevPage": isPrevPage,
+      "isNextPage": isNextPage,
+      "nextPage": nextPage,
+      "prevPage": prevPage,
+      "name": req.session.name,
+      "isLoggedIn": true,
+      "showPagination": true,
     });
   } else {
     res.render("index", {
-      movieArray: movies,
-      pages: pages,
-      currentPage: page,
-      showPagination: true,
+      "movieArray": movies,
+      "pages": pages,
+      "isPrevPage": isPrevPage,
+      "isNextPage": isNextPage,
+      "nextPage": nextPage,
+      "prevPage": prevPage,
+      "name": req.session.name,
+      "currentPage": page,
+      "showPagination": true,
     });
   }
 });
