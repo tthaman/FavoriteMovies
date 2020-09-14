@@ -34,6 +34,9 @@
                                 </li>
                             {{/name}}
                             <li class="pure-menu-item">
+                                <a href="/" class="pure-menu-link">Home</a>
+                            </li>
+                            <li class="pure-menu-item">
                                 <a href="/login/logout" class="pure-menu-link">Logout</a>
                             </li>
                             <li class="pure-menu-item">
@@ -41,6 +44,9 @@
                             </li>
                         {{/isLoggedIn}}
                         {{^isLoggedIn}}
+                            <li class="pure-menu-item">
+                                <a href="/" class="pure-menu-link">Home</a>
+                            </li>
                             <li class="pure-menu-item">
                                 <a href="/login/signup" class="pure-menu-link">Sign Up</a>
                             </li>
