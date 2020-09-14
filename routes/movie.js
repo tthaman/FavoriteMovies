@@ -44,16 +44,25 @@ router.get("/filter/", async (req, res, next) => {
   if (page) {
     const pages = await movieDAO.getPages(req.session.filteredMovies);
     const movieArray = req.session.filteredMovies;
+    const pageNum = parseInt(page)
     const movies = await movieArray.filter((movie, index) => {
-      let start = ((page - 1) * 20) + 1;
-      let end = ((page - 1) * 20) + 20;
+      let start = ((pageNum - 1) * 20) + 1;
+      let end = ((pageNum - 1) * 20) + 20;
       return index > start && index < end;
-    })
+    });
+    const isNextPage = pageNum + 1 <= pages.length ? true : false;
+    const isPrevPage = pageNum - 1 !== 0 ? true : false;
+    const nextPage = pageNum + 1;
+    const prevPage = pageNum - 1;
     if(req.session.name) {
       res.render("filter", {
         "movieArray": movies,
         "pages": pages,
         "currentPage": page,
+        "isPrevPage": isPrevPage,
+        "isNextPage": isNextPage,
+        "nextPage": nextPage,
+        "prevPage": prevPage,
         "name": req.session.name,
         "isLoggedIn": true,
         "showPagination": true,
@@ -62,15 +71,23 @@ router.get("/filter/", async (req, res, next) => {
       res.render("filter", {
         "movieArray": movies,
         "pages": pages,
+        "isPrevPage": isPrevPage,
+        "isNextPage": isNextPage,
+        "nextPage": nextPage,
+        "prevPage": prevPage,
         "currentPage": page,
         "showPagination": true,
       });
     }
   } else {
-    page = page ? Number(page) : 1;
+    page = 1;
     const movies = await movieDAO.filterMovie(req.query, page);
     const totalMovies = await movieDAO.filterMovie(req.query);
     const pages = await movieDAO.getPages(totalMovies);
+    const isNextPage = page + 1 < pages.length ? true : false;
+    const isPrevPage = page - 1 !== 0 ? true : false;
+    const nextPage = page + 1;
+    const prevPage = page - 1;
     req.session.filteredMovies = totalMovies;
     res.statusCode = 200;
     if(req.session.name) {
@@ -78,6 +95,10 @@ router.get("/filter/", async (req, res, next) => {
         "movieArray": movies,
         "pages": pages,
         "currentPage": page,
+        "isPrevPage": isPrevPage,
+        "isNextPage": isNextPage,
+        "nextPage": nextPage,
+        "prevPage": prevPage,
         "name": req.session.name,
         "isLoggedIn": true,
         "showPagination": totalMovies.length > 20 ? true : false,
@@ -87,6 +108,10 @@ router.get("/filter/", async (req, res, next) => {
         "movieArray": movies,
         "pages": pages,
         "currentPage": page,
+        "isPrevPage": isPrevPage,
+        "isNextPage": isNextPage,
+        "nextPage": nextPage,
+        "prevPage": prevPage,
         "showPagination": totalMovies.length > 20 ? true : false,
       });
     }
@@ -158,23 +183,37 @@ router.get("/:id", async (req, res, next) => {
 router.get("/", async (req, res, next) => {
   let { page } = req.query;
   page = page ? Number(page) : 1;
-  const pages = await movieDAO.getPages();
   const movies = await movieDAO.getAll(page);
+  const pages = await movieDAO.getPages();
+  const isNextPage = page + 1 < pages.length ? true : false;
+  const isPrevPage = page - 1 !== 0 ? true : false;
+  const nextPage = page + 1;
+  const prevPage = page - 1;
   res.statusCode = 200;
-  if (req.session.token) {
+  if(req.session.name) {
     res.render("index", {
-      movieArray: movies,
-      pages: pages,
-      currentPage: page,
-      isLoggedIn: true,
-      showPagination: true,
+      "movieArray": movies,
+      "pages": pages,
+      "currentPage": page,
+      "isPrevPage": isPrevPage,
+      "isNextPage": isNextPage,
+      "nextPage": nextPage,
+      "prevPage": prevPage,
+      "name": req.session.name,
+      "isLoggedIn": true,
+      "showPagination": true,
     });
   } else {
     res.render("index", {
-      movieArray: movies,
-      pages: pages,
-      currentPage: page,
-      showPagination: true,
+      "movieArray": movies,
+      "pages": pages,
+      "isPrevPage": isPrevPage,
+      "isNextPage": isNextPage,
+      "nextPage": nextPage,
+      "prevPage": prevPage,
+      "name": req.session.name,
+      "currentPage": page,
+      "showPagination": true,
     });
   }
 });

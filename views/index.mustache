@@ -34,6 +34,9 @@
                                 </li>
                             {{/name}}
                             <li class="pure-menu-item">
+                                <a href="/" class="pure-menu-link">Home</a>
+                            </li>
+                            <li class="pure-menu-item">
                                 <a href="/login/logout" class="pure-menu-link">Logout</a>
                             </li>
                             <li class="pure-menu-item">
@@ -41,6 +44,9 @@
                             </li>
                         {{/isLoggedIn}}
                         {{^isLoggedIn}}
+                            <li class="pure-menu-item">
+                                <a href="/" class="pure-menu-link">Home</a>
+                            </li>
                             <li class="pure-menu-item">
                                 <a href="/login/signup" class="pure-menu-link">Sign Up</a>
                             </li>
@@ -149,6 +155,20 @@
                 <button type="submit">Go To Page</button>
                 </form>
                 <p>Page {{currentPage}}</p>
+            </div>
+            <div class="pagination margin-bottom">
+                {{#isPrevPage}}
+                    <a href="/movie?page={{prevPage}}">Prev</a>
+                {{/isPrevPage}}
+                {{^isPrevPage}}
+                    <a class="disabled">Prev</a>
+                {{/isPrevPage}}
+                {{#isNextPage}}
+                    <a href="/movie?page={{nextPage}}">Next</a>
+                {{/isNextPage}}
+                {{^isNextPage}}
+                    <a class="disabled">Next</a>
+                {{/isNextPage}}
             </div>
             {{/showPagination}}
             {{^showPagination}}{{/showPagination}}
