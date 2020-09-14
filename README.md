@@ -49,15 +49,11 @@ All mustache files for views have been created<br/>
 ### Deployment
 Movie data has been loaded to MongoDB Atlas<br/>
 Heroku cluster created and connected to MongoDB Atlas with auto deploy from github master functioning<br/>
-App renders???<br/>
+App renders<br/>
 
 ### Still in Progress
-Adding pagination</br>
 Developing admin features.<br/>
-Completing /movie routes</br>
 Review route tests<br/>
-Review routes<br/>
-Adding frontend event listeners to /saved post routes</br>
 Migration to load the data to mongo atlas<br/>
 
 ### Deployment URL
@@ -68,5 +64,3 @@ Our team's intial approach was to split up work according to CRUD routes, with A
 From this we learned the importance of communicating with our teammates and of being flexible, so we could all quickly tackle any problems that arose, even if they weren't assigned to us. We also learned to make sure our code was working properly before we pushed it, and to be very careful not to break other things that might have been tied to the changes we made.
 Overall, we were able to do most of what we set out to do, and our website looked and functioned well. We did a good job of meeting regularly and notifying our teammates of finished tasks or problems we were having, and asking for help when we needed it. 
 Something we would like to improve upon for next time is estimating how much work certain tasks are going to take and making sure to start them earlier. Since it was our first time doing a big team project, we underestimated how difficult some tasks were going to be. We were also unable to implement admin features like we had wanted, so maybe if we had planned our workload better and met our sprint goals we would have been able to work that in as well. 
-
-
