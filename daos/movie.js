@@ -21,8 +21,8 @@ module.exports.getMovie = async (movieId) => {
   return movieTemp;
 };
 
-module.exports.filterMovie = async (movieObj) => {
-  let { genre, service, age, filterByYear, filterByIMDB, filterByRottenTomatoes } = movieObj;
+module.exports.filterMovie = async (movieObj, page) => {
+  let { genre, service, age, sort } = movieObj;
   let genreExp;
   let ageArray = [];
   let genreSearch;
@@ -79,11 +79,28 @@ module.exports.filterMovie = async (movieObj) => {
     movieQuery.Age = {$in: ageArray}
   }
 
-  if (filterByYear) sortBy = {Year: -1};
-  if (filterByIMDB) sortBy = {IMDb: -1};
-  if (filterByRottenTomatoes) sortBy = {RottenTomatoes: -1};
+  if (sort) {
+    if (sort === 'filterByIMDB') {
+      sortBy = {IMDb: -1};
+    }
+    if (sort === 'filterByYear') {
+      sortBy = {Year: -1};
+    }
+    if (sort === 'filterByRottenTomatoes') {
+      sortBy = {RottenTomatoes: -1};
+    }
 
-  const movies = await Movie.find(movieQuery).lean().sort(sortBy);
+  }
+  let movies;
+  if (page) {
+    if (page > 0) {
+      movies = await Movie.find(movieQuery).limit(20).skip(20 * (page - 1)).lean().sort(sortBy);
+    } else {
+      movies = await Movie.find(movieQuery).limit(20).skip(20 * (page)).lean().sort(sortBy);
+    }
+  } else {
+    movies = await Movie.find(movieQuery).lean().sort(sortBy);
+  }
   return movies;
 };
 
@@ -111,13 +128,24 @@ module.exports.searchDirector = async (directorString) => {
   return movies;
 };
 
-module.exports.getPages = async () => {
-  const pageArray = [];
-  const movies = await Movie.find().lean();
-  const totalMovies = movies.length;
-  const numPages = Math.ceil(totalMovies / 20);
-  for (let i = 1; i <= numPages; i++) {
-    pageArray.push(i);
+module.exports.getPages = async (array) => {
+  let movies, totalMovies, numPages;
+  let pageArray = [];
+  if(!array) {
+    movies = await Movie.find().lean();
+    totalMovies = movies.length;
+    numPages = Math.ceil(totalMovies / 20);
+    for (let i = 1; i <= numPages; i++) {
+      pageArray.push(i);
+    }
+    return pageArray;
+  } else {
+    totalMovies = array.length;
+    numPages = Math.ceil(totalMovies / 20);
+    for (let i = 1; i <= numPages; i++) {
+      pageArray.push(i)
+    }
+    return pageArray;
   }
-  return pageArray;
+  
 };

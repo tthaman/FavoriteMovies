@@ -1,5 +1,7 @@
 const { Router } = require("express");
 const router = Router();
+const session = require('express-session');
+
 
 const movieDAO = require("../daos/movie");
 const reviewDAO = require("../daos/review");
@@ -37,12 +39,58 @@ router.get("/search", async (req, res, next) => {
 });
 
 // GET /movies/filter Retrieves potential matches
-router.get("/filter", async (req, res, next) => {
-  const movies = await movieDAO.filterMovie(req.query);
-  res.statusCode = 200;
-  res.render("index", {
-    movieArray: movies,
-  });
+router.get("/filter/", async (req, res, next) => {
+  let { page } = req.query;
+  if (page) {
+    const pages = await movieDAO.getPages(req.session.filteredMovies);
+    const movieArray = req.session.filteredMovies;
+    const movies = await movieArray.filter((movie, index) => {
+      let start = ((page - 1) * 20) + 1;
+      let end = ((page - 1) * 20) + 20;
+      return index > start && index < end;
+    })
+    if(req.session.name) {
+      res.render("filter", {
+        "movieArray": movies,
+        "pages": pages,
+        "currentPage": page,
+        "name": req.session.name,
+        "isLoggedIn": true,
+        "showPagination": true,
+      });
+    } else {
+      res.render("filter", {
+        "movieArray": movies,
+        "pages": pages,
+        "currentPage": page,
+        "showPagination": true,
+      });
+    }
+  } else {
+    page = page ? Number(page) : 1;
+    const movies = await movieDAO.filterMovie(req.query, page);
+    const totalMovies = await movieDAO.filterMovie(req.query);
+    const pages = await movieDAO.getPages(totalMovies);
+    req.session.filteredMovies = totalMovies;
+    res.statusCode = 200;
+    if(req.session.name) {
+      res.render("filter", {
+        "movieArray": movies,
+        "pages": pages,
+        "currentPage": page,
+        "name": req.session.name,
+        "isLoggedIn": true,
+        "showPagination": totalMovies.length > 20 ? true : false,
+      });
+    } else {
+      res.render("filter", {
+        "movieArray": movies,
+        "pages": pages,
+        "currentPage": page,
+        "showPagination": totalMovies.length > 20 ? true : false,
+      });
+    }
+  }
 });
 
 function convertStarRating(rating) {
@@ -108,7 +156,6 @@ router.get("/:id", async (req, res, next) => {
 
 //GET /movies Retrieves all movies
 router.get("/", async (req, res, next) => {
-  console.log(req.query);
   let { page } = req.query;
   page = page ? Number(page) : 1;
   const pages = await movieDAO.getPages();
